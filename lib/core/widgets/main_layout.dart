@@ -279,9 +279,13 @@ class _MainLayoutState extends State<MainLayout> {
               icon: Icons.home_work,
               route: AppRoutes.adminProperties),
           _NavItem(
-              label: l10n.manageContracts,
-              icon: Icons.description,
-              route: AppRoutes.adminContracts),
+              label: 'Buy Contracts',
+              icon: Icons.shopping_cart,
+              route: AppRoutes.contractsBuy),
+          _NavItem(
+              label: 'Rent Contracts',
+              icon: Icons.key,
+              route: AppRoutes.contractsRent),
         ];
         break;
       case UserRole.owner:
@@ -291,9 +295,13 @@ class _MainLayoutState extends State<MainLayout> {
               icon: Icons.home,
               route: AppRoutes.ownerProperties),
           _NavItem(
-              label: l10n.contracts,
-              icon: Icons.description,
-              route: AppRoutes.ownerContracts),
+              label: 'Buy Contracts',
+              icon: Icons.shopping_cart,
+              route: AppRoutes.contractsBuy),
+          _NavItem(
+              label: 'Rent Contracts',
+              icon: Icons.key,
+              route: AppRoutes.contractsRent),
         ];
         break;
       case UserRole.tenant:

@@ -2220,6 +2220,44 @@ class $ContractsTable extends Contracts
   late final GeneratedColumn<String> terms = GeneratedColumn<String>(
       'terms', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+      'description', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _descriptionArMeta =
+      const VerificationMeta('descriptionAr');
+  @override
+  late final GeneratedColumn<String> descriptionAr = GeneratedColumn<String>(
+      'description_ar', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _concessionsMeta =
+      const VerificationMeta('concessions');
+  @override
+  late final GeneratedColumn<String> concessions = GeneratedColumn<String>(
+      'concessions', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _fileUrlMeta =
+      const VerificationMeta('fileUrl');
+  @override
+  late final GeneratedColumn<String> fileUrl = GeneratedColumn<String>(
+      'file_url', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _paymentFrequencyMeta =
+      const VerificationMeta('paymentFrequency');
+  @override
+  late final GeneratedColumn<String> paymentFrequency = GeneratedColumn<String>(
+      'payment_frequency', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('monthly'));
+  static const VerificationMeta _customFrequencyDaysMeta =
+      const VerificationMeta('customFrequencyDays');
+  @override
+  late final GeneratedColumn<int> customFrequencyDays = GeneratedColumn<int>(
+      'custom_frequency_days', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _statusMeta = const VerificationMeta('status');
   @override
   late final GeneratedColumn<String> status = GeneratedColumn<String>(
@@ -2260,6 +2298,12 @@ class $ContractsTable extends Contracts
         salePrice,
         depositAmount,
         terms,
+        description,
+        descriptionAr,
+        concessions,
+        fileUrl,
+        paymentFrequency,
+        customFrequencyDays,
         status,
         createdAt,
         updatedAt,
@@ -2340,6 +2384,40 @@ class $ContractsTable extends Contracts
       context.handle(
           _termsMeta, terms.isAcceptableOrUnknown(data['terms']!, _termsMeta));
     }
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
+    }
+    if (data.containsKey('description_ar')) {
+      context.handle(
+          _descriptionArMeta,
+          descriptionAr.isAcceptableOrUnknown(
+              data['description_ar']!, _descriptionArMeta));
+    }
+    if (data.containsKey('concessions')) {
+      context.handle(
+          _concessionsMeta,
+          concessions.isAcceptableOrUnknown(
+              data['concessions']!, _concessionsMeta));
+    }
+    if (data.containsKey('file_url')) {
+      context.handle(_fileUrlMeta,
+          fileUrl.isAcceptableOrUnknown(data['file_url']!, _fileUrlMeta));
+    }
+    if (data.containsKey('payment_frequency')) {
+      context.handle(
+          _paymentFrequencyMeta,
+          paymentFrequency.isAcceptableOrUnknown(
+              data['payment_frequency']!, _paymentFrequencyMeta));
+    }
+    if (data.containsKey('custom_frequency_days')) {
+      context.handle(
+          _customFrequencyDaysMeta,
+          customFrequencyDays.isAcceptableOrUnknown(
+              data['custom_frequency_days']!, _customFrequencyDaysMeta));
+    }
     if (data.containsKey('status')) {
       context.handle(_statusMeta,
           status.isAcceptableOrUnknown(data['status']!, _statusMeta));
@@ -2393,6 +2471,18 @@ class $ContractsTable extends Contracts
           .read(DriftSqlType.double, data['${effectivePrefix}deposit_amount']),
       terms: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}terms']),
+      description: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}description']),
+      descriptionAr: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}description_ar']),
+      concessions: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}concessions']),
+      fileUrl: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}file_url']),
+      paymentFrequency: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}payment_frequency'])!,
+      customFrequencyDays: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}custom_frequency_days']),
       status: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}status'])!,
       createdAt: attachedDatabase.typeMapping
@@ -2422,6 +2512,12 @@ class Contract extends DataClass implements Insertable<Contract> {
   final double? salePrice;
   final double? depositAmount;
   final String? terms;
+  final String? description;
+  final String? descriptionAr;
+  final String? concessions;
+  final String? fileUrl;
+  final String paymentFrequency;
+  final int? customFrequencyDays;
   final String status;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -2438,6 +2534,12 @@ class Contract extends DataClass implements Insertable<Contract> {
       this.salePrice,
       this.depositAmount,
       this.terms,
+      this.description,
+      this.descriptionAr,
+      this.concessions,
+      this.fileUrl,
+      required this.paymentFrequency,
+      this.customFrequencyDays,
       required this.status,
       required this.createdAt,
       required this.updatedAt,
@@ -2465,6 +2567,22 @@ class Contract extends DataClass implements Insertable<Contract> {
     }
     if (!nullToAbsent || terms != null) {
       map['terms'] = Variable<String>(terms);
+    }
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    if (!nullToAbsent || descriptionAr != null) {
+      map['description_ar'] = Variable<String>(descriptionAr);
+    }
+    if (!nullToAbsent || concessions != null) {
+      map['concessions'] = Variable<String>(concessions);
+    }
+    if (!nullToAbsent || fileUrl != null) {
+      map['file_url'] = Variable<String>(fileUrl);
+    }
+    map['payment_frequency'] = Variable<String>(paymentFrequency);
+    if (!nullToAbsent || customFrequencyDays != null) {
+      map['custom_frequency_days'] = Variable<int>(customFrequencyDays);
     }
     map['status'] = Variable<String>(status);
     map['created_at'] = Variable<DateTime>(createdAt);
@@ -2495,6 +2613,22 @@ class Contract extends DataClass implements Insertable<Contract> {
           : Value(depositAmount),
       terms:
           terms == null && nullToAbsent ? const Value.absent() : Value(terms),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      descriptionAr: descriptionAr == null && nullToAbsent
+          ? const Value.absent()
+          : Value(descriptionAr),
+      concessions: concessions == null && nullToAbsent
+          ? const Value.absent()
+          : Value(concessions),
+      fileUrl: fileUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fileUrl),
+      paymentFrequency: Value(paymentFrequency),
+      customFrequencyDays: customFrequencyDays == null && nullToAbsent
+          ? const Value.absent()
+          : Value(customFrequencyDays),
       status: Value(status),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
@@ -2517,6 +2651,13 @@ class Contract extends DataClass implements Insertable<Contract> {
       salePrice: serializer.fromJson<double?>(json['salePrice']),
       depositAmount: serializer.fromJson<double?>(json['depositAmount']),
       terms: serializer.fromJson<String?>(json['terms']),
+      description: serializer.fromJson<String?>(json['description']),
+      descriptionAr: serializer.fromJson<String?>(json['descriptionAr']),
+      concessions: serializer.fromJson<String?>(json['concessions']),
+      fileUrl: serializer.fromJson<String?>(json['fileUrl']),
+      paymentFrequency: serializer.fromJson<String>(json['paymentFrequency']),
+      customFrequencyDays:
+          serializer.fromJson<int?>(json['customFrequencyDays']),
       status: serializer.fromJson<String>(json['status']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
@@ -2538,6 +2679,12 @@ class Contract extends DataClass implements Insertable<Contract> {
       'salePrice': serializer.toJson<double?>(salePrice),
       'depositAmount': serializer.toJson<double?>(depositAmount),
       'terms': serializer.toJson<String?>(terms),
+      'description': serializer.toJson<String?>(description),
+      'descriptionAr': serializer.toJson<String?>(descriptionAr),
+      'concessions': serializer.toJson<String?>(concessions),
+      'fileUrl': serializer.toJson<String?>(fileUrl),
+      'paymentFrequency': serializer.toJson<String>(paymentFrequency),
+      'customFrequencyDays': serializer.toJson<int?>(customFrequencyDays),
       'status': serializer.toJson<String>(status),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
@@ -2557,6 +2704,12 @@ class Contract extends DataClass implements Insertable<Contract> {
           Value<double?> salePrice = const Value.absent(),
           Value<double?> depositAmount = const Value.absent(),
           Value<String?> terms = const Value.absent(),
+          Value<String?> description = const Value.absent(),
+          Value<String?> descriptionAr = const Value.absent(),
+          Value<String?> concessions = const Value.absent(),
+          Value<String?> fileUrl = const Value.absent(),
+          String? paymentFrequency,
+          Value<int?> customFrequencyDays = const Value.absent(),
           String? status,
           DateTime? createdAt,
           DateTime? updatedAt,
@@ -2574,6 +2727,15 @@ class Contract extends DataClass implements Insertable<Contract> {
         depositAmount:
             depositAmount.present ? depositAmount.value : this.depositAmount,
         terms: terms.present ? terms.value : this.terms,
+        description: description.present ? description.value : this.description,
+        descriptionAr:
+            descriptionAr.present ? descriptionAr.value : this.descriptionAr,
+        concessions: concessions.present ? concessions.value : this.concessions,
+        fileUrl: fileUrl.present ? fileUrl.value : this.fileUrl,
+        paymentFrequency: paymentFrequency ?? this.paymentFrequency,
+        customFrequencyDays: customFrequencyDays.present
+            ? customFrequencyDays.value
+            : this.customFrequencyDays,
         status: status ?? this.status,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
@@ -2600,6 +2762,20 @@ class Contract extends DataClass implements Insertable<Contract> {
           ? data.depositAmount.value
           : this.depositAmount,
       terms: data.terms.present ? data.terms.value : this.terms,
+      description:
+          data.description.present ? data.description.value : this.description,
+      descriptionAr: data.descriptionAr.present
+          ? data.descriptionAr.value
+          : this.descriptionAr,
+      concessions:
+          data.concessions.present ? data.concessions.value : this.concessions,
+      fileUrl: data.fileUrl.present ? data.fileUrl.value : this.fileUrl,
+      paymentFrequency: data.paymentFrequency.present
+          ? data.paymentFrequency.value
+          : this.paymentFrequency,
+      customFrequencyDays: data.customFrequencyDays.present
+          ? data.customFrequencyDays.value
+          : this.customFrequencyDays,
       status: data.status.present ? data.status.value : this.status,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
@@ -2622,6 +2798,12 @@ class Contract extends DataClass implements Insertable<Contract> {
           ..write('salePrice: $salePrice, ')
           ..write('depositAmount: $depositAmount, ')
           ..write('terms: $terms, ')
+          ..write('description: $description, ')
+          ..write('descriptionAr: $descriptionAr, ')
+          ..write('concessions: $concessions, ')
+          ..write('fileUrl: $fileUrl, ')
+          ..write('paymentFrequency: $paymentFrequency, ')
+          ..write('customFrequencyDays: $customFrequencyDays, ')
           ..write('status: $status, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
@@ -2631,22 +2813,29 @@ class Contract extends DataClass implements Insertable<Contract> {
   }
 
   @override
-  int get hashCode => Object.hash(
-      id,
-      propertyId,
-      ownerId,
-      tenantBuyerId,
-      contractType,
-      startDate,
-      endDate,
-      monthlyRent,
-      salePrice,
-      depositAmount,
-      terms,
-      status,
-      createdAt,
-      updatedAt,
-      syncStatus);
+  int get hashCode => Object.hashAll([
+        id,
+        propertyId,
+        ownerId,
+        tenantBuyerId,
+        contractType,
+        startDate,
+        endDate,
+        monthlyRent,
+        salePrice,
+        depositAmount,
+        terms,
+        description,
+        descriptionAr,
+        concessions,
+        fileUrl,
+        paymentFrequency,
+        customFrequencyDays,
+        status,
+        createdAt,
+        updatedAt,
+        syncStatus
+      ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2662,6 +2851,12 @@ class Contract extends DataClass implements Insertable<Contract> {
           other.salePrice == this.salePrice &&
           other.depositAmount == this.depositAmount &&
           other.terms == this.terms &&
+          other.description == this.description &&
+          other.descriptionAr == this.descriptionAr &&
+          other.concessions == this.concessions &&
+          other.fileUrl == this.fileUrl &&
+          other.paymentFrequency == this.paymentFrequency &&
+          other.customFrequencyDays == this.customFrequencyDays &&
           other.status == this.status &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
@@ -2680,6 +2875,12 @@ class ContractsCompanion extends UpdateCompanion<Contract> {
   final Value<double?> salePrice;
   final Value<double?> depositAmount;
   final Value<String?> terms;
+  final Value<String?> description;
+  final Value<String?> descriptionAr;
+  final Value<String?> concessions;
+  final Value<String?> fileUrl;
+  final Value<String> paymentFrequency;
+  final Value<int?> customFrequencyDays;
   final Value<String> status;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
@@ -2697,6 +2898,12 @@ class ContractsCompanion extends UpdateCompanion<Contract> {
     this.salePrice = const Value.absent(),
     this.depositAmount = const Value.absent(),
     this.terms = const Value.absent(),
+    this.description = const Value.absent(),
+    this.descriptionAr = const Value.absent(),
+    this.concessions = const Value.absent(),
+    this.fileUrl = const Value.absent(),
+    this.paymentFrequency = const Value.absent(),
+    this.customFrequencyDays = const Value.absent(),
     this.status = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -2715,6 +2922,12 @@ class ContractsCompanion extends UpdateCompanion<Contract> {
     this.salePrice = const Value.absent(),
     this.depositAmount = const Value.absent(),
     this.terms = const Value.absent(),
+    this.description = const Value.absent(),
+    this.descriptionAr = const Value.absent(),
+    this.concessions = const Value.absent(),
+    this.fileUrl = const Value.absent(),
+    this.paymentFrequency = const Value.absent(),
+    this.customFrequencyDays = const Value.absent(),
     this.status = const Value.absent(),
     required DateTime createdAt,
     required DateTime updatedAt,
@@ -2740,6 +2953,12 @@ class ContractsCompanion extends UpdateCompanion<Contract> {
     Expression<double>? salePrice,
     Expression<double>? depositAmount,
     Expression<String>? terms,
+    Expression<String>? description,
+    Expression<String>? descriptionAr,
+    Expression<String>? concessions,
+    Expression<String>? fileUrl,
+    Expression<String>? paymentFrequency,
+    Expression<int>? customFrequencyDays,
     Expression<String>? status,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
@@ -2758,6 +2977,13 @@ class ContractsCompanion extends UpdateCompanion<Contract> {
       if (salePrice != null) 'sale_price': salePrice,
       if (depositAmount != null) 'deposit_amount': depositAmount,
       if (terms != null) 'terms': terms,
+      if (description != null) 'description': description,
+      if (descriptionAr != null) 'description_ar': descriptionAr,
+      if (concessions != null) 'concessions': concessions,
+      if (fileUrl != null) 'file_url': fileUrl,
+      if (paymentFrequency != null) 'payment_frequency': paymentFrequency,
+      if (customFrequencyDays != null)
+        'custom_frequency_days': customFrequencyDays,
       if (status != null) 'status': status,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
@@ -2778,6 +3004,12 @@ class ContractsCompanion extends UpdateCompanion<Contract> {
       Value<double?>? salePrice,
       Value<double?>? depositAmount,
       Value<String?>? terms,
+      Value<String?>? description,
+      Value<String?>? descriptionAr,
+      Value<String?>? concessions,
+      Value<String?>? fileUrl,
+      Value<String>? paymentFrequency,
+      Value<int?>? customFrequencyDays,
       Value<String>? status,
       Value<DateTime>? createdAt,
       Value<DateTime>? updatedAt,
@@ -2795,6 +3027,12 @@ class ContractsCompanion extends UpdateCompanion<Contract> {
       salePrice: salePrice ?? this.salePrice,
       depositAmount: depositAmount ?? this.depositAmount,
       terms: terms ?? this.terms,
+      description: description ?? this.description,
+      descriptionAr: descriptionAr ?? this.descriptionAr,
+      concessions: concessions ?? this.concessions,
+      fileUrl: fileUrl ?? this.fileUrl,
+      paymentFrequency: paymentFrequency ?? this.paymentFrequency,
+      customFrequencyDays: customFrequencyDays ?? this.customFrequencyDays,
       status: status ?? this.status,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -2839,6 +3077,24 @@ class ContractsCompanion extends UpdateCompanion<Contract> {
     if (terms.present) {
       map['terms'] = Variable<String>(terms.value);
     }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (descriptionAr.present) {
+      map['description_ar'] = Variable<String>(descriptionAr.value);
+    }
+    if (concessions.present) {
+      map['concessions'] = Variable<String>(concessions.value);
+    }
+    if (fileUrl.present) {
+      map['file_url'] = Variable<String>(fileUrl.value);
+    }
+    if (paymentFrequency.present) {
+      map['payment_frequency'] = Variable<String>(paymentFrequency.value);
+    }
+    if (customFrequencyDays.present) {
+      map['custom_frequency_days'] = Variable<int>(customFrequencyDays.value);
+    }
     if (status.present) {
       map['status'] = Variable<String>(status.value);
     }
@@ -2871,6 +3127,12 @@ class ContractsCompanion extends UpdateCompanion<Contract> {
           ..write('salePrice: $salePrice, ')
           ..write('depositAmount: $depositAmount, ')
           ..write('terms: $terms, ')
+          ..write('description: $description, ')
+          ..write('descriptionAr: $descriptionAr, ')
+          ..write('concessions: $concessions, ')
+          ..write('fileUrl: $fileUrl, ')
+          ..write('paymentFrequency: $paymentFrequency, ')
+          ..write('customFrequencyDays: $customFrequencyDays, ')
           ..write('status: $status, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
@@ -5904,6 +6166,12 @@ typedef $$ContractsTableCreateCompanionBuilder = ContractsCompanion Function({
   Value<double?> salePrice,
   Value<double?> depositAmount,
   Value<String?> terms,
+  Value<String?> description,
+  Value<String?> descriptionAr,
+  Value<String?> concessions,
+  Value<String?> fileUrl,
+  Value<String> paymentFrequency,
+  Value<int?> customFrequencyDays,
   Value<String> status,
   required DateTime createdAt,
   required DateTime updatedAt,
@@ -5922,6 +6190,12 @@ typedef $$ContractsTableUpdateCompanionBuilder = ContractsCompanion Function({
   Value<double?> salePrice,
   Value<double?> depositAmount,
   Value<String?> terms,
+  Value<String?> description,
+  Value<String?> descriptionAr,
+  Value<String?> concessions,
+  Value<String?> fileUrl,
+  Value<String> paymentFrequency,
+  Value<int?> customFrequencyDays,
   Value<String> status,
   Value<DateTime> createdAt,
   Value<DateTime> updatedAt,
@@ -6025,6 +6299,26 @@ class $$ContractsTableFilterComposer
 
   ColumnFilters<String> get terms => $composableBuilder(
       column: $table.terms, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get descriptionAr => $composableBuilder(
+      column: $table.descriptionAr, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get concessions => $composableBuilder(
+      column: $table.concessions, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get fileUrl => $composableBuilder(
+      column: $table.fileUrl, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get paymentFrequency => $composableBuilder(
+      column: $table.paymentFrequency,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get customFrequencyDays => $composableBuilder(
+      column: $table.customFrequencyDays,
+      builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get status => $composableBuilder(
       column: $table.status, builder: (column) => ColumnFilters(column));
@@ -6155,6 +6449,27 @@ class $$ContractsTableOrderingComposer
   ColumnOrderings<String> get terms => $composableBuilder(
       column: $table.terms, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get descriptionAr => $composableBuilder(
+      column: $table.descriptionAr,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get concessions => $composableBuilder(
+      column: $table.concessions, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get fileUrl => $composableBuilder(
+      column: $table.fileUrl, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get paymentFrequency => $composableBuilder(
+      column: $table.paymentFrequency,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get customFrequencyDays => $composableBuilder(
+      column: $table.customFrequencyDays,
+      builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<String> get status => $composableBuilder(
       column: $table.status, builder: (column) => ColumnOrderings(column));
 
@@ -6260,6 +6575,24 @@ class $$ContractsTableAnnotationComposer
 
   GeneratedColumn<String> get terms =>
       $composableBuilder(column: $table.terms, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => column);
+
+  GeneratedColumn<String> get descriptionAr => $composableBuilder(
+      column: $table.descriptionAr, builder: (column) => column);
+
+  GeneratedColumn<String> get concessions => $composableBuilder(
+      column: $table.concessions, builder: (column) => column);
+
+  GeneratedColumn<String> get fileUrl =>
+      $composableBuilder(column: $table.fileUrl, builder: (column) => column);
+
+  GeneratedColumn<String> get paymentFrequency => $composableBuilder(
+      column: $table.paymentFrequency, builder: (column) => column);
+
+  GeneratedColumn<int> get customFrequencyDays => $composableBuilder(
+      column: $table.customFrequencyDays, builder: (column) => column);
 
   GeneratedColumn<String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
@@ -6393,6 +6726,12 @@ class $$ContractsTableTableManager extends RootTableManager<
             Value<double?> salePrice = const Value.absent(),
             Value<double?> depositAmount = const Value.absent(),
             Value<String?> terms = const Value.absent(),
+            Value<String?> description = const Value.absent(),
+            Value<String?> descriptionAr = const Value.absent(),
+            Value<String?> concessions = const Value.absent(),
+            Value<String?> fileUrl = const Value.absent(),
+            Value<String> paymentFrequency = const Value.absent(),
+            Value<int?> customFrequencyDays = const Value.absent(),
             Value<String> status = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
             Value<DateTime> updatedAt = const Value.absent(),
@@ -6411,6 +6750,12 @@ class $$ContractsTableTableManager extends RootTableManager<
             salePrice: salePrice,
             depositAmount: depositAmount,
             terms: terms,
+            description: description,
+            descriptionAr: descriptionAr,
+            concessions: concessions,
+            fileUrl: fileUrl,
+            paymentFrequency: paymentFrequency,
+            customFrequencyDays: customFrequencyDays,
             status: status,
             createdAt: createdAt,
             updatedAt: updatedAt,
@@ -6429,6 +6774,12 @@ class $$ContractsTableTableManager extends RootTableManager<
             Value<double?> salePrice = const Value.absent(),
             Value<double?> depositAmount = const Value.absent(),
             Value<String?> terms = const Value.absent(),
+            Value<String?> description = const Value.absent(),
+            Value<String?> descriptionAr = const Value.absent(),
+            Value<String?> concessions = const Value.absent(),
+            Value<String?> fileUrl = const Value.absent(),
+            Value<String> paymentFrequency = const Value.absent(),
+            Value<int?> customFrequencyDays = const Value.absent(),
             Value<String> status = const Value.absent(),
             required DateTime createdAt,
             required DateTime updatedAt,
@@ -6447,6 +6798,12 @@ class $$ContractsTableTableManager extends RootTableManager<
             salePrice: salePrice,
             depositAmount: depositAmount,
             terms: terms,
+            description: description,
+            descriptionAr: descriptionAr,
+            concessions: concessions,
+            fileUrl: fileUrl,
+            paymentFrequency: paymentFrequency,
+            customFrequencyDays: customFrequencyDays,
             status: status,
             createdAt: createdAt,
             updatedAt: updatedAt,

@@ -79,6 +79,13 @@ class Contracts extends Table {
   RealColumn get salePrice => real().nullable()();
   RealColumn get depositAmount => real().nullable()();
   TextColumn get terms => text().nullable()();
+  TextColumn get description => text().nullable()();
+  TextColumn get descriptionAr => text().nullable()();
+  TextColumn get concessions => text().nullable()();
+  TextColumn get fileUrl => text().nullable()();
+  TextColumn get paymentFrequency =>
+      text().withDefault(const Constant('monthly'))();
+  IntColumn get customFrequencyDays => integer().nullable()();
   TextColumn get status => text().withDefault(const Constant('active'))();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();

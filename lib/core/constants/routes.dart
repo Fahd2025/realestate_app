@@ -40,4 +40,8 @@ class AppRoutes {
 
   // Property details
   static const String propertyDetails = '/property/details';
+
+  // Contract routes
+  static const String contractsBuy = '/contracts/buy';
+  static const String contractsRent = '/contracts/rent';
 }

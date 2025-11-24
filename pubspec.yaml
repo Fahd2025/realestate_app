@@ -13,7 +13,7 @@ dependencies:
     sdk: flutter
 
   # State Management
-  flutter_bloc: ^8.1.3
+  flutter_bloc: ^9.1.1
   equatable: ^2.0.5
 
   # Local Database - Drift (supports Web and Mobile)
@@ -25,7 +25,7 @@ dependencies:
 
   # API & Network
   http: ^1.1.0
-  connectivity_plus: ^5.0.2
+  connectivity_plus: ^7.0.0
 
   # Storage
   shared_preferences: ^2.2.2
@@ -49,7 +49,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^6.0.0
 
   flutter_launcher_icons: ^0.14.4
 
