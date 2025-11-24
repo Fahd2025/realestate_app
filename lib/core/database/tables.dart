@@ -7,7 +7,9 @@ class Users extends Table {
   TextColumn get passwordHash => text()();
   TextColumn get email => text().unique()();
   TextColumn get fullName => text()();
+  TextColumn get fullNameAr => text().nullable()();
   TextColumn get phone => text().nullable()();
+  TextColumn get nationalId => text().nullable()();
   TextColumn get role => text()();
   TextColumn get logoUrl => text().nullable()();
   TextColumn get address => text().nullable()();
@@ -49,7 +51,8 @@ class Properties extends Table {
 // Property images table
 class PropertyImages extends Table {
   TextColumn get id => text()();
-  TextColumn get propertyId => text().references(Properties, #id, onDelete: KeyAction.cascade)();
+  TextColumn get propertyId =>
+      text().references(Properties, #id, onDelete: KeyAction.cascade)();
   TextColumn get imageUrl => text()();
   TextColumn get thumbnailUrl => text().nullable()();
   BoolColumn get isPrimary => boolean().withDefault(const Constant(false))();

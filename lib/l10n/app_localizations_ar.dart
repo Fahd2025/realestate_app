@@ -388,4 +388,71 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get statistics => 'الإحصائيات';
+
+  @override
+  String get myRequests => 'طلباتي';
+
+  @override
+  String get loginRequired => 'تسجيل الدخول مطلوب';
+
+  @override
+  String get personalInformation => 'المعلومات الشخصية';
+
+  @override
+  String get phoneNumber => 'رقم الهاتف';
+
+  @override
+  String get role => 'Role';
+
+  @override
+  String get editProfile => 'تعديل الملف الشخصي';
+
+  @override
+  String get addUser => 'إضافة مستخدم';
+
+  @override
+  String get searchByNameEmailUsername =>
+      'البحث بالاسم أو البريد الإلكتروني أو اسم المستخدم...';
+
+  @override
+  String get all => 'الكل';
+
+  @override
+  String get noUsersFound => 'لم يتم العثور على مستخدمين';
+
+  @override
+  String get userCreatedSuccessfully => 'تم إنشاء المستخدم بنجاح';
+
+  @override
+  String get userUpdatedSuccessfully => 'تم تحديث المستخدم بنجاح';
+
+  @override
+  String get userDeletedSuccessfully => 'تم حذف المستخدم بنجاح';
+
+  @override
+  String get deleteUser => 'حذف المستخدم';
+
+  @override
+  String deleteUserConfirmation(String name) {
+    return 'هل أنت متأكد من حذف $name؟ لا يمكن التراجع عن هذا الإجراء.';
+  }
+
+  @override
+  String errorLoadingUsers(String error) {
+    return 'خطأ في تحميل المستخدمين: $error';
+  }
+
+  @override
+  String errorDeletingUser(String error) {
+    return 'خطأ في حذف المستخدم: $error';
+  }
+
+  @override
+  String get nationalId => 'الرقم الوطني';
+
+  @override
+  String get actions => 'الإجراءات';
+
+  @override
+  String get inactive => 'غير نشط';
 }

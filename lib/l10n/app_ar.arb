@@ -126,5 +126,45 @@
   "totalUsers": "إجمالي المستخدمين",
   "totalRevenue": "إجمالي الإيرادات",
   "recentActivity": "النشاط الأخير",
-  "statistics": "الإحصائيات"
+  "statistics": "الإحصائيات",
+  "myRequests": "طلباتي",
+  "loginRequired": "تسجيل الدخول مطلوب",
+  "personalInformation": "المعلومات الشخصية",
+  "phoneNumber": "رقم الهاتف",
+  "editProfile": "تعديل الملف الشخصي",
+  "addUser": "إضافة مستخدم",
+  "searchByNameEmailUsername": "البحث بالاسم أو البريد الإلكتروني أو اسم المستخدم...",
+  "all": "الكل",
+  "noUsersFound": "لم يتم العثور على مستخدمين",
+  "userCreatedSuccessfully": "تم إنشاء المستخدم بنجاح",
+  "userUpdatedSuccessfully": "تم تحديث المستخدم بنجاح",
+  "userDeletedSuccessfully": "تم حذف المستخدم بنجاح",
+  "deleteUser": "حذف المستخدم",
+  "deleteUserConfirmation": "هل أنت متأكد من حذف {name}؟ لا يمكن التراجع عن هذا الإجراء.",
+  "@deleteUserConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "errorLoadingUsers": "خطأ في تحميل المستخدمين: {error}",
+  "@errorLoadingUsers": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "errorDeletingUser": "خطأ في حذف المستخدم: {error}",
+  "@errorDeletingUser": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "nationalId": "الرقم الوطني",
+  "actions": "الإجراءات",
+  "inactive": "غير نشط"
 }

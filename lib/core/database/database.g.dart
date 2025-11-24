@@ -40,10 +40,22 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   late final GeneratedColumn<String> fullName = GeneratedColumn<String>(
       'full_name', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _fullNameArMeta =
+      const VerificationMeta('fullNameAr');
+  @override
+  late final GeneratedColumn<String> fullNameAr = GeneratedColumn<String>(
+      'full_name_ar', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _phoneMeta = const VerificationMeta('phone');
   @override
   late final GeneratedColumn<String> phone = GeneratedColumn<String>(
       'phone', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _nationalIdMeta =
+      const VerificationMeta('nationalId');
+  @override
+  late final GeneratedColumn<String> nationalId = GeneratedColumn<String>(
+      'national_id', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _roleMeta = const VerificationMeta('role');
   @override
@@ -99,7 +111,9 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
         passwordHash,
         email,
         fullName,
+        fullNameAr,
         phone,
+        nationalId,
         role,
         logoUrl,
         address,
@@ -149,9 +163,21 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
     } else if (isInserting) {
       context.missing(_fullNameMeta);
     }
+    if (data.containsKey('full_name_ar')) {
+      context.handle(
+          _fullNameArMeta,
+          fullNameAr.isAcceptableOrUnknown(
+              data['full_name_ar']!, _fullNameArMeta));
+    }
     if (data.containsKey('phone')) {
       context.handle(
           _phoneMeta, phone.isAcceptableOrUnknown(data['phone']!, _phoneMeta));
+    }
+    if (data.containsKey('national_id')) {
+      context.handle(
+          _nationalIdMeta,
+          nationalId.isAcceptableOrUnknown(
+              data['national_id']!, _nationalIdMeta));
     }
     if (data.containsKey('role')) {
       context.handle(
@@ -208,8 +234,12 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
           .read(DriftSqlType.string, data['${effectivePrefix}email'])!,
       fullName: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}full_name'])!,
+      fullNameAr: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}full_name_ar']),
       phone: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}phone']),
+      nationalId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}national_id']),
       role: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}role'])!,
       logoUrl: attachedDatabase.typeMapping
@@ -239,7 +269,9 @@ class User extends DataClass implements Insertable<User> {
   final String passwordHash;
   final String email;
   final String fullName;
+  final String? fullNameAr;
   final String? phone;
+  final String? nationalId;
   final String role;
   final String? logoUrl;
   final String? address;
@@ -253,7 +285,9 @@ class User extends DataClass implements Insertable<User> {
       required this.passwordHash,
       required this.email,
       required this.fullName,
+      this.fullNameAr,
       this.phone,
+      this.nationalId,
       required this.role,
       this.logoUrl,
       this.address,
@@ -269,8 +303,14 @@ class User extends DataClass implements Insertable<User> {
     map['password_hash'] = Variable<String>(passwordHash);
     map['email'] = Variable<String>(email);
     map['full_name'] = Variable<String>(fullName);
+    if (!nullToAbsent || fullNameAr != null) {
+      map['full_name_ar'] = Variable<String>(fullNameAr);
+    }
     if (!nullToAbsent || phone != null) {
       map['phone'] = Variable<String>(phone);
+    }
+    if (!nullToAbsent || nationalId != null) {
+      map['national_id'] = Variable<String>(nationalId);
     }
     map['role'] = Variable<String>(role);
     if (!nullToAbsent || logoUrl != null) {
@@ -293,8 +333,14 @@ class User extends DataClass implements Insertable<User> {
       passwordHash: Value(passwordHash),
       email: Value(email),
       fullName: Value(fullName),
+      fullNameAr: fullNameAr == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fullNameAr),
       phone:
           phone == null && nullToAbsent ? const Value.absent() : Value(phone),
+      nationalId: nationalId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(nationalId),
       role: Value(role),
       logoUrl: logoUrl == null && nullToAbsent
           ? const Value.absent()
@@ -318,7 +364,9 @@ class User extends DataClass implements Insertable<User> {
       passwordHash: serializer.fromJson<String>(json['passwordHash']),
       email: serializer.fromJson<String>(json['email']),
       fullName: serializer.fromJson<String>(json['fullName']),
+      fullNameAr: serializer.fromJson<String?>(json['fullNameAr']),
       phone: serializer.fromJson<String?>(json['phone']),
+      nationalId: serializer.fromJson<String?>(json['nationalId']),
       role: serializer.fromJson<String>(json['role']),
       logoUrl: serializer.fromJson<String?>(json['logoUrl']),
       address: serializer.fromJson<String?>(json['address']),
@@ -337,7 +385,9 @@ class User extends DataClass implements Insertable<User> {
       'passwordHash': serializer.toJson<String>(passwordHash),
       'email': serializer.toJson<String>(email),
       'fullName': serializer.toJson<String>(fullName),
+      'fullNameAr': serializer.toJson<String?>(fullNameAr),
       'phone': serializer.toJson<String?>(phone),
+      'nationalId': serializer.toJson<String?>(nationalId),
       'role': serializer.toJson<String>(role),
       'logoUrl': serializer.toJson<String?>(logoUrl),
       'address': serializer.toJson<String?>(address),
@@ -354,7 +404,9 @@ class User extends DataClass implements Insertable<User> {
           String? passwordHash,
           String? email,
           String? fullName,
+          Value<String?> fullNameAr = const Value.absent(),
           Value<String?> phone = const Value.absent(),
+          Value<String?> nationalId = const Value.absent(),
           String? role,
           Value<String?> logoUrl = const Value.absent(),
           Value<String?> address = const Value.absent(),
@@ -368,7 +420,9 @@ class User extends DataClass implements Insertable<User> {
         passwordHash: passwordHash ?? this.passwordHash,
         email: email ?? this.email,
         fullName: fullName ?? this.fullName,
+        fullNameAr: fullNameAr.present ? fullNameAr.value : this.fullNameAr,
         phone: phone.present ? phone.value : this.phone,
+        nationalId: nationalId.present ? nationalId.value : this.nationalId,
         role: role ?? this.role,
         logoUrl: logoUrl.present ? logoUrl.value : this.logoUrl,
         address: address.present ? address.value : this.address,
@@ -386,7 +440,11 @@ class User extends DataClass implements Insertable<User> {
           : this.passwordHash,
       email: data.email.present ? data.email.value : this.email,
       fullName: data.fullName.present ? data.fullName.value : this.fullName,
+      fullNameAr:
+          data.fullNameAr.present ? data.fullNameAr.value : this.fullNameAr,
       phone: data.phone.present ? data.phone.value : this.phone,
+      nationalId:
+          data.nationalId.present ? data.nationalId.value : this.nationalId,
       role: data.role.present ? data.role.value : this.role,
       logoUrl: data.logoUrl.present ? data.logoUrl.value : this.logoUrl,
       address: data.address.present ? data.address.value : this.address,
@@ -406,7 +464,9 @@ class User extends DataClass implements Insertable<User> {
           ..write('passwordHash: $passwordHash, ')
           ..write('email: $email, ')
           ..write('fullName: $fullName, ')
+          ..write('fullNameAr: $fullNameAr, ')
           ..write('phone: $phone, ')
+          ..write('nationalId: $nationalId, ')
           ..write('role: $role, ')
           ..write('logoUrl: $logoUrl, ')
           ..write('address: $address, ')
@@ -425,7 +485,9 @@ class User extends DataClass implements Insertable<User> {
       passwordHash,
       email,
       fullName,
+      fullNameAr,
       phone,
+      nationalId,
       role,
       logoUrl,
       address,
@@ -442,7 +504,9 @@ class User extends DataClass implements Insertable<User> {
           other.passwordHash == this.passwordHash &&
           other.email == this.email &&
           other.fullName == this.fullName &&
+          other.fullNameAr == this.fullNameAr &&
           other.phone == this.phone &&
+          other.nationalId == this.nationalId &&
           other.role == this.role &&
           other.logoUrl == this.logoUrl &&
           other.address == this.address &&
@@ -458,7 +522,9 @@ class UsersCompanion extends UpdateCompanion<User> {
   final Value<String> passwordHash;
   final Value<String> email;
   final Value<String> fullName;
+  final Value<String?> fullNameAr;
   final Value<String?> phone;
+  final Value<String?> nationalId;
   final Value<String> role;
   final Value<String?> logoUrl;
   final Value<String?> address;
@@ -473,7 +539,9 @@ class UsersCompanion extends UpdateCompanion<User> {
     this.passwordHash = const Value.absent(),
     this.email = const Value.absent(),
     this.fullName = const Value.absent(),
+    this.fullNameAr = const Value.absent(),
     this.phone = const Value.absent(),
+    this.nationalId = const Value.absent(),
     this.role = const Value.absent(),
     this.logoUrl = const Value.absent(),
     this.address = const Value.absent(),
@@ -489,7 +557,9 @@ class UsersCompanion extends UpdateCompanion<User> {
     required String passwordHash,
     required String email,
     required String fullName,
+    this.fullNameAr = const Value.absent(),
     this.phone = const Value.absent(),
+    this.nationalId = const Value.absent(),
     required String role,
     this.logoUrl = const Value.absent(),
     this.address = const Value.absent(),
@@ -512,7 +582,9 @@ class UsersCompanion extends UpdateCompanion<User> {
     Expression<String>? passwordHash,
     Expression<String>? email,
     Expression<String>? fullName,
+    Expression<String>? fullNameAr,
     Expression<String>? phone,
+    Expression<String>? nationalId,
     Expression<String>? role,
     Expression<String>? logoUrl,
     Expression<String>? address,
@@ -528,7 +600,9 @@ class UsersCompanion extends UpdateCompanion<User> {
       if (passwordHash != null) 'password_hash': passwordHash,
       if (email != null) 'email': email,
       if (fullName != null) 'full_name': fullName,
+      if (fullNameAr != null) 'full_name_ar': fullNameAr,
       if (phone != null) 'phone': phone,
+      if (nationalId != null) 'national_id': nationalId,
       if (role != null) 'role': role,
       if (logoUrl != null) 'logo_url': logoUrl,
       if (address != null) 'address': address,
@@ -546,7 +620,9 @@ class UsersCompanion extends UpdateCompanion<User> {
       Value<String>? passwordHash,
       Value<String>? email,
       Value<String>? fullName,
+      Value<String?>? fullNameAr,
       Value<String?>? phone,
+      Value<String?>? nationalId,
       Value<String>? role,
       Value<String?>? logoUrl,
       Value<String?>? address,
@@ -561,7 +637,9 @@ class UsersCompanion extends UpdateCompanion<User> {
       passwordHash: passwordHash ?? this.passwordHash,
       email: email ?? this.email,
       fullName: fullName ?? this.fullName,
+      fullNameAr: fullNameAr ?? this.fullNameAr,
       phone: phone ?? this.phone,
+      nationalId: nationalId ?? this.nationalId,
       role: role ?? this.role,
       logoUrl: logoUrl ?? this.logoUrl,
       address: address ?? this.address,
@@ -591,8 +669,14 @@ class UsersCompanion extends UpdateCompanion<User> {
     if (fullName.present) {
       map['full_name'] = Variable<String>(fullName.value);
     }
+    if (fullNameAr.present) {
+      map['full_name_ar'] = Variable<String>(fullNameAr.value);
+    }
     if (phone.present) {
       map['phone'] = Variable<String>(phone.value);
+    }
+    if (nationalId.present) {
+      map['national_id'] = Variable<String>(nationalId.value);
     }
     if (role.present) {
       map['role'] = Variable<String>(role.value);
@@ -629,7 +713,9 @@ class UsersCompanion extends UpdateCompanion<User> {
           ..write('passwordHash: $passwordHash, ')
           ..write('email: $email, ')
           ..write('fullName: $fullName, ')
+          ..write('fullNameAr: $fullNameAr, ')
           ..write('phone: $phone, ')
+          ..write('nationalId: $nationalId, ')
           ..write('role: $role, ')
           ..write('logoUrl: $logoUrl, ')
           ..write('address: $address, ')
@@ -4112,7 +4198,9 @@ typedef $$UsersTableCreateCompanionBuilder = UsersCompanion Function({
   required String passwordHash,
   required String email,
   required String fullName,
+  Value<String?> fullNameAr,
   Value<String?> phone,
+  Value<String?> nationalId,
   required String role,
   Value<String?> logoUrl,
   Value<String?> address,
@@ -4128,7 +4216,9 @@ typedef $$UsersTableUpdateCompanionBuilder = UsersCompanion Function({
   Value<String> passwordHash,
   Value<String> email,
   Value<String> fullName,
+  Value<String?> fullNameAr,
   Value<String?> phone,
+  Value<String?> nationalId,
   Value<String> role,
   Value<String?> logoUrl,
   Value<String?> address,
@@ -4212,8 +4302,14 @@ class $$UsersTableFilterComposer extends Composer<_$AppDatabase, $UsersTable> {
   ColumnFilters<String> get fullName => $composableBuilder(
       column: $table.fullName, builder: (column) => ColumnFilters(column));
 
+  ColumnFilters<String> get fullNameAr => $composableBuilder(
+      column: $table.fullNameAr, builder: (column) => ColumnFilters(column));
+
   ColumnFilters<String> get phone => $composableBuilder(
       column: $table.phone, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get nationalId => $composableBuilder(
+      column: $table.nationalId, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get role => $composableBuilder(
       column: $table.role, builder: (column) => ColumnFilters(column));
@@ -4325,8 +4421,14 @@ class $$UsersTableOrderingComposer
   ColumnOrderings<String> get fullName => $composableBuilder(
       column: $table.fullName, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get fullNameAr => $composableBuilder(
+      column: $table.fullNameAr, builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<String> get phone => $composableBuilder(
       column: $table.phone, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get nationalId => $composableBuilder(
+      column: $table.nationalId, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get role => $composableBuilder(
       column: $table.role, builder: (column) => ColumnOrderings(column));
@@ -4374,8 +4476,14 @@ class $$UsersTableAnnotationComposer
   GeneratedColumn<String> get fullName =>
       $composableBuilder(column: $table.fullName, builder: (column) => column);
 
+  GeneratedColumn<String> get fullNameAr => $composableBuilder(
+      column: $table.fullNameAr, builder: (column) => column);
+
   GeneratedColumn<String> get phone =>
       $composableBuilder(column: $table.phone, builder: (column) => column);
+
+  GeneratedColumn<String> get nationalId => $composableBuilder(
+      column: $table.nationalId, builder: (column) => column);
 
   GeneratedColumn<String> get role =>
       $composableBuilder(column: $table.role, builder: (column) => column);
@@ -4491,7 +4599,9 @@ class $$UsersTableTableManager extends RootTableManager<
             Value<String> passwordHash = const Value.absent(),
             Value<String> email = const Value.absent(),
             Value<String> fullName = const Value.absent(),
+            Value<String?> fullNameAr = const Value.absent(),
             Value<String?> phone = const Value.absent(),
+            Value<String?> nationalId = const Value.absent(),
             Value<String> role = const Value.absent(),
             Value<String?> logoUrl = const Value.absent(),
             Value<String?> address = const Value.absent(),
@@ -4507,7 +4617,9 @@ class $$UsersTableTableManager extends RootTableManager<
             passwordHash: passwordHash,
             email: email,
             fullName: fullName,
+            fullNameAr: fullNameAr,
             phone: phone,
+            nationalId: nationalId,
             role: role,
             logoUrl: logoUrl,
             address: address,
@@ -4523,7 +4635,9 @@ class $$UsersTableTableManager extends RootTableManager<
             required String passwordHash,
             required String email,
             required String fullName,
+            Value<String?> fullNameAr = const Value.absent(),
             Value<String?> phone = const Value.absent(),
+            Value<String?> nationalId = const Value.absent(),
             required String role,
             Value<String?> logoUrl = const Value.absent(),
             Value<String?> address = const Value.absent(),
@@ -4539,7 +4653,9 @@ class $$UsersTableTableManager extends RootTableManager<
             passwordHash: passwordHash,
             email: email,
             fullName: fullName,
+            fullNameAr: fullNameAr,
             phone: phone,
+            nationalId: nationalId,
             role: role,
             logoUrl: logoUrl,
             address: address,

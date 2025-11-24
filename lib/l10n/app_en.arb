@@ -126,5 +126,46 @@
   "totalUsers": "Total Users",
   "totalRevenue": "Total Revenue",
   "recentActivity": "Recent Activity",
-  "statistics": "Statistics"
+  "statistics": "Statistics",
+  "myRequests": "My Requests",
+  "loginRequired": "Login Required",
+  "personalInformation": "Personal Information",
+  "phoneNumber": "Phone Number",
+  "role": "Role",
+  "editProfile": "Edit Profile",
+  "addUser": "Add User",
+  "searchByNameEmailUsername": "Search by name, email, or username...",
+  "all": "All",
+  "noUsersFound": "No users found",
+  "userCreatedSuccessfully": "User created successfully",
+  "userUpdatedSuccessfully": "User updated successfully",
+  "userDeletedSuccessfully": "User deleted successfully",
+  "deleteUser": "Delete User",
+  "deleteUserConfirmation": "Are you sure you want to delete {name}? This action cannot be undone.",
+  "@deleteUserConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "errorLoadingUsers": "Error loading users: {error}",
+  "@errorLoadingUsers": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "errorDeletingUser": "Error deleting user: {error}",
+  "@errorDeletingUser": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "nationalId": "National ID",
+  "actions": "Actions",
+  "inactive": "Inactive"
 }

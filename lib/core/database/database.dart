@@ -20,7 +20,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(impl.connect());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration {
@@ -30,7 +30,11 @@ class AppDatabase extends _$AppDatabase {
         await _seedData();
       },
       onUpgrade: (Migrator m, int from, int to) async {
-        // Handle future migrations here
+        if (from < 2) {
+          // Add new columns for version 2
+          await m.addColumn(users, users.fullNameAr);
+          await m.addColumn(users, users.nationalId);
+        }
       },
     );
   }

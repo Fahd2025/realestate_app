@@ -5,6 +5,8 @@ import '../features/auth/screens/login_screen.dart';
 import '../features/settings/screens/settings_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
 import '../core/constants/routes.dart';
+import '../core/models/enums.dart';
+import '../features/admin/screens/user_management_screen.dart';
 import 'dashboard_router.dart';
 
 class AppRouter {
@@ -14,26 +16,120 @@ class AppRouter {
       case AppRoutes.login:
         return MaterialPageRoute(
           builder: (_) => const LoginScreen(),
+          settings: settings,
         );
 
       case AppRoutes.dashboard:
         return MaterialPageRoute(
           builder: (context) {
-            final authBloc = context.read<AuthBloc>();
-            final userRole = authBloc.getUserRole();
-            
-            return DashboardRouter(userRole: userRole);
+            return BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                if (state is AuthAuthenticated) {
+                  final user = state.user;
+                  UserRole role;
+                  switch (user.role) {
+                    case 'admin':
+                      role = UserRole.admin;
+                      break;
+                    case 'owner':
+                      role = UserRole.owner;
+                      break;
+                    case 'tenant':
+                      role = UserRole.tenant;
+                      break;
+                    case 'buyer':
+                      role = UserRole.buyer;
+                      break;
+                    default:
+                      return const Scaffold(
+                        body: Center(child: Text('Unknown user role')),
+                      );
+                  }
+                  return DashboardRouter(userRole: role);
+                } else if (state is AuthUnauthenticated) {
+                  return const LoginScreen();
+                }
+                return const Scaffold(
+                  body: Center(child: CircularProgressIndicator()),
+                );
+              },
+            );
           },
+          settings: settings,
         );
 
       case AppRoutes.settings:
         return MaterialPageRoute(
-          builder: (_) => const SettingsScreen(),
+          builder: (_) => BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is AuthAuthenticated) {
+                return const SettingsScreen();
+              } else if (state is AuthUnauthenticated) {
+                return const LoginScreen();
+              }
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            },
+          ),
+          settings: settings,
         );
 
       case AppRoutes.profile:
         return MaterialPageRoute(
-          builder: (_) => const ProfileScreen(),
+          builder: (_) => BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is AuthAuthenticated) {
+                return const ProfileScreen();
+              } else if (state is AuthUnauthenticated) {
+                return const LoginScreen();
+              }
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            },
+          ),
+          settings: settings,
+        );
+
+      // Admin Routes
+      case AppRoutes.adminUsers:
+        return MaterialPageRoute(
+          builder: (context) => BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is AuthAuthenticated) {
+                final database = context.read<AuthBloc>().database;
+                return UserManagementScreen(database: database);
+              } else if (state is AuthUnauthenticated) {
+                return const LoginScreen();
+              }
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            },
+          ),
+          settings: settings,
+        );
+
+      case AppRoutes.adminProperties:
+      case AppRoutes.adminContracts:
+      // Owner Routes
+      case AppRoutes.ownerProperties:
+      case AppRoutes.ownerContracts:
+      // Tenant Routes
+      case AppRoutes.tenantContracts:
+      case AppRoutes.tenantPayments:
+      // Buyer Routes
+      case AppRoutes.buyerBrowse:
+      case AppRoutes.buyerRequests:
+        return MaterialPageRoute(
+          builder: (_) => Scaffold(
+            appBar: AppBar(title: Text(settings.name ?? 'Page')),
+            body: Center(
+              child: Text('Coming Soon: ${settings.name}'),
+            ),
+          ),
+          settings: settings,
         );
 
       default:
@@ -43,6 +139,7 @@ class AppRouter {
               child: Text('No route defined for ${settings.name}'),
             ),
           ),
+          settings: settings,
         );
     }
   }

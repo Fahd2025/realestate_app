@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:realestate_app/l10n/app_localizations.dart';
 import '../../../features/auth/bloc/auth_bloc.dart';
+import '../../../core/widgets/main_layout.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -9,153 +10,173 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final user = context.read<AuthBloc>().currentUser!;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.profile),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            // Profile picture
-            CircleAvatar(
-              radius: 60,
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              child: user.logoUrl != null && user.logoUrl!.isNotEmpty
-                  ? ClipOval(
-                      child: Image.network(
-                        user.logoUrl!,
-                        width: 120,
-                        height: 120,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return _buildInitials(context, user.fullName);
-                        },
-                      ),
-                    )
-                  : _buildInitials(context, user.fullName),
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        if (state is AuthLoading || state is AuthInitial) {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
             ),
-            const SizedBox(height: 16),
-            
-            // Name
-            Text(
-              user.fullName,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: 4),
-            
-            // Role
-            Chip(
-              label: Text(user.role.toUpperCase()),
-              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-            ),
-            const SizedBox(height: 24),
+          );
+        }
 
-            // User information
-            Card(
+        if (state is AuthUnauthenticated) {
+          return Scaffold(
+            body: Center(
+              child: Text(l10n.loginRequired),
+            ),
+          );
+        }
+
+        if (state is AuthAuthenticated) {
+          final user = state.user;
+
+          return MainLayout(
+            title: l10n.profile,
+            body: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                  _buildInfoTile(
-                    context,
-                    icon: Icons.person,
-                    label: l10n.username,
-                    value: user.username,
-                  ),
-                  const Divider(height: 1),
-                  _buildInfoTile(
-                    context,
-                    icon: Icons.email,
-                    label: l10n.email,
-                    value: user.email,
-                  ),
-                  if (user.phone != null) ...[
-                    const Divider(height: 1),
-                    _buildInfoTile(
-                      context,
-                      icon: Icons.phone,
-                      label: l10n.phone,
-                      value: user.phone!,
+                  // Profile Header
+                  Center(
+                    child: Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 60,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primaryContainer,
+                          child: Text(
+                            (user.fullName.isNotEmpty ? user.fullName[0] : 'U')
+                                .toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 48,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: CircleAvatar(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            radius: 18,
+                            child: IconButton(
+                              icon: const Icon(Icons.camera_alt, size: 18),
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              onPressed: () {
+                                // TODO: Implement profile picture upload
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                  if (user.address != null) ...[
-                    const Divider(height: 1),
-                    _buildInfoTile(
-                      context,
-                      icon: Icons.location_on,
-                      label: l10n.address,
-                      value: user.address!,
-                    ),
-                  ],
+                  ),
+                  const SizedBox(height: 24),
+
+                  // User Info Cards
+                  _buildInfoCard(
+                    context,
+                    title: l10n.personalInformation,
+                    children: [
+                      _buildInfoRow(context, l10n.fullName, user.fullName),
+                      _buildInfoRow(context, l10n.email, user.email),
+                      _buildInfoRow(context, l10n.phoneNumber, user.phone),
+                      _buildInfoRow(
+                          context, l10n.role, user.role.toUpperCase()),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Actions
+                  _buildActionCard(
+                    context,
+                    children: [
+                      ListTile(
+                        leading: const Icon(Icons.edit),
+                        title: Text(l10n.editProfile),
+                        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                        onTap: () {
+                          // TODO: Navigate to edit profile screen
+                        },
+                      ),
+                      const Divider(),
+                      ListTile(
+                        leading: const Icon(Icons.lock),
+                        title: Text(l10n.changePassword),
+                        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                        onTap: () {
+                          // TODO: Navigate to change password screen
+                        },
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+          );
+        }
 
-            // Action buttons
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  // TODO: Implement profile update
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Profile update feature coming soon'),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.edit),
-                label: Text(l10n.updateProfile),
-              ),
+        return const SizedBox.shrink();
+      },
+    );
+  }
+
+  Widget _buildInfoCard(BuildContext context,
+      {required String title, required List<Widget> children}) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
-            const SizedBox(height: 12),
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: () {
-                  // TODO: Implement password change
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Password change feature coming soon'),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.lock),
-                label: Text(l10n.changePassword),
-              ),
-            ),
+            const SizedBox(height: 16),
+            ...children,
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInitials(BuildContext context, String name) {
-    return Text(
-      name[0].toUpperCase(),
-      style: const TextStyle(
-        fontSize: 48,
-        color: Colors.white,
-        fontWeight: FontWeight.bold,
+  Widget _buildInfoRow(BuildContext context, String label, String? value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 120,
+            child: Text(
+              label,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value ?? '-',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildInfoTile(
-    BuildContext context, {
-    required IconData icon,
-    required String label,
-    required String value,
-  }) {
-    return ListTile(
-      leading: Icon(icon, color: Theme.of(context).colorScheme.primary),
-      title: Text(label),
-      subtitle: Text(
-        value,
-        style: const TextStyle(fontWeight: FontWeight.w500),
+  Widget _buildActionCard(BuildContext context,
+      {required List<Widget> children}) {
+    return Card(
+      child: Column(
+        children: children,
       ),
     );
   }

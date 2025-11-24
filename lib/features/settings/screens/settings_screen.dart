@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:realestate_app/l10n/app_localizations.dart';
 import '../../../core/theme/theme_cubit.dart';
+import '../../../core/language/language_cubit.dart';
 import '../../../core/constants/api_endpoints.dart';
+import '../../../core/widgets/main_layout.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -15,7 +17,6 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   final _apiUrlController = TextEditingController();
   bool _syncEnabled = false;
-  String _selectedLanguage = 'en';
 
   @override
   void initState() {
@@ -28,7 +29,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() {
       _apiUrlController.text = prefs.getString('api_url') ?? '';
       _syncEnabled = prefs.getBool('sync_enabled') ?? false;
-      _selectedLanguage = prefs.getString('language') ?? 'en';
     });
   }
 
@@ -36,7 +36,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('api_url', _apiUrlController.text);
     ApiEndpoints.updateBaseUrl(_apiUrlController.text);
-    
+
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('API URL saved')),
@@ -52,23 +52,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
-  Future<void> _changeLanguage(String? language) async {
-    if (language == null) return;
-    
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('language', language);
-    setState(() {
-      _selectedLanguage = language;
-    });
-    
-    // TODO: Implement language change
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Language will change on restart')),
-      );
-    }
-  }
-
   @override
   void dispose() {
     _apiUrlController.dispose();
@@ -79,11 +62,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final themeCubit = context.watch<ThemeCubit>();
+    final languageCubit = context.watch<LanguageCubit>();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.settings),
-      ),
+    return MainLayout(
+      title: l10n.settings,
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -137,14 +119,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Card(
             child: ListTile(
               title: const Text('Language'),
-              subtitle: Text(_selectedLanguage == 'en' ? 'English' : 'العربية'),
+              subtitle: Text(languageCubit.state.locale.languageCode == 'en'
+                  ? 'English'
+                  : 'العربية'),
               trailing: DropdownButton<String>(
-                value: _selectedLanguage,
+                value: languageCubit.state.locale.languageCode,
                 items: const [
                   DropdownMenuItem(value: 'en', child: Text('English')),
                   DropdownMenuItem(value: 'ar', child: Text('العربية')),
                 ],
-                onChanged: _changeLanguage,
+                onChanged: (value) {
+                  if (value != null) {
+                    languageCubit.changeLanguage(value);
+                  }
+                },
               ),
             ),
           ),
@@ -177,7 +165,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   const SizedBox(height: 16),
                   SwitchListTile(
                     title: Text(l10n.syncEnabled),
-                    subtitle: const Text('Enable data synchronization with server'),
+                    subtitle:
+                        const Text('Enable data synchronization with server'),
                     value: _syncEnabled,
                     onChanged: _toggleSync,
                     contentPadding: EdgeInsets.zero,

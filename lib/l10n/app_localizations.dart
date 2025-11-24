@@ -859,6 +859,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Statistics'**
   String get statistics;
+
+  /// No description provided for @myRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'My Requests'**
+  String get myRequests;
+
+  /// No description provided for @loginRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Login Required'**
+  String get loginRequired;
+
+  /// No description provided for @personalInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Information'**
+  String get personalInformation;
+
+  /// No description provided for @phoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get phoneNumber;
+
+  /// No description provided for @role.
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
+  String get role;
+
+  /// No description provided for @editProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get editProfile;
+
+  /// No description provided for @addUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Add User'**
+  String get addUser;
+
+  /// No description provided for @searchByNameEmailUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name, email, or username...'**
+  String get searchByNameEmailUsername;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
+  /// No description provided for @noUsersFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No users found'**
+  String get noUsersFound;
+
+  /// No description provided for @userCreatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'User created successfully'**
+  String get userCreatedSuccessfully;
+
+  /// No description provided for @userUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'User updated successfully'**
+  String get userUpdatedSuccessfully;
+
+  /// No description provided for @userDeletedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'User deleted successfully'**
+  String get userDeletedSuccessfully;
+
+  /// No description provided for @deleteUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete User'**
+  String get deleteUser;
+
+  /// No description provided for @deleteUserConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete {name}? This action cannot be undone.'**
+  String deleteUserConfirmation(String name);
+
+  /// No description provided for @errorLoadingUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading users: {error}'**
+  String errorLoadingUsers(String error);
+
+  /// No description provided for @errorDeletingUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Error deleting user: {error}'**
+  String errorDeletingUser(String error);
+
+  /// No description provided for @nationalId.
+  ///
+  /// In en, this message translates to:
+  /// **'National ID'**
+  String get nationalId;
+
+  /// No description provided for @actions.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions'**
+  String get actions;
+
+  /// No description provided for @inactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get inactive;
 }
 
 class _AppLocalizationsDelegate

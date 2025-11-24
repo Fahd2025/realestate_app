@@ -388,4 +388,71 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statistics => 'Statistics';
+
+  @override
+  String get myRequests => 'My Requests';
+
+  @override
+  String get loginRequired => 'Login Required';
+
+  @override
+  String get personalInformation => 'Personal Information';
+
+  @override
+  String get phoneNumber => 'Phone Number';
+
+  @override
+  String get role => 'Role';
+
+  @override
+  String get editProfile => 'Edit Profile';
+
+  @override
+  String get addUser => 'Add User';
+
+  @override
+  String get searchByNameEmailUsername =>
+      'Search by name, email, or username...';
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get noUsersFound => 'No users found';
+
+  @override
+  String get userCreatedSuccessfully => 'User created successfully';
+
+  @override
+  String get userUpdatedSuccessfully => 'User updated successfully';
+
+  @override
+  String get userDeletedSuccessfully => 'User deleted successfully';
+
+  @override
+  String get deleteUser => 'Delete User';
+
+  @override
+  String deleteUserConfirmation(String name) {
+    return 'Are you sure you want to delete $name? This action cannot be undone.';
+  }
+
+  @override
+  String errorLoadingUsers(String error) {
+    return 'Error loading users: $error';
+  }
+
+  @override
+  String errorDeletingUser(String error) {
+    return 'Error deleting user: $error';
+  }
+
+  @override
+  String get nationalId => 'National ID';
+
+  @override
+  String get actions => 'Actions';
+
+  @override
+  String get inactive => 'Inactive';
 }

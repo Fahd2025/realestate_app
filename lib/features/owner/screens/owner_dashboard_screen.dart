@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:realestate_app/l10n/app_localizations.dart';
 import '../../../features/auth/bloc/auth_bloc.dart';
-import '../../../core/constants/routes.dart';
+import '../../../core/widgets/main_layout.dart';
 
 class OwnerDashboardScreen extends StatelessWidget {
   const OwnerDashboardScreen({super.key});
@@ -12,31 +12,8 @@ class OwnerDashboardScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final user = context.read<AuthBloc>().currentUser!;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.dashboard),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.pushNamed(context, AppRoutes.settings);
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.person),
-            onPressed: () {
-              Navigator.pushNamed(context, AppRoutes.profile);
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              context.read<AuthBloc>().add(LogoutRequested());
-              Navigator.pushReplacementNamed(context, AppRoutes.login);
-            },
-          ),
-        ],
-      ),
+    return MainLayout(
+      title: l10n.dashboard,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -70,7 +47,10 @@ class OwnerDashboardScreen extends StatelessWidget {
                           ),
                           Text(
                             l10n.owner,
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
                           ),

@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/database/database.dart';
 import '../../../core/models/enums.dart';
 
@@ -72,11 +73,15 @@ class AuthError extends AuthState {
 // Auth Bloc
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AppDatabase database;
+  final SharedPreferences sharedPreferences;
   User? _currentUser;
 
   User? get currentUser => _currentUser;
 
-  AuthBloc({required this.database}) : super(AuthInitial()) {
+  AuthBloc({
+    required this.database,
+    required this.sharedPreferences,
+  }) : super(AuthInitial()) {
     on<LoginRequested>(_onLoginRequested);
     on<LogoutRequested>(_onLogoutRequested);
     on<CheckAuthStatus>(_onCheckAuthStatus);
@@ -90,7 +95,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     try {
       // Hash the password
-      final passwordHash = sha256.convert(utf8.encode(event.password)).toString();
+      final passwordHash =
+          sha256.convert(utf8.encode(event.password)).toString();
 
       // Query the database for the user
       final user = await (database.select(database.users)
@@ -101,6 +107,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       if (user != null) {
         _currentUser = user;
+        await sharedPreferences.setString('userId', user.id);
         emit(AuthAuthenticated(user));
       } else {
         emit(const AuthUnauthenticated(
@@ -117,6 +124,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     _currentUser = null;
+    await sharedPreferences.remove('userId');
     emit(const AuthUnauthenticated());
   }
 
@@ -124,18 +132,40 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     CheckAuthStatus event,
     Emitter<AuthState> emit,
   ) async {
-    if (_currentUser != null) {
-      emit(AuthAuthenticated(_currentUser!));
-    } else {
+    emit(AuthLoading());
+    try {
+      final userId = sharedPreferences.getString('userId');
+      if (userId != null) {
+        final user = await (database.select(database.users)
+              ..where((tbl) => tbl.id.equals(userId))
+              ..where((tbl) => tbl.isActive.equals(true)))
+            .getSingleOrNull();
+
+        if (user != null) {
+          _currentUser = user;
+          emit(AuthAuthenticated(user));
+        } else {
+          await sharedPreferences.remove('userId');
+          emit(const AuthUnauthenticated());
+        }
+      } else {
+        emit(const AuthUnauthenticated());
+      }
+    } catch (e) {
       emit(const AuthUnauthenticated());
     }
   }
 
   UserRole getUserRole() {
     if (_currentUser == null) {
+      // Return a default role or handle gracefully if needed,
+      // but for now we expect the UI to guard against this.
+      // Throwing here causes the crash if UI builds before auth check completes.
+      // Let's return a safe default or re-throw if we want to enforce protection.
+      // Given the crash, let's throw but ensure we catch it in UI or wait for auth.
       throw Exception('No authenticated user');
     }
-    
+
     switch (_currentUser!.role) {
       case 'admin':
         return UserRole.admin;
