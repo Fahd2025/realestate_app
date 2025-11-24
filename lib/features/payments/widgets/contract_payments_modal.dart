@@ -4,6 +4,8 @@ import 'package:realestate_app/core/database/database.dart';
 import 'package:realestate_app/features/payments/bloc/payments_bloc.dart';
 import 'package:realestate_app/features/payments/bloc/payments_event.dart';
 import 'package:realestate_app/features/payments/bloc/payments_state.dart';
+import 'package:realestate_app/features/payments/services/payment_processor.dart';
+import 'package:realestate_app/features/payments/services/payment_receipt_generator.dart';
 import 'package:uuid/uuid.dart';
 import 'package:drift/drift.dart' as drift;
 
@@ -37,6 +39,67 @@ class _ContractPaymentsModalState extends State<ContractPaymentsModal> {
         bloc: context.read<PaymentsBloc>(),
       ),
     );
+  }
+
+  void _processPayment(Payment payment) async {
+    if (context.mounted) {
+      // Show loading indicator
+      final snackBar = SnackBar(
+        content: Row(
+          children: [
+            const CircularProgressIndicator(strokeWidth: 2),
+            const SizedBox(width: 12),
+            Text('Processing payment...'),
+          ],
+        ),
+        duration: const Duration(seconds: 10),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+
+    final result = await PaymentProcessor.processPayment(
+      paymentId: payment.id,
+      amount: payment.amount,
+    );
+
+    // Dismiss the loading snackbar
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    }
+
+    if (result.success) {
+      // Update payment status to completed
+      final updatedPayment = PaymentsCompanion(
+        id: drift.Value(payment.id),
+        status: const drift.Value('completed'),
+        paymentDate: drift.Value(DateTime.now()),
+        updatedAt: drift.Value(DateTime.now()),
+      );
+
+      context.read<PaymentsBloc>().add(UpdatePayment(updatedPayment));
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Payment processed successfully!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } else {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Payment failed: ${result.message}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  void _downloadReceipt(Payment payment) async {
+    await PaymentReceiptGenerator.generateAndDownloadReceipt(payment);
   }
 
   @override
@@ -75,18 +138,79 @@ class _ContractPaymentsModalState extends State<ContractPaymentsModal> {
                     itemCount: state.payments.length,
                     itemBuilder: (context, index) {
                       final payment = state.payments[index];
-                      return ListTile(
-                        title:
-                            Text('${payment.amount} - ${payment.paymentType}'),
-                        subtitle: Text(
-                            'Due: ${payment.dueDate?.toString().split(' ')[0] ?? 'N/A'} | Status: ${payment.status}'),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            context
-                                .read<PaymentsBloc>()
-                                .add(DeletePayment(payment.id));
-                          },
+                      return Card(
+                        margin: const EdgeInsets.symmetric(vertical: 4),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${payment.amount} - ${payment.paymentType}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium,
+                                        ),
+                                        Text(
+                                          'Due: ${payment.dueDate?.toString().split(' ')[0] ?? 'N/A'} | Status: ${payment.status}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.delete),
+                                    onPressed: () {
+                                      context
+                                          .read<PaymentsBloc>()
+                                          .add(DeletePayment(payment.id));
+                                    },
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  if (payment.status == 'pending')
+                                    ElevatedButton.icon(
+                                      onPressed: () => _processPayment(payment),
+                                      icon: const Icon(Icons.payment),
+                                      label: const Text('Pay Now'),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        foregroundColor: Colors.white,
+                                      ),
+                                    ),
+                                  const SizedBox(width: 8),
+                                  if (payment.status == 'completed')
+                                    ElevatedButton.icon(
+                                      onPressed: () =>
+                                          _downloadReceipt(payment),
+                                      icon: const Icon(Icons.download),
+                                      label: const Text('Receipt'),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                        foregroundColor: Colors.white,
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -122,7 +246,7 @@ class _AddPaymentDialogState extends State<_AddPaymentDialog> {
   final _amountController = TextEditingController();
   final _notesController = TextEditingController();
   DateTime _dueDate = DateTime.now();
-  String _paymentType = 'rent'; // rent, deposit, installment
+  String _paymentType = 'lease'; // lease, deposit, installment
   String _status = 'pending';
 
   @override
@@ -145,7 +269,7 @@ class _AddPaymentDialogState extends State<_AddPaymentDialog> {
               DropdownButtonFormField<String>(
                 value: _paymentType,
                 items: const [
-                  DropdownMenuItem(value: 'rent', child: Text('Rent')),
+                  DropdownMenuItem(value: 'lease', child: Text('Lease')),
                   DropdownMenuItem(value: 'deposit', child: Text('Deposit')),
                   DropdownMenuItem(
                       value: 'installment', child: Text('Installment')),
@@ -207,10 +331,12 @@ class _AddPaymentDialogState extends State<_AddPaymentDialog> {
                 paymentDate: drift.Value(DateTime.now()),
                 dueDate: drift.Value(_dueDate),
                 paymentType: drift.Value(_paymentType),
+                paymentMethod: const drift.Value(null),
                 status: drift.Value(_status),
                 notes: drift.Value(_notesController.text),
                 createdAt: drift.Value(DateTime.now()),
                 updatedAt: drift.Value(DateTime.now()),
+                syncStatus: const drift.Value('synced'),
               );
               widget.bloc.add(AddPayment(payment));
               Navigator.pop(context);

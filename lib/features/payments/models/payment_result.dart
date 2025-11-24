@@ -29,6 +29,8 @@ class PaymentResult extends Equatable {
     );
   }
 
+  String get message => success ? 'Transaction successful' : (errorMessage ?? 'Unknown error');
+
   @override
   List<Object?> get props => [success, transactionId, errorMessage, timestamp];
 }

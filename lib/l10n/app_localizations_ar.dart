@@ -537,4 +537,257 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get titleRequired => 'العنوان مطلوب';
+
+  @override
+  String get lease => 'إيجار';
+
+  @override
+  String get purchase => 'شراء';
+
+  @override
+  String get leaseContracts => 'عقود الإيجار';
+
+  @override
+  String get purchaseContracts => 'عقود الشراء';
+
+  @override
+  String get newContract => 'عقد جديد';
+
+  @override
+  String get editContract => 'تعديل العقد';
+
+  @override
+  String get createContract => 'إنشاء';
+
+  @override
+  String get updateContract => 'تحديث';
+
+  @override
+  String get contractDetails => 'تفاصيل العقد';
+
+  @override
+  String get contractId => 'رقم العقد';
+
+  @override
+  String get propertyId => 'رقم العقار';
+
+  @override
+  String get ownerId => 'رقم المالك';
+
+  @override
+  String get tenantId => 'رقم المستأجر';
+
+  @override
+  String get buyerId => 'رقم المشتري';
+
+  @override
+  String get selectOwner => 'اختر المالك';
+
+  @override
+  String get selectProperty => 'اختر العقار';
+
+  @override
+  String get selectTenant => 'اختر المستأجر';
+
+  @override
+  String get selectBuyer => 'اختر المشتري';
+
+  @override
+  String get monthlyLeaseAmount => 'قيمة الإيجار الشهري';
+
+  @override
+  String get purchasePrice => 'سعر الشراء';
+
+  @override
+  String get concessions => 'التنازلات';
+
+  @override
+  String get uploadContractImage => 'رفع صورة العقد';
+
+  @override
+  String get imageSelected => 'تم اختيار الصورة';
+
+  @override
+  String get contractType => 'نوع العقد';
+
+  @override
+  String get required => 'مطلوب';
+
+  @override
+  String get pleaseSelectOwnerPropertyTenantBuyer =>
+      'الرجاء اختيار المالك والعقار والمستأجر/المشتري';
+
+  @override
+  String get descriptionEn => 'الوصف (بالإنجليزية)';
+
+  @override
+  String get descriptionAr => 'الوصف (بالعربية)';
+
+  @override
+  String get paymentSchedule => 'جدول الدفع';
+
+  @override
+  String get paymentFrequency => 'تكرار الدفع';
+
+  @override
+  String get monthly => 'شهري';
+
+  @override
+  String get quarterly => 'ربع سنوي';
+
+  @override
+  String get semiAnnual => 'نصف سنوي';
+
+  @override
+  String get annual => 'سنوي';
+
+  @override
+  String get custom => 'مخصص';
+
+  @override
+  String get customFrequencyDays => 'التكرار المخصص (بالأيام)';
+
+  @override
+  String get customFrequencyHint => 'مثال: 45';
+
+  @override
+  String get requiredForCustomFrequency => 'مطلوب للتكرار المخصص';
+
+  @override
+  String get mustBePositiveNumber => 'يجب أن يكون رقماً موجباً';
+
+  @override
+  String get previewPaymentSchedule => 'معاينة جدول الدفع';
+
+  @override
+  String get pleaseSelectEndDateFirst => 'الرجاء اختيار تاريخ الانتهاء أولاً';
+
+  @override
+  String get pleaseEnterValidAmount => 'الرجاء إدخال مبلغ صحيح';
+
+  @override
+  String get paymentsInstallments => 'الدفعات / الأقساط';
+
+  @override
+  String get addPayment => 'إضافة دفعة';
+
+  @override
+  String get noPaymentsRecorded => 'لا توجد دفعات مسجلة.';
+
+  @override
+  String get payNow => 'ادفع الآن';
+
+  @override
+  String get receipt => 'إيصال';
+
+  @override
+  String get processingPayment => 'جاري معالجة الدفع...';
+
+  @override
+  String get paymentProcessedSuccessfully => 'تمت معالجة الدفع بنجاح!';
+
+  @override
+  String get paymentFailed => 'فشل الدفع';
+
+  @override
+  String get notes => 'ملاحظات';
+
+  @override
+  String get overdue => 'متأخر';
+
+  @override
+  String get paymentStatus => 'حالة الدفع';
+
+  @override
+  String get installmentNumber => 'رقم القسط';
+
+  @override
+  String get totalAmount => 'المبلغ الإجمالي';
+
+  @override
+  String get paidAmount => 'المبلغ المدفوع';
+
+  @override
+  String get remainingBalance => 'الرصيد المتبقي';
+
+  @override
+  String get paymentSchedulePreview => 'معاينة جدول الدفع';
+
+  @override
+  String get due => 'مستحق';
+
+  @override
+  String get close => 'إغلاق';
+
+  @override
+  String get installmentDetails => 'تفاصيل القسط';
+
+  @override
+  String get generatingSchedule => 'جاري إنشاء الجدول...';
+
+  @override
+  String get cash => 'نقدي';
+
+  @override
+  String get creditCard => 'بطاقة ائتمان';
+
+  @override
+  String get bankTransfer => 'تحويل بنكي';
+
+  @override
+  String get check => 'شيك';
+
+  @override
+  String get online => 'عبر الإنترنت';
+
+  @override
+  String get contractCreatedSuccessfully => 'تم إنشاء العقد بنجاح';
+
+  @override
+  String get contractUpdatedSuccessfully => 'تم تحديث العقد بنجاح';
+
+  @override
+  String get contractDeletedSuccessfully => 'تم حذف العقد بنجاح';
+
+  @override
+  String get errorCreatingContract => 'خطأ في إنشاء العقد';
+
+  @override
+  String get errorUpdatingContract => 'خطأ في تحديث العقد';
+
+  @override
+  String get errorDeletingContract => 'خطأ في حذف العقد';
+
+  @override
+  String get errorLoadingContracts => 'خطأ في تحميل العقود';
+
+  @override
+  String get errorLoadingPayments => 'خطأ في تحميل الدفعات';
+
+  @override
+  String get noContractsFound => 'لم يتم العثور على عقود';
+
+  @override
+  String get deleteContract => 'حذف العقد';
+
+  @override
+  String get deleteContractConfirmation => 'هل أنت متأكد من حذف هذا العقد؟';
+
+  @override
+  String get generatePDF => 'إنشاء PDF';
+
+  @override
+  String get forSale => 'للبيع';
+
+  @override
+  String get propertyStatus => 'حالة العقار';
+
+  @override
+  String get selectDate => 'اختر التاريخ';
+
+  @override
+  String get selectEndDate => 'اختر تاريخ الانتهاء';
+
+  @override
+  String get selectStartDate => 'اختر تاريخ البدء';
 }

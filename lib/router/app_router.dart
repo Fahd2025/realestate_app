@@ -9,6 +9,11 @@ import '../core/models/enums.dart';
 import '../features/admin/screens/user_management_screen.dart';
 import '../features/admin/screens/property_management_screen.dart';
 import 'dashboard_router.dart';
+import '../features/contracts/data/repositories/contracts_repository.dart';
+import '../features/contracts/bloc/contracts_bloc.dart';
+import '../features/contracts/screens/purchase_contracts_screen.dart';
+import '../features/contracts/screens/lease_contracts_screen.dart';
+import '../features/payments/data/repositories/payments_repository.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -160,12 +165,50 @@ class AppRouter {
       // Buyer Routes
       case AppRoutes.buyerBrowse:
       case AppRoutes.buyerRequests:
+      // Contract Routes
+      case AppRoutes.contractsPurchase:
         return MaterialPageRoute(
-          builder: (_) => Scaffold(
-            appBar: AppBar(title: Text(settings.name ?? 'Page')),
-            body: Center(
-              child: Text('Coming Soon: ${settings.name}'),
-            ),
+          builder: (context) => BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is AuthAuthenticated) {
+                final database = context.read<AuthBloc>().database;
+                return BlocProvider(
+                  create: (context) => ContractsBloc(
+                    ContractsRepository(database),
+                    PaymentsRepository(database),
+                  ),
+                  child: const PurchaseContractsScreen(),
+                );
+              } else if (state is AuthUnauthenticated) {
+                return const LoginScreen();
+              }
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            },
+          ),
+          settings: settings,
+        );
+      case AppRoutes.contractsLease:
+        return MaterialPageRoute(
+          builder: (context) => BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is AuthAuthenticated) {
+                final database = context.read<AuthBloc>().database;
+                return BlocProvider(
+                  create: (context) => ContractsBloc(
+                    ContractsRepository(database),
+                    PaymentsRepository(database),
+                  ),
+                  child: const LeaseContractsScreen(),
+                );
+              } else if (state is AuthUnauthenticated) {
+                return const LoginScreen();
+              }
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            },
           ),
           settings: settings,
         );

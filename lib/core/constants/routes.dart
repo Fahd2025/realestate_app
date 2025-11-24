@@ -42,6 +42,6 @@ class AppRoutes {
   static const String propertyDetails = '/property/details';
 
   // Contract routes
-  static const String contractsBuy = '/contracts/buy';
-  static const String contractsRent = '/contracts/rent';
+  static const String contractsPurchase = '/contracts/purchase';
+  static const String contractsLease = '/contracts/lease';
 }

@@ -80,9 +80,9 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
       double totalAmount;
       String paymentType;
 
-      if (contractType == 'rent') {
+      if (contractType == 'lease') {
         totalAmount = contract.monthlyRent.value ?? 0;
-        paymentType = 'rent';
+        paymentType = 'lease';
       } else {
         totalAmount = contract.salePrice.value ?? 0;
         paymentType = 'installment';

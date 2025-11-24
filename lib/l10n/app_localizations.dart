@@ -1141,6 +1141,510 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Title is required'**
   String get titleRequired;
+
+  /// No description provided for @lease.
+  ///
+  /// In en, this message translates to:
+  /// **'Lease'**
+  String get lease;
+
+  /// No description provided for @purchase.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase'**
+  String get purchase;
+
+  /// No description provided for @leaseContracts.
+  ///
+  /// In en, this message translates to:
+  /// **'Lease Contracts'**
+  String get leaseContracts;
+
+  /// No description provided for @purchaseContracts.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase Contracts'**
+  String get purchaseContracts;
+
+  /// No description provided for @newContract.
+  ///
+  /// In en, this message translates to:
+  /// **'New Contract'**
+  String get newContract;
+
+  /// No description provided for @editContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Contract'**
+  String get editContract;
+
+  /// No description provided for @createContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get createContract;
+
+  /// No description provided for @updateContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get updateContract;
+
+  /// No description provided for @contractDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract Details'**
+  String get contractDetails;
+
+  /// No description provided for @contractId.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract ID'**
+  String get contractId;
+
+  /// No description provided for @propertyId.
+  ///
+  /// In en, this message translates to:
+  /// **'Property ID'**
+  String get propertyId;
+
+  /// No description provided for @ownerId.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner ID'**
+  String get ownerId;
+
+  /// No description provided for @tenantId.
+  ///
+  /// In en, this message translates to:
+  /// **'Tenant ID'**
+  String get tenantId;
+
+  /// No description provided for @buyerId.
+  ///
+  /// In en, this message translates to:
+  /// **'Buyer ID'**
+  String get buyerId;
+
+  /// No description provided for @selectOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Owner'**
+  String get selectOwner;
+
+  /// No description provided for @selectProperty.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Property'**
+  String get selectProperty;
+
+  /// No description provided for @selectTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Tenant'**
+  String get selectTenant;
+
+  /// No description provided for @selectBuyer.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Buyer'**
+  String get selectBuyer;
+
+  /// No description provided for @monthlyLeaseAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Lease Amount'**
+  String get monthlyLeaseAmount;
+
+  /// No description provided for @purchasePrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase Price'**
+  String get purchasePrice;
+
+  /// No description provided for @concessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Concessions'**
+  String get concessions;
+
+  /// No description provided for @uploadContractImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload Contract Image'**
+  String get uploadContractImage;
+
+  /// No description provided for @imageSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Image Selected'**
+  String get imageSelected;
+
+  /// No description provided for @contractType.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract Type'**
+  String get contractType;
+
+  /// No description provided for @required.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get required;
+
+  /// No description provided for @pleaseSelectOwnerPropertyTenantBuyer.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select owner, property, and tenant/buyer'**
+  String get pleaseSelectOwnerPropertyTenantBuyer;
+
+  /// No description provided for @descriptionEn.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (En)'**
+  String get descriptionEn;
+
+  /// No description provided for @descriptionAr.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (Ar)'**
+  String get descriptionAr;
+
+  /// No description provided for @paymentSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Schedule'**
+  String get paymentSchedule;
+
+  /// No description provided for @paymentFrequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Frequency'**
+  String get paymentFrequency;
+
+  /// No description provided for @monthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get monthly;
+
+  /// No description provided for @quarterly.
+  ///
+  /// In en, this message translates to:
+  /// **'Quarterly'**
+  String get quarterly;
+
+  /// No description provided for @semiAnnual.
+  ///
+  /// In en, this message translates to:
+  /// **'Semi-Annual'**
+  String get semiAnnual;
+
+  /// No description provided for @annual.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual'**
+  String get annual;
+
+  /// No description provided for @custom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get custom;
+
+  /// No description provided for @customFrequencyDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Frequency (days)'**
+  String get customFrequencyDays;
+
+  /// No description provided for @customFrequencyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., 45'**
+  String get customFrequencyHint;
+
+  /// No description provided for @requiredForCustomFrequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Required for custom frequency'**
+  String get requiredForCustomFrequency;
+
+  /// No description provided for @mustBePositiveNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Must be a positive number'**
+  String get mustBePositiveNumber;
+
+  /// No description provided for @previewPaymentSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview Payment Schedule'**
+  String get previewPaymentSchedule;
+
+  /// No description provided for @pleaseSelectEndDateFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select an end date first'**
+  String get pleaseSelectEndDateFirst;
+
+  /// No description provided for @pleaseEnterValidAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid amount'**
+  String get pleaseEnterValidAmount;
+
+  /// No description provided for @paymentsInstallments.
+  ///
+  /// In en, this message translates to:
+  /// **'Payments / Installments'**
+  String get paymentsInstallments;
+
+  /// No description provided for @addPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Payment'**
+  String get addPayment;
+
+  /// No description provided for @noPaymentsRecorded.
+  ///
+  /// In en, this message translates to:
+  /// **'No payments recorded.'**
+  String get noPaymentsRecorded;
+
+  /// No description provided for @payNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Now'**
+  String get payNow;
+
+  /// No description provided for @receipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt'**
+  String get receipt;
+
+  /// No description provided for @processingPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing payment...'**
+  String get processingPayment;
+
+  /// No description provided for @paymentProcessedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment processed successfully!'**
+  String get paymentProcessedSuccessfully;
+
+  /// No description provided for @paymentFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment failed'**
+  String get paymentFailed;
+
+  /// No description provided for @notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get notes;
+
+  /// No description provided for @overdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get overdue;
+
+  /// No description provided for @paymentStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Status'**
+  String get paymentStatus;
+
+  /// No description provided for @installmentNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Installment Number'**
+  String get installmentNumber;
+
+  /// No description provided for @totalAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Amount'**
+  String get totalAmount;
+
+  /// No description provided for @paidAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid Amount'**
+  String get paidAmount;
+
+  /// No description provided for @remainingBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining Balance'**
+  String get remainingBalance;
+
+  /// No description provided for @paymentSchedulePreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Schedule Preview'**
+  String get paymentSchedulePreview;
+
+  /// No description provided for @due.
+  ///
+  /// In en, this message translates to:
+  /// **'Due'**
+  String get due;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @installmentDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Installment Details'**
+  String get installmentDetails;
+
+  /// No description provided for @generatingSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating schedule...'**
+  String get generatingSchedule;
+
+  /// No description provided for @cash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get cash;
+
+  /// No description provided for @creditCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit Card'**
+  String get creditCard;
+
+  /// No description provided for @bankTransfer.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank Transfer'**
+  String get bankTransfer;
+
+  /// No description provided for @check.
+  ///
+  /// In en, this message translates to:
+  /// **'Check'**
+  String get check;
+
+  /// No description provided for @online.
+  ///
+  /// In en, this message translates to:
+  /// **'Online'**
+  String get online;
+
+  /// No description provided for @contractCreatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract created successfully'**
+  String get contractCreatedSuccessfully;
+
+  /// No description provided for @contractUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract updated successfully'**
+  String get contractUpdatedSuccessfully;
+
+  /// No description provided for @contractDeletedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract deleted successfully'**
+  String get contractDeletedSuccessfully;
+
+  /// No description provided for @errorCreatingContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Error creating contract'**
+  String get errorCreatingContract;
+
+  /// No description provided for @errorUpdatingContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Error updating contract'**
+  String get errorUpdatingContract;
+
+  /// No description provided for @errorDeletingContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Error deleting contract'**
+  String get errorDeletingContract;
+
+  /// No description provided for @errorLoadingContracts.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading contracts'**
+  String get errorLoadingContracts;
+
+  /// No description provided for @errorLoadingPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading payments'**
+  String get errorLoadingPayments;
+
+  /// No description provided for @noContractsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No contracts found'**
+  String get noContractsFound;
+
+  /// No description provided for @deleteContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Contract'**
+  String get deleteContract;
+
+  /// No description provided for @deleteContractConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this contract?'**
+  String get deleteContractConfirmation;
+
+  /// No description provided for @generatePDF.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate PDF'**
+  String get generatePDF;
+
+  /// No description provided for @forSale.
+  ///
+  /// In en, this message translates to:
+  /// **'For Sale'**
+  String get forSale;
+
+  /// No description provided for @propertyStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Property Status'**
+  String get propertyStatus;
+
+  /// No description provided for @selectDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Date'**
+  String get selectDate;
+
+  /// No description provided for @selectEndDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select End Date'**
+  String get selectEndDate;
+
+  /// No description provided for @selectStartDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Start Date'**
+  String get selectStartDate;
 }
 
 class _AppLocalizationsDelegate

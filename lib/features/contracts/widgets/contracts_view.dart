@@ -29,12 +29,16 @@ class _ContractsViewState extends State<ContractsView> {
   }
 
   void _showForm(BuildContext context, {Contract? contract}) {
+    final contractsBloc = context.read<ContractsBloc>();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (context) => ContractFormModal(
-        contract: contract,
-        initialType: widget.contractType,
+      builder: (context) => BlocProvider.value(
+        value: contractsBloc,
+        child: ContractFormModal(
+          contract: contract,
+          initialType: widget.contractType,
+        ),
       ),
     );
   }
@@ -50,6 +54,10 @@ class _ContractsViewState extends State<ContractsView> {
         },
       ),
     );
+  }
+
+  String _getShortString(String str, int length) {
+    return str.length > length ? str.substring(0, length) : str;
   }
 
   @override
@@ -125,11 +133,11 @@ class _ContractsViewState extends State<ContractsView> {
         ],
         rows: contracts.map((contract) {
           return DataRow(cells: [
-            DataCell(Text(contract.id.substring(0, 8))),
-            DataCell(Text(contract.propertyId
-                .substring(0, 8))), // TODO: Show Property Title
+            DataCell(Text(_getShortString(contract.id, 8))),
+            DataCell(Text(_getShortString(
+                contract.propertyId, 8))), // TODO: Show Property Title
             DataCell(Text(contract.startDate.toString().split(' ')[0])),
-            DataCell(Text(widget.contractType == 'rent'
+            DataCell(Text(widget.contractType == 'lease'
                 ? '${contract.monthlyRent}/mo'
                 : '${contract.salePrice}')),
             DataCell(Text(contract.status)),
@@ -168,7 +176,7 @@ class _ContractsViewState extends State<ContractsView> {
         final contract = contracts[index];
         return Card(
           child: ExpansionTile(
-            title: Text('Contract ${contract.id.substring(0, 8)}'),
+            title: Text('Contract ${_getShortString(contract.id, 8)}'),
             subtitle: Text(contract.startDate.toString().split(' ')[0]),
             children: [
               ListTile(
@@ -177,9 +185,9 @@ class _ContractsViewState extends State<ContractsView> {
               ),
               ListTile(
                 title: const Text('Amount'),
-                subtitle: Text(widget.contractType == 'rent'
-                    ? '${contract.monthlyRent}/mo'
-                    : '${contract.salePrice}'),
+                subtitle: Text(widget.contractType == 'lease'
+                    ? 'Monthly: ${contract.monthlyRent}'
+                    : 'Price: ${contract.salePrice}'),
               ),
               ButtonBar(
                 children: [

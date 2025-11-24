@@ -536,4 +536,258 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get titleRequired => 'Title is required';
+
+  @override
+  String get lease => 'Lease';
+
+  @override
+  String get purchase => 'Purchase';
+
+  @override
+  String get leaseContracts => 'Lease Contracts';
+
+  @override
+  String get purchaseContracts => 'Purchase Contracts';
+
+  @override
+  String get newContract => 'New Contract';
+
+  @override
+  String get editContract => 'Edit Contract';
+
+  @override
+  String get createContract => 'Create';
+
+  @override
+  String get updateContract => 'Update';
+
+  @override
+  String get contractDetails => 'Contract Details';
+
+  @override
+  String get contractId => 'Contract ID';
+
+  @override
+  String get propertyId => 'Property ID';
+
+  @override
+  String get ownerId => 'Owner ID';
+
+  @override
+  String get tenantId => 'Tenant ID';
+
+  @override
+  String get buyerId => 'Buyer ID';
+
+  @override
+  String get selectOwner => 'Select Owner';
+
+  @override
+  String get selectProperty => 'Select Property';
+
+  @override
+  String get selectTenant => 'Select Tenant';
+
+  @override
+  String get selectBuyer => 'Select Buyer';
+
+  @override
+  String get monthlyLeaseAmount => 'Monthly Lease Amount';
+
+  @override
+  String get purchasePrice => 'Purchase Price';
+
+  @override
+  String get concessions => 'Concessions';
+
+  @override
+  String get uploadContractImage => 'Upload Contract Image';
+
+  @override
+  String get imageSelected => 'Image Selected';
+
+  @override
+  String get contractType => 'Contract Type';
+
+  @override
+  String get required => 'Required';
+
+  @override
+  String get pleaseSelectOwnerPropertyTenantBuyer =>
+      'Please select owner, property, and tenant/buyer';
+
+  @override
+  String get descriptionEn => 'Description (En)';
+
+  @override
+  String get descriptionAr => 'Description (Ar)';
+
+  @override
+  String get paymentSchedule => 'Payment Schedule';
+
+  @override
+  String get paymentFrequency => 'Payment Frequency';
+
+  @override
+  String get monthly => 'Monthly';
+
+  @override
+  String get quarterly => 'Quarterly';
+
+  @override
+  String get semiAnnual => 'Semi-Annual';
+
+  @override
+  String get annual => 'Annual';
+
+  @override
+  String get custom => 'Custom';
+
+  @override
+  String get customFrequencyDays => 'Custom Frequency (days)';
+
+  @override
+  String get customFrequencyHint => 'e.g., 45';
+
+  @override
+  String get requiredForCustomFrequency => 'Required for custom frequency';
+
+  @override
+  String get mustBePositiveNumber => 'Must be a positive number';
+
+  @override
+  String get previewPaymentSchedule => 'Preview Payment Schedule';
+
+  @override
+  String get pleaseSelectEndDateFirst => 'Please select an end date first';
+
+  @override
+  String get pleaseEnterValidAmount => 'Please enter a valid amount';
+
+  @override
+  String get paymentsInstallments => 'Payments / Installments';
+
+  @override
+  String get addPayment => 'Add Payment';
+
+  @override
+  String get noPaymentsRecorded => 'No payments recorded.';
+
+  @override
+  String get payNow => 'Pay Now';
+
+  @override
+  String get receipt => 'Receipt';
+
+  @override
+  String get processingPayment => 'Processing payment...';
+
+  @override
+  String get paymentProcessedSuccessfully => 'Payment processed successfully!';
+
+  @override
+  String get paymentFailed => 'Payment failed';
+
+  @override
+  String get notes => 'Notes';
+
+  @override
+  String get overdue => 'Overdue';
+
+  @override
+  String get paymentStatus => 'Payment Status';
+
+  @override
+  String get installmentNumber => 'Installment Number';
+
+  @override
+  String get totalAmount => 'Total Amount';
+
+  @override
+  String get paidAmount => 'Paid Amount';
+
+  @override
+  String get remainingBalance => 'Remaining Balance';
+
+  @override
+  String get paymentSchedulePreview => 'Payment Schedule Preview';
+
+  @override
+  String get due => 'Due';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get installmentDetails => 'Installment Details';
+
+  @override
+  String get generatingSchedule => 'Generating schedule...';
+
+  @override
+  String get cash => 'Cash';
+
+  @override
+  String get creditCard => 'Credit Card';
+
+  @override
+  String get bankTransfer => 'Bank Transfer';
+
+  @override
+  String get check => 'Check';
+
+  @override
+  String get online => 'Online';
+
+  @override
+  String get contractCreatedSuccessfully => 'Contract created successfully';
+
+  @override
+  String get contractUpdatedSuccessfully => 'Contract updated successfully';
+
+  @override
+  String get contractDeletedSuccessfully => 'Contract deleted successfully';
+
+  @override
+  String get errorCreatingContract => 'Error creating contract';
+
+  @override
+  String get errorUpdatingContract => 'Error updating contract';
+
+  @override
+  String get errorDeletingContract => 'Error deleting contract';
+
+  @override
+  String get errorLoadingContracts => 'Error loading contracts';
+
+  @override
+  String get errorLoadingPayments => 'Error loading payments';
+
+  @override
+  String get noContractsFound => 'No contracts found';
+
+  @override
+  String get deleteContract => 'Delete Contract';
+
+  @override
+  String get deleteContractConfirmation =>
+      'Are you sure you want to delete this contract?';
+
+  @override
+  String get generatePDF => 'Generate PDF';
+
+  @override
+  String get forSale => 'For Sale';
+
+  @override
+  String get propertyStatus => 'Property Status';
+
+  @override
+  String get selectDate => 'Select Date';
+
+  @override
+  String get selectEndDate => 'Select End Date';
+
+  @override
+  String get selectStartDate => 'Select Start Date';
 }

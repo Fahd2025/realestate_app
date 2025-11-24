@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:realestate_app/core/database/database.dart';
 import 'package:realestate_app/features/contracts/bloc/contracts_bloc.dart';
 import 'package:realestate_app/features/contracts/bloc/contracts_event.dart';
+import 'package:realestate_app/features/auth/bloc/auth_bloc.dart';
 import 'package:uuid/uuid.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:image_picker/image_picker.dart';
@@ -23,11 +24,8 @@ class ContractFormModal extends StatefulWidget {
 class _ContractFormModalState extends State<ContractFormModal> {
   final _formKey = GlobalKey<FormState>();
   late String _contractType;
-  late TextEditingController _propertyIdController;
-  late TextEditingController _ownerIdController;
-  late TextEditingController _tenantBuyerIdController;
-  late TextEditingController _monthlyRentController;
-  late TextEditingController _salePriceController;
+  late TextEditingController _monthlyLeaseController;
+  late TextEditingController _purchasePriceController;
   late TextEditingController _depositAmountController;
   late TextEditingController _termsController;
   late TextEditingController _descriptionController;
@@ -37,6 +35,18 @@ class _ContractFormModalState extends State<ContractFormModal> {
   String? _fileUrl;
   PaymentFrequency _paymentFrequency = PaymentFrequency.monthly;
 
+  // Dropdown data
+  List<User> _owners = [];
+  List<Property> _properties = [];
+  List<User> _tenants = [];
+  List<User> _buyers = [];
+
+  String? _selectedOwnerId;
+  String? _selectedPropertyId;
+  String? _selectedTenantBuyerId;
+
+  bool _isLoadingData = true;
+
   DateTime _startDate = DateTime.now();
   DateTime? _endDate;
 
@@ -44,29 +54,36 @@ class _ContractFormModalState extends State<ContractFormModal> {
   void initState() {
     super.initState();
     _contractType =
-        widget.contract?.contractType ?? widget.initialType ?? 'rent';
-    _propertyIdController =
-        TextEditingController(text: widget.contract?.propertyId);
-    _ownerIdController = TextEditingController(text: widget.contract?.ownerId);
-    _tenantBuyerIdController =
-        TextEditingController(text: widget.contract?.tenantBuyerId);
-    _monthlyRentController =
-        TextEditingController(text: widget.contract?.monthlyRent?.toString());
-    _salePriceController =
-        TextEditingController(text: widget.contract?.salePrice?.toString());
-    _depositAmountController =
-        TextEditingController(text: widget.contract?.depositAmount?.toString());
+        widget.contract?.contractType ?? widget.initialType ?? 'lease';
+
+    _monthlyLeaseController = TextEditingController(
+      text: widget.contract?.monthlyRent?.toString(),
+    );
+    _purchasePriceController = TextEditingController(
+      text: widget.contract?.salePrice?.toString(),
+    );
+    _depositAmountController = TextEditingController(
+      text: widget.contract?.depositAmount?.toString(),
+    );
     _termsController = TextEditingController(text: widget.contract?.terms);
-    _descriptionController =
-        TextEditingController(text: widget.contract?.description);
-    _descriptionArController =
-        TextEditingController(text: widget.contract?.descriptionAr);
-    _concessionsController =
-        TextEditingController(text: widget.contract?.concessions);
+    _descriptionController = TextEditingController(
+      text: widget.contract?.description,
+    );
+    _descriptionArController = TextEditingController(
+      text: widget.contract?.descriptionAr,
+    );
+    _concessionsController = TextEditingController(
+      text: widget.contract?.concessions,
+    );
     _customFrequencyController = TextEditingController();
     _fileUrl = widget.contract?.fileUrl;
 
+    // Set selected values if editing
     if (widget.contract != null) {
+      _selectedOwnerId = widget.contract!.ownerId;
+      _selectedPropertyId = widget.contract!.propertyId;
+      _selectedTenantBuyerId = widget.contract!.tenantBuyerId;
+
       _paymentFrequency = PaymentFrequency.fromString(
         widget.contract!.paymentFrequency,
       );
@@ -74,21 +91,77 @@ class _ContractFormModalState extends State<ContractFormModal> {
         _customFrequencyController.text =
             widget.contract!.customFrequencyDays.toString();
       }
-    }
 
-    if (widget.contract != null) {
       _startDate = widget.contract!.startDate;
       _endDate = widget.contract!.endDate;
     }
+
+    _loadDropdownData();
+  }
+
+  Future<void> _loadDropdownData() async {
+    final database = context.read<AuthBloc>().database;
+
+    // Load owners (users with role 'owner')
+    final owners = await (database.select(database.users)
+          ..where((u) => u.role.equals('owner')))
+        .get();
+
+    // Load tenants (users with role 'tenant')
+    final tenants = await (database.select(database.users)
+          ..where((u) => u.role.equals('tenant')))
+        .get();
+
+    // Load buyers (users with role 'buyer')
+    final buyers = await (database.select(database.users)
+          ..where((u) => u.role.equals('buyer')))
+        .get();
+
+    setState(() {
+      _owners = owners;
+      _tenants = tenants;
+      _buyers = buyers;
+      _isLoadingData = false;
+    });
+
+    // Load properties if owner is already selected
+    if (_selectedOwnerId != null) {
+      await _loadPropertiesForOwner(_selectedOwnerId!);
+    }
+  }
+
+  Future<void> _loadPropertiesForOwner(String ownerId) async {
+    final database = context.read<AuthBloc>().database;
+
+    // Load properties for the selected owner with appropriate status
+    final query = database.select(database.properties)
+      ..where((p) => p.ownerId.equals(ownerId));
+
+    final properties = await query.get();
+
+    // Filter by status based on contract type
+    final filteredProperties = properties.where((p) {
+      if (_contractType == 'lease') {
+        return p.status == 'available' || p.status == 'rented';
+      } else {
+        return p.status == 'available' || p.status == 'for_sale';
+      }
+    }).toList();
+
+    setState(() {
+      _properties = filteredProperties;
+      // Reset property selection if it's not in the new list
+      if (_selectedPropertyId != null &&
+          !filteredProperties.any((p) => p.id == _selectedPropertyId)) {
+        _selectedPropertyId = null;
+      }
+    });
   }
 
   @override
   void dispose() {
-    _propertyIdController.dispose();
-    _ownerIdController.dispose();
-    _tenantBuyerIdController.dispose();
-    _monthlyRentController.dispose();
-    _salePriceController.dispose();
+    _monthlyLeaseController.dispose();
+    _purchasePriceController.dispose();
     _depositAmountController.dispose();
     _termsController.dispose();
     _descriptionController.dispose();
@@ -117,9 +190,9 @@ class _ContractFormModalState extends State<ContractFormModal> {
       return;
     }
 
-    final totalAmount = _contractType == 'rent'
-        ? double.tryParse(_monthlyRentController.text) ?? 0
-        : double.tryParse(_salePriceController.text) ?? 0;
+    final totalAmount = _contractType == 'lease'
+        ? double.tryParse(_monthlyLeaseController.text) ?? 0
+        : double.tryParse(_purchasePriceController.text) ?? 0;
 
     if (totalAmount <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -150,7 +223,7 @@ class _ContractFormModalState extends State<ContractFormModal> {
       frequency: _paymentFrequency,
       startDate: _startDate,
       endDate: _endDate!,
-      paymentType: _contractType == 'rent' ? 'rent' : 'installment',
+      paymentType: _contractType == 'lease' ? 'lease' : 'installment',
       customFrequencyDays: _paymentFrequency == PaymentFrequency.custom
           ? int.tryParse(_customFrequencyController.text)
           : null,
@@ -164,16 +237,26 @@ class _ContractFormModalState extends State<ContractFormModal> {
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
+      if (_selectedOwnerId == null ||
+          _selectedPropertyId == null ||
+          _selectedTenantBuyerId == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('Please select owner, property, and tenant/buyer')),
+        );
+        return;
+      }
+
       final contract = ContractsCompanion(
         id: drift.Value(widget.contract?.id ?? const Uuid().v4()),
-        propertyId: drift.Value(_propertyIdController.text),
-        ownerId: drift.Value(_ownerIdController.text),
-        tenantBuyerId: drift.Value(_tenantBuyerIdController.text),
+        propertyId: drift.Value(_selectedPropertyId!),
+        ownerId: drift.Value(_selectedOwnerId!),
+        tenantBuyerId: drift.Value(_selectedTenantBuyerId!),
         contractType: drift.Value(_contractType),
         startDate: drift.Value(_startDate),
         endDate: drift.Value(_endDate),
-        monthlyRent: drift.Value(double.tryParse(_monthlyRentController.text)),
-        salePrice: drift.Value(double.tryParse(_salePriceController.text)),
+        monthlyRent: drift.Value(double.tryParse(_monthlyLeaseController.text)),
+        salePrice: drift.Value(double.tryParse(_purchasePriceController.text)),
         depositAmount:
             drift.Value(double.tryParse(_depositAmountController.text)),
         terms: drift.Value(_termsController.text),
@@ -202,6 +285,13 @@ class _ContractFormModalState extends State<ContractFormModal> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoadingData) {
+      return Container(
+        padding: const EdgeInsets.all(16),
+        child: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Container(
       padding: const EdgeInsets.all(16),
       child: Form(
@@ -214,50 +304,85 @@ class _ContractFormModalState extends State<ContractFormModal> {
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 16),
+
+            // Owner Dropdown
             DropdownButtonFormField<String>(
-              value: _contractType,
-              items: const [
-                DropdownMenuItem(value: 'rent', child: Text('Rent')),
-                DropdownMenuItem(value: 'buy', child: Text('Buy')),
-              ],
+              value: _selectedOwnerId,
+              items: _owners.map((owner) {
+                return DropdownMenuItem(
+                  value: owner.id,
+                  child: Text(owner.fullName),
+                );
+              }).toList(),
+              onChanged: (value) async {
+                setState(() {
+                  _selectedOwnerId = value;
+                  _selectedPropertyId = null; // Reset property selection
+                  _properties = []; // Clear properties
+                });
+                if (value != null) {
+                  await _loadPropertiesForOwner(value);
+                }
+              },
+              decoration: const InputDecoration(labelText: 'Owner'),
+              validator: (value) => value == null ? 'Required' : null,
+            ),
+            const SizedBox(height: 16),
+
+            // Property Dropdown
+            DropdownButtonFormField<String>(
+              value: _selectedPropertyId,
+              items: _properties.map((property) {
+                return DropdownMenuItem(
+                  value: property.id,
+                  child: Text(property.title),
+                );
+              }).toList(),
               onChanged: (value) {
                 setState(() {
-                  _contractType = value!;
+                  _selectedPropertyId = value;
                 });
               },
-              decoration: const InputDecoration(labelText: 'Contract Type'),
+              decoration: const InputDecoration(labelText: 'Property'),
+              validator: (value) => value == null ? 'Required' : null,
             ),
             const SizedBox(height: 16),
-            // TODO: Replace with Dropdowns/Search for Property, Owner, Tenant
-            TextFormField(
-              controller: _propertyIdController,
-              decoration: const InputDecoration(labelText: 'Property ID'),
-              validator: (value) => value!.isEmpty ? 'Required' : null,
+
+            // Tenant/Buyer Dropdown
+            DropdownButtonFormField<String>(
+              value: _selectedTenantBuyerId,
+              items:
+                  (_contractType == 'lease' ? _tenants : _buyers).map((user) {
+                return DropdownMenuItem(
+                  value: user.id,
+                  child: Text(user.fullName),
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  _selectedTenantBuyerId = value;
+                });
+              },
+              decoration: InputDecoration(
+                labelText: _contractType == 'lease' ? 'Tenant' : 'Buyer',
+              ),
+              validator: (value) => value == null ? 'Required' : null,
             ),
             const SizedBox(height: 16),
-            TextFormField(
-              controller: _ownerIdController,
-              decoration: const InputDecoration(labelText: 'Owner ID'),
-              validator: (value) => value!.isEmpty ? 'Required' : null,
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _tenantBuyerIdController,
-              decoration: const InputDecoration(labelText: 'Tenant/Buyer ID'),
-              validator: (value) => value!.isEmpty ? 'Required' : null,
-            ),
-            const SizedBox(height: 16),
-            if (_contractType == 'rent') ...[
+
+            // Amount field based on contract type
+            if (_contractType == 'lease') ...[
               TextFormField(
-                controller: _monthlyRentController,
-                decoration: const InputDecoration(labelText: 'Monthly Rent'),
+                controller: _monthlyLeaseController,
+                decoration:
+                    const InputDecoration(labelText: 'Monthly Lease Amount'),
                 keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 16),
             ] else ...[
               TextFormField(
-                controller: _salePriceController,
-                decoration: const InputDecoration(labelText: 'Sale Price'),
+                controller: _purchasePriceController,
+                decoration: const InputDecoration(labelText: 'Purchase Price'),
                 keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 16),

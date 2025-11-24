@@ -239,4 +239,47 @@ class PaymentReceiptGenerator {
       filename: 'Receipt_${payment.id.substring(0, 8)}.pdf',
     );
   }
+
+  /// Generate and download receipt (save to device)
+  static Future<void> generateAndDownloadReceipt(Payment payment) async {
+    // In a real implementation, we would need to get related data
+    // For now, we'll use default values since we don't have the context here
+    try {
+      final pdfBytes = await generateReceipt(
+        payment: payment,
+        contract: Contract( // Create a dummy contract with all required data
+          id: payment.contractId,
+          propertyId: payment.contractId,
+          ownerId: '',
+          tenantBuyerId: payment.payerId,
+          contractType: 'rent', // Default value
+          startDate: DateTime.now(),
+          endDate: DateTime.now(),
+          monthlyRent: payment.amount, // Use payment amount as monthly rent
+          salePrice: null,
+          depositAmount: null,
+          terms: '',
+          description: '',
+          descriptionAr: null,
+          concessions: null,
+          fileUrl: null,
+          paymentFrequency: 'monthly', // Default frequency
+          customFrequencyDays: null,
+          status: 'active',
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+          syncStatus: 'synced', // Default sync status
+        ),
+        remainingBalance: 0.0, // This would be calculated in a real app
+      );
+
+      await Printing.sharePdf(
+        bytes: pdfBytes,
+        filename: 'Receipt_${payment.id.substring(0, 8)}.pdf',
+      );
+    } catch (e) {
+      // Handle error appropriately
+      print('Error generating receipt: $e');
+    }
+  }
 }
