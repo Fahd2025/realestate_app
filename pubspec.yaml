@@ -1,10 +1,10 @@
 name: realestate_app
 description: A comprehensive Flutter real estate application with buying, selling, and renting services.
-publish_to: 'none'
+publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -18,8 +18,8 @@ dependencies:
 
   # Local Database - Drift (supports Web and Mobile)
   drift: ^2.14.0
-  sqlite3_flutter_libs: ^0.5.0  # For mobile platforms
-  sqlite3: ^2.1.0  # For web via WASM
+  sqlite3_flutter_libs: ^0.5.0 # For mobile platforms
+  sqlite3: ^2.1.0 # For web via WASM
   path_provider: ^2.1.1
   path: ^1.8.3
 
@@ -51,21 +51,49 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^3.0.0
 
+  flutter_launcher_icons: ^0.14.4
+
   # Code Generation
   drift_dev: ^2.14.0
+  # dart run build_runner build --delete-conflicting-outputs
   build_runner: ^2.4.6
 
 flutter:
   uses-material-design: true
-  generate: true  # Enable localization generation
+  generate: true # Enable localization generation
 
-  # assets:
-  #   - images/
-  #   - icons/
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/fonts/
 
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+  fonts:
+    - family: DINNextLTArabic
+      fonts:
+        - asset: assets/fonts/DINNextLTArabic-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/DINNextLTArabic-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/DINNextLTArabic-Bold.ttf
+          weight: 700
+    - family: NotoSansArabic
+      fonts:
+        - asset: assets/fonts/NotoSansArabic-Regular.ttf
+          weight: 400
+
+# Run command: dart run flutter_launcher_icons:main
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/images/logo.png"
+  remove_alpha_ios: true
+  web:
+    generate: true
+  windows:
+    generate: false
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: "assets/images/logo.png"
+  android_12:
+    image: "assets/images/logo.png"
