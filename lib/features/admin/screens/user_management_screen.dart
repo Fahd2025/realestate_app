@@ -296,8 +296,8 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
               style: const TextStyle(fontSize: 12),
             ),
             backgroundColor: user.isActive
-                ? Colors.green.withOpacity(0.2)
-                : Colors.grey.withOpacity(0.2),
+                ? Colors.green.withValues(alpha: 0.2)
+                : Colors.grey.withValues(alpha: 0.2),
             padding: const EdgeInsets.symmetric(horizontal: 8),
           ),
         ),
@@ -352,8 +352,8 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
           customWidget: (user) => Chip(
             label: Text(user.isActive ? l10n.active : l10n.inactive),
             backgroundColor: user.isActive
-                ? Colors.green.withOpacity(0.2)
-                : Colors.grey.withOpacity(0.2),
+                ? Colors.green.withValues(alpha: 0.2)
+                : Colors.grey.withValues(alpha: 0.2),
           ),
         ),
       ],
@@ -381,15 +381,15 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
   Color _getRoleColor(String role) {
     switch (role) {
       case 'admin':
-        return Colors.purple.withOpacity(0.2);
+        return Colors.purple.withValues(alpha: 0.2);
       case 'owner':
-        return Colors.blue.withOpacity(0.2);
+        return Colors.blue.withValues(alpha: 0.2);
       case 'tenant':
-        return Colors.orange.withOpacity(0.2);
+        return Colors.orange.withValues(alpha: 0.2);
       case 'buyer':
-        return Colors.teal.withOpacity(0.2);
+        return Colors.teal.withValues(alpha: 0.2);
       default:
-        return Colors.grey.withOpacity(0.2);
+        return Colors.grey.withValues(alpha: 0.2);
     }
   }
 }

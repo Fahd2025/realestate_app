@@ -40,6 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isLoading = context.watch<AuthBloc>().state is AuthLoading;
 
     return Scaffold(
       body: Stack(
@@ -48,7 +49,6 @@ class _LoginScreenState extends State<LoginScreen> {
           BlocConsumer<AuthBloc, AuthState>(
             listener: (context, state) {
               if (state is AuthAuthenticated) {
-                // Navigate to dashboard based on role
                 Navigator.of(context).pushReplacementNamed(AppRoutes.dashboard);
               } else if (state is AuthUnauthenticated &&
                   state.message != null) {
@@ -68,8 +68,6 @@ class _LoginScreenState extends State<LoginScreen> {
               }
             },
             builder: (context, state) {
-              final isLoading = state is AuthLoading;
-
               return Center(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(24),
@@ -95,7 +93,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 color: Theme.of(context).colorScheme.primary,
                               ),
                               const SizedBox(height: 16),
-
                               // Title
                               Text(
                                 l10n.appTitle,
@@ -116,7 +113,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 textAlign: TextAlign.center,
                               ),
                               const SizedBox(height: 16),
-
                               // Username field
                               TextFormField(
                                 controller: _usernameController,
@@ -135,7 +131,36 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onFieldSubmitted: (_) => _handleLogin(),
                               ),
                               const SizedBox(height: 16),
-
+                              // Password field
+                              TextFormField(
+                                controller: _passwordController,
+                                obscureText: _obscurePassword,
+                                decoration: InputDecoration(
+                                  labelText: l10n.password,
+                                  prefixIcon: const Icon(Icons.lock),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _obscurePassword
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _obscurePassword = !_obscurePassword;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                enabled: !isLoading,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your password';
+                                  }
+                                  return null;
+                                },
+                                onFieldSubmitted: (_) => _handleLogin(),
+                              ),
+                              const SizedBox(height: 16),
                               // Login button
                               ElevatedButton(
                                 onPressed: isLoading ? null : _handleLogin,
@@ -148,16 +173,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                         height: 20,
                                         width: 20,
                                         child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                        ),
+                                            strokeWidth: 2),
                                       )
-                                    : Text(
-                                        l10n.login,
-                                        style: const TextStyle(fontSize: 16),
-                                      ),
+                                    : Text(l10n.login,
+                                        style: const TextStyle(fontSize: 16)),
                               ),
                               const SizedBox(height: 16),
-
                               // Demo credentials hint
                               Container(
                                 padding: const EdgeInsets.all(12),
@@ -176,8 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           .textTheme
                                           .labelLarge
                                           ?.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                              fontWeight: FontWeight.bold),
                                     ),
                                     const SizedBox(height: 8),
                                     const Text('Admin: admin / 123'),
@@ -214,7 +234,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
+                            color: Colors.black.withValues(alpha: 0.1),
                             blurRadius: 4,
                             offset: const Offset(0, 2),
                           ),
@@ -224,17 +244,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           _buildLanguageButton(
-                            context,
-                            'العربية',
-                            'ar',
-                            isArabic,
-                          ),
+                              context, 'العربية', 'ar', isArabic),
                           _buildLanguageButton(
-                            context,
-                            'English',
-                            'en',
-                            !isArabic,
-                          ),
+                              context, 'English', 'en', !isArabic),
                         ],
                       ),
                     );
@@ -250,21 +262,18 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
+                            color: Colors.black.withValues(alpha: 0.1),
                             blurRadius: 4,
                             offset: const Offset(0, 2),
                           ),
                         ],
                       ),
                       child: IconButton(
-                        icon: Icon(
-                          themeState.isDarkMode
-                              ? Icons.light_mode
-                              : Icons.dark_mode,
-                        ),
-                        onPressed: () {
-                          context.read<ThemeCubit>().toggleTheme();
-                        },
+                        icon: Icon(themeState.isDarkMode
+                            ? Icons.light_mode
+                            : Icons.dark_mode),
+                        onPressed: () =>
+                            context.read<ThemeCubit>().toggleTheme(),
                         tooltip: themeState.isDarkMode
                             ? l10n.lightMode
                             : l10n.darkMode,
@@ -280,21 +289,15 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildLanguageButton(
-    BuildContext context,
-    String label,
-    String languageCode,
-    bool isSelected,
-  ) {
+  Widget _buildLanguageButton(BuildContext context, String label,
+      String languageCode, bool isSelected) {
     return Material(
       color: isSelected
           ? Theme.of(context).colorScheme.primaryContainer
           : Colors.transparent,
       borderRadius: BorderRadius.circular(8),
       child: InkWell(
-        onTap: () {
-          context.read<LanguageCubit>().changeLanguage(languageCode);
-        },
+        onTap: () => context.read<LanguageCubit>().changeLanguage(languageCode),
         borderRadius: BorderRadius.circular(8),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

@@ -76,7 +76,7 @@ class AppTheme {
 
   static ThemeData lightTheme(String colorScheme) {
     final scheme = colorSchemes[colorScheme] ?? colorSchemes['blue']!;
-    
+
     return ThemeData(
       useMaterial3: true,
       colorScheme: scheme,
@@ -112,7 +112,7 @@ class AppTheme {
 
   static ThemeData darkTheme(String colorScheme) {
     final scheme = darkColorSchemes[colorScheme] ?? darkColorSchemes['blue']!;
-    
+
     return ThemeData(
       useMaterial3: true,
       colorScheme: scheme,
