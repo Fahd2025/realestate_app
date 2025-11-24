@@ -754,11 +754,23 @@ class $PropertiesTable extends Properties
   late final GeneratedColumn<String> title = GeneratedColumn<String>(
       'title', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _titleArMeta =
+      const VerificationMeta('titleAr');
+  @override
+  late final GeneratedColumn<String> titleAr = GeneratedColumn<String>(
+      'title_ar', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
   @override
   late final GeneratedColumn<String> description = GeneratedColumn<String>(
       'description', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _descriptionArMeta =
+      const VerificationMeta('descriptionAr');
+  @override
+  late final GeneratedColumn<String> descriptionAr = GeneratedColumn<String>(
+      'description_ar', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _propertyTypeMeta =
       const VerificationMeta('propertyType');
@@ -855,7 +867,9 @@ class $PropertiesTable extends Properties
         id,
         ownerId,
         title,
+        titleAr,
         description,
+        descriptionAr,
         propertyType,
         listingType,
         price,
@@ -899,11 +913,21 @@ class $PropertiesTable extends Properties
     } else if (isInserting) {
       context.missing(_titleMeta);
     }
+    if (data.containsKey('title_ar')) {
+      context.handle(_titleArMeta,
+          titleAr.isAcceptableOrUnknown(data['title_ar']!, _titleArMeta));
+    }
     if (data.containsKey('description')) {
       context.handle(
           _descriptionMeta,
           description.isAcceptableOrUnknown(
               data['description']!, _descriptionMeta));
+    }
+    if (data.containsKey('description_ar')) {
+      context.handle(
+          _descriptionArMeta,
+          descriptionAr.isAcceptableOrUnknown(
+              data['description_ar']!, _descriptionArMeta));
     }
     if (data.containsKey('property_type')) {
       context.handle(
@@ -1004,8 +1028,12 @@ class $PropertiesTable extends Properties
           .read(DriftSqlType.string, data['${effectivePrefix}owner_id'])!,
       title: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
+      titleAr: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}title_ar']),
       description: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}description']),
+      descriptionAr: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}description_ar']),
       propertyType: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}property_type'])!,
       listingType: attachedDatabase.typeMapping
@@ -1049,7 +1077,9 @@ class Property extends DataClass implements Insertable<Property> {
   final String id;
   final String ownerId;
   final String title;
+  final String? titleAr;
   final String? description;
+  final String? descriptionAr;
   final String propertyType;
   final String listingType;
   final double price;
@@ -1069,7 +1099,9 @@ class Property extends DataClass implements Insertable<Property> {
       {required this.id,
       required this.ownerId,
       required this.title,
+      this.titleAr,
       this.description,
+      this.descriptionAr,
       required this.propertyType,
       required this.listingType,
       required this.price,
@@ -1091,8 +1123,14 @@ class Property extends DataClass implements Insertable<Property> {
     map['id'] = Variable<String>(id);
     map['owner_id'] = Variable<String>(ownerId);
     map['title'] = Variable<String>(title);
+    if (!nullToAbsent || titleAr != null) {
+      map['title_ar'] = Variable<String>(titleAr);
+    }
     if (!nullToAbsent || description != null) {
       map['description'] = Variable<String>(description);
+    }
+    if (!nullToAbsent || descriptionAr != null) {
+      map['description_ar'] = Variable<String>(descriptionAr);
     }
     map['property_type'] = Variable<String>(propertyType);
     map['listing_type'] = Variable<String>(listingType);
@@ -1125,9 +1163,15 @@ class Property extends DataClass implements Insertable<Property> {
       id: Value(id),
       ownerId: Value(ownerId),
       title: Value(title),
+      titleAr: titleAr == null && nullToAbsent
+          ? const Value.absent()
+          : Value(titleAr),
       description: description == null && nullToAbsent
           ? const Value.absent()
           : Value(description),
+      descriptionAr: descriptionAr == null && nullToAbsent
+          ? const Value.absent()
+          : Value(descriptionAr),
       propertyType: Value(propertyType),
       listingType: Value(listingType),
       price: Value(price),
@@ -1161,7 +1205,9 @@ class Property extends DataClass implements Insertable<Property> {
       id: serializer.fromJson<String>(json['id']),
       ownerId: serializer.fromJson<String>(json['ownerId']),
       title: serializer.fromJson<String>(json['title']),
+      titleAr: serializer.fromJson<String?>(json['titleAr']),
       description: serializer.fromJson<String?>(json['description']),
+      descriptionAr: serializer.fromJson<String?>(json['descriptionAr']),
       propertyType: serializer.fromJson<String>(json['propertyType']),
       listingType: serializer.fromJson<String>(json['listingType']),
       price: serializer.fromJson<double>(json['price']),
@@ -1186,7 +1232,9 @@ class Property extends DataClass implements Insertable<Property> {
       'id': serializer.toJson<String>(id),
       'ownerId': serializer.toJson<String>(ownerId),
       'title': serializer.toJson<String>(title),
+      'titleAr': serializer.toJson<String?>(titleAr),
       'description': serializer.toJson<String?>(description),
+      'descriptionAr': serializer.toJson<String?>(descriptionAr),
       'propertyType': serializer.toJson<String>(propertyType),
       'listingType': serializer.toJson<String>(listingType),
       'price': serializer.toJson<double>(price),
@@ -1209,7 +1257,9 @@ class Property extends DataClass implements Insertable<Property> {
           {String? id,
           String? ownerId,
           String? title,
+          Value<String?> titleAr = const Value.absent(),
           Value<String?> description = const Value.absent(),
+          Value<String?> descriptionAr = const Value.absent(),
           String? propertyType,
           String? listingType,
           double? price,
@@ -1229,7 +1279,10 @@ class Property extends DataClass implements Insertable<Property> {
         id: id ?? this.id,
         ownerId: ownerId ?? this.ownerId,
         title: title ?? this.title,
+        titleAr: titleAr.present ? titleAr.value : this.titleAr,
         description: description.present ? description.value : this.description,
+        descriptionAr:
+            descriptionAr.present ? descriptionAr.value : this.descriptionAr,
         propertyType: propertyType ?? this.propertyType,
         listingType: listingType ?? this.listingType,
         price: price ?? this.price,
@@ -1251,8 +1304,12 @@ class Property extends DataClass implements Insertable<Property> {
       id: data.id.present ? data.id.value : this.id,
       ownerId: data.ownerId.present ? data.ownerId.value : this.ownerId,
       title: data.title.present ? data.title.value : this.title,
+      titleAr: data.titleAr.present ? data.titleAr.value : this.titleAr,
       description:
           data.description.present ? data.description.value : this.description,
+      descriptionAr: data.descriptionAr.present
+          ? data.descriptionAr.value
+          : this.descriptionAr,
       propertyType: data.propertyType.present
           ? data.propertyType.value
           : this.propertyType,
@@ -1281,7 +1338,9 @@ class Property extends DataClass implements Insertable<Property> {
           ..write('id: $id, ')
           ..write('ownerId: $ownerId, ')
           ..write('title: $title, ')
+          ..write('titleAr: $titleAr, ')
           ..write('description: $description, ')
+          ..write('descriptionAr: $descriptionAr, ')
           ..write('propertyType: $propertyType, ')
           ..write('listingType: $listingType, ')
           ..write('price: $price, ')
@@ -1302,26 +1361,29 @@ class Property extends DataClass implements Insertable<Property> {
   }
 
   @override
-  int get hashCode => Object.hash(
-      id,
-      ownerId,
-      title,
-      description,
-      propertyType,
-      listingType,
-      price,
-      area,
-      bedrooms,
-      bathrooms,
-      address,
-      city,
-      country,
-      latitude,
-      longitude,
-      status,
-      createdAt,
-      updatedAt,
-      syncStatus);
+  int get hashCode => Object.hashAll([
+        id,
+        ownerId,
+        title,
+        titleAr,
+        description,
+        descriptionAr,
+        propertyType,
+        listingType,
+        price,
+        area,
+        bedrooms,
+        bathrooms,
+        address,
+        city,
+        country,
+        latitude,
+        longitude,
+        status,
+        createdAt,
+        updatedAt,
+        syncStatus
+      ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1329,7 +1391,9 @@ class Property extends DataClass implements Insertable<Property> {
           other.id == this.id &&
           other.ownerId == this.ownerId &&
           other.title == this.title &&
+          other.titleAr == this.titleAr &&
           other.description == this.description &&
+          other.descriptionAr == this.descriptionAr &&
           other.propertyType == this.propertyType &&
           other.listingType == this.listingType &&
           other.price == this.price &&
@@ -1351,7 +1415,9 @@ class PropertiesCompanion extends UpdateCompanion<Property> {
   final Value<String> id;
   final Value<String> ownerId;
   final Value<String> title;
+  final Value<String?> titleAr;
   final Value<String?> description;
+  final Value<String?> descriptionAr;
   final Value<String> propertyType;
   final Value<String> listingType;
   final Value<double> price;
@@ -1372,7 +1438,9 @@ class PropertiesCompanion extends UpdateCompanion<Property> {
     this.id = const Value.absent(),
     this.ownerId = const Value.absent(),
     this.title = const Value.absent(),
+    this.titleAr = const Value.absent(),
     this.description = const Value.absent(),
+    this.descriptionAr = const Value.absent(),
     this.propertyType = const Value.absent(),
     this.listingType = const Value.absent(),
     this.price = const Value.absent(),
@@ -1394,7 +1462,9 @@ class PropertiesCompanion extends UpdateCompanion<Property> {
     required String id,
     required String ownerId,
     required String title,
+    this.titleAr = const Value.absent(),
     this.description = const Value.absent(),
+    this.descriptionAr = const Value.absent(),
     required String propertyType,
     required String listingType,
     required double price,
@@ -1427,7 +1497,9 @@ class PropertiesCompanion extends UpdateCompanion<Property> {
     Expression<String>? id,
     Expression<String>? ownerId,
     Expression<String>? title,
+    Expression<String>? titleAr,
     Expression<String>? description,
+    Expression<String>? descriptionAr,
     Expression<String>? propertyType,
     Expression<String>? listingType,
     Expression<double>? price,
@@ -1449,7 +1521,9 @@ class PropertiesCompanion extends UpdateCompanion<Property> {
       if (id != null) 'id': id,
       if (ownerId != null) 'owner_id': ownerId,
       if (title != null) 'title': title,
+      if (titleAr != null) 'title_ar': titleAr,
       if (description != null) 'description': description,
+      if (descriptionAr != null) 'description_ar': descriptionAr,
       if (propertyType != null) 'property_type': propertyType,
       if (listingType != null) 'listing_type': listingType,
       if (price != null) 'price': price,
@@ -1473,7 +1547,9 @@ class PropertiesCompanion extends UpdateCompanion<Property> {
       {Value<String>? id,
       Value<String>? ownerId,
       Value<String>? title,
+      Value<String?>? titleAr,
       Value<String?>? description,
+      Value<String?>? descriptionAr,
       Value<String>? propertyType,
       Value<String>? listingType,
       Value<double>? price,
@@ -1494,7 +1570,9 @@ class PropertiesCompanion extends UpdateCompanion<Property> {
       id: id ?? this.id,
       ownerId: ownerId ?? this.ownerId,
       title: title ?? this.title,
+      titleAr: titleAr ?? this.titleAr,
       description: description ?? this.description,
+      descriptionAr: descriptionAr ?? this.descriptionAr,
       propertyType: propertyType ?? this.propertyType,
       listingType: listingType ?? this.listingType,
       price: price ?? this.price,
@@ -1526,8 +1604,14 @@ class PropertiesCompanion extends UpdateCompanion<Property> {
     if (title.present) {
       map['title'] = Variable<String>(title.value);
     }
+    if (titleAr.present) {
+      map['title_ar'] = Variable<String>(titleAr.value);
+    }
     if (description.present) {
       map['description'] = Variable<String>(description.value);
+    }
+    if (descriptionAr.present) {
+      map['description_ar'] = Variable<String>(descriptionAr.value);
     }
     if (propertyType.present) {
       map['property_type'] = Variable<String>(propertyType.value);
@@ -1586,7 +1670,9 @@ class PropertiesCompanion extends UpdateCompanion<Property> {
           ..write('id: $id, ')
           ..write('ownerId: $ownerId, ')
           ..write('title: $title, ')
+          ..write('titleAr: $titleAr, ')
           ..write('description: $description, ')
+          ..write('descriptionAr: $descriptionAr, ')
           ..write('propertyType: $propertyType, ')
           ..write('listingType: $listingType, ')
           ..write('price: $price, ')
@@ -4743,7 +4829,9 @@ typedef $$PropertiesTableCreateCompanionBuilder = PropertiesCompanion Function({
   required String id,
   required String ownerId,
   required String title,
+  Value<String?> titleAr,
   Value<String?> description,
+  Value<String?> descriptionAr,
   required String propertyType,
   required String listingType,
   required double price,
@@ -4765,7 +4853,9 @@ typedef $$PropertiesTableUpdateCompanionBuilder = PropertiesCompanion Function({
   Value<String> id,
   Value<String> ownerId,
   Value<String> title,
+  Value<String?> titleAr,
   Value<String?> description,
+  Value<String?> descriptionAr,
   Value<String> propertyType,
   Value<String> listingType,
   Value<double> price,
@@ -4865,8 +4955,14 @@ class $$PropertiesTableFilterComposer
   ColumnFilters<String> get title => $composableBuilder(
       column: $table.title, builder: (column) => ColumnFilters(column));
 
+  ColumnFilters<String> get titleAr => $composableBuilder(
+      column: $table.titleAr, builder: (column) => ColumnFilters(column));
+
   ColumnFilters<String> get description => $composableBuilder(
       column: $table.description, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get descriptionAr => $composableBuilder(
+      column: $table.descriptionAr, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get propertyType => $composableBuilder(
       column: $table.propertyType, builder: (column) => ColumnFilters(column));
@@ -5012,8 +5108,15 @@ class $$PropertiesTableOrderingComposer
   ColumnOrderings<String> get title => $composableBuilder(
       column: $table.title, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get titleAr => $composableBuilder(
+      column: $table.titleAr, builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<String> get description => $composableBuilder(
       column: $table.description, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get descriptionAr => $composableBuilder(
+      column: $table.descriptionAr,
+      builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get propertyType => $composableBuilder(
       column: $table.propertyType,
@@ -5097,8 +5200,14 @@ class $$PropertiesTableAnnotationComposer
   GeneratedColumn<String> get title =>
       $composableBuilder(column: $table.title, builder: (column) => column);
 
+  GeneratedColumn<String> get titleAr =>
+      $composableBuilder(column: $table.titleAr, builder: (column) => column);
+
   GeneratedColumn<String> get description => $composableBuilder(
       column: $table.description, builder: (column) => column);
+
+  GeneratedColumn<String> get descriptionAr => $composableBuilder(
+      column: $table.descriptionAr, builder: (column) => column);
 
   GeneratedColumn<String> get propertyType => $composableBuilder(
       column: $table.propertyType, builder: (column) => column);
@@ -5259,7 +5368,9 @@ class $$PropertiesTableTableManager extends RootTableManager<
             Value<String> id = const Value.absent(),
             Value<String> ownerId = const Value.absent(),
             Value<String> title = const Value.absent(),
+            Value<String?> titleAr = const Value.absent(),
             Value<String?> description = const Value.absent(),
+            Value<String?> descriptionAr = const Value.absent(),
             Value<String> propertyType = const Value.absent(),
             Value<String> listingType = const Value.absent(),
             Value<double> price = const Value.absent(),
@@ -5281,7 +5392,9 @@ class $$PropertiesTableTableManager extends RootTableManager<
             id: id,
             ownerId: ownerId,
             title: title,
+            titleAr: titleAr,
             description: description,
+            descriptionAr: descriptionAr,
             propertyType: propertyType,
             listingType: listingType,
             price: price,
@@ -5303,7 +5416,9 @@ class $$PropertiesTableTableManager extends RootTableManager<
             required String id,
             required String ownerId,
             required String title,
+            Value<String?> titleAr = const Value.absent(),
             Value<String?> description = const Value.absent(),
+            Value<String?> descriptionAr = const Value.absent(),
             required String propertyType,
             required String listingType,
             required double price,
@@ -5325,7 +5440,9 @@ class $$PropertiesTableTableManager extends RootTableManager<
             id: id,
             ownerId: ownerId,
             title: title,
+            titleAr: titleAr,
             description: description,
+            descriptionAr: descriptionAr,
             propertyType: propertyType,
             listingType: listingType,
             price: price,

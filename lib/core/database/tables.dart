@@ -27,7 +27,9 @@ class Properties extends Table {
   TextColumn get id => text()();
   TextColumn get ownerId => text().references(Users, #id)();
   TextColumn get title => text()();
+  TextColumn get titleAr => text().nullable()();
   TextColumn get description => text().nullable()();
+  TextColumn get descriptionAr => text().nullable()();
   TextColumn get propertyType => text()();
   TextColumn get listingType => text()();
   RealColumn get price => real()();

@@ -455,4 +455,85 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get inactive => 'Inactive';
+
+  @override
+  String get editUser => 'Edit User';
+
+  @override
+  String get addNewUser => 'Add New User';
+
+  @override
+  String get updateUser => 'Update User';
+
+  @override
+  String get createUser => 'Create User';
+
+  @override
+  String get fullNameArabic => 'Full Name (Arabic)';
+
+  @override
+  String get newPasswordHint => 'New Password (leave empty to keep current)';
+
+  @override
+  String get usernameRequired => 'Username is required';
+
+  @override
+  String get passwordRequired => 'Password is required';
+
+  @override
+  String get emailRequired => 'Email is required';
+
+  @override
+  String get invalidEmail => 'Invalid email format';
+
+  @override
+  String get fullNameRequired => 'Full name is required';
+
+  @override
+  String get userCanLogin => 'User can login to the system';
+
+  @override
+  String get editProperty => 'Edit Property';
+
+  @override
+  String get addNewProperty => 'Add New Property';
+
+  @override
+  String get updateProperty => 'Update Property';
+
+  @override
+  String get createProperty => 'Create Property';
+
+  @override
+  String get titleArabic => 'Title (Arabic)';
+
+  @override
+  String get descriptionArabic => 'Description (Arabic)';
+
+  @override
+  String get listingType => 'Listing Type';
+
+  @override
+  String get priceRequired => 'Price is required';
+
+  @override
+  String get invalidPrice => 'Invalid price';
+
+  @override
+  String get areaRequired => 'Area is required';
+
+  @override
+  String get invalidArea => 'Invalid area';
+
+  @override
+  String get addressRequired => 'Address is required';
+
+  @override
+  String get cityRequired => 'City is required';
+
+  @override
+  String get countryRequired => 'Country is required';
+
+  @override
+  String get titleRequired => 'Title is required';
 }

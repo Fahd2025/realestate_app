@@ -979,6 +979,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Inactive'**
   String get inactive;
+
+  /// No description provided for @editUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit User'**
+  String get editUser;
+
+  /// No description provided for @addNewUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New User'**
+  String get addNewUser;
+
+  /// No description provided for @updateUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Update User'**
+  String get updateUser;
+
+  /// No description provided for @createUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Create User'**
+  String get createUser;
+
+  /// No description provided for @fullNameArabic.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name (Arabic)'**
+  String get fullNameArabic;
+
+  /// No description provided for @newPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'New Password (leave empty to keep current)'**
+  String get newPasswordHint;
+
+  /// No description provided for @usernameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Username is required'**
+  String get usernameRequired;
+
+  /// No description provided for @passwordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required'**
+  String get passwordRequired;
+
+  /// No description provided for @emailRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get emailRequired;
+
+  /// No description provided for @invalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email format'**
+  String get invalidEmail;
+
+  /// No description provided for @fullNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name is required'**
+  String get fullNameRequired;
+
+  /// No description provided for @userCanLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'User can login to the system'**
+  String get userCanLogin;
+
+  /// No description provided for @editProperty.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Property'**
+  String get editProperty;
+
+  /// No description provided for @addNewProperty.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Property'**
+  String get addNewProperty;
+
+  /// No description provided for @updateProperty.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Property'**
+  String get updateProperty;
+
+  /// No description provided for @createProperty.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Property'**
+  String get createProperty;
+
+  /// No description provided for @titleArabic.
+  ///
+  /// In en, this message translates to:
+  /// **'Title (Arabic)'**
+  String get titleArabic;
+
+  /// No description provided for @descriptionArabic.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (Arabic)'**
+  String get descriptionArabic;
+
+  /// No description provided for @listingType.
+  ///
+  /// In en, this message translates to:
+  /// **'Listing Type'**
+  String get listingType;
+
+  /// No description provided for @priceRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Price is required'**
+  String get priceRequired;
+
+  /// No description provided for @invalidPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid price'**
+  String get invalidPrice;
+
+  /// No description provided for @areaRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Area is required'**
+  String get areaRequired;
+
+  /// No description provided for @invalidArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid area'**
+  String get invalidArea;
+
+  /// No description provided for @addressRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Address is required'**
+  String get addressRequired;
+
+  /// No description provided for @cityRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'City is required'**
+  String get cityRequired;
+
+  /// No description provided for @countryRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Country is required'**
+  String get countryRequired;
+
+  /// No description provided for @titleRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Title is required'**
+  String get titleRequired;
 }
 
 class _AppLocalizationsDelegate

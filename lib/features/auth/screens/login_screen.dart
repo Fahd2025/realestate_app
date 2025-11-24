@@ -115,11 +115,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 style: Theme.of(context).textTheme.titleMedium,
                                 textAlign: TextAlign.center,
                               ),
-                              const SizedBox(height: 32),
+                              const SizedBox(height: 16),
 
                               // Username field
                               TextFormField(
                                 controller: _usernameController,
+                                autofocus: true,
                                 decoration: InputDecoration(
                                   labelText: l10n.username,
                                   prefixIcon: const Icon(Icons.person),
@@ -134,37 +135,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onFieldSubmitted: (_) => _handleLogin(),
                               ),
                               const SizedBox(height: 16),
-
-                              // Password field
-                              TextFormField(
-                                controller: _passwordController,
-                                decoration: InputDecoration(
-                                  labelText: l10n.password,
-                                  prefixIcon: const Icon(Icons.lock),
-                                  suffixIcon: IconButton(
-                                    icon: Icon(
-                                      _obscurePassword
-                                          ? Icons.visibility
-                                          : Icons.visibility_off,
-                                    ),
-                                    onPressed: () {
-                                      setState(() {
-                                        _obscurePassword = !_obscurePassword;
-                                      });
-                                    },
-                                  ),
-                                ),
-                                obscureText: _obscurePassword,
-                                enabled: !isLoading,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter your password';
-                                  }
-                                  return null;
-                                },
-                                onFieldSubmitted: (_) => _handleLogin(),
-                              ),
-                              const SizedBox(height: 32),
 
                               // Login button
                               ElevatedButton(

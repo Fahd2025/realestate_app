@@ -28,7 +28,15 @@ class _MainLayoutState extends State<MainLayout> {
 
   @override
   Widget build(BuildContext context) {
-    final userRole = context.read<AuthBloc>().getUserRole();
+    final authBloc = context.read<AuthBloc>();
+    if (authBloc.currentUser == null) {
+      // No authenticated user, redirect to login
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacementNamed(context, AppRoutes.login);
+      });
+      return const Scaffold();
+    }
+    final userRole = authBloc.getUserRole();
     final isDesktop = MediaQuery.of(context).size.width >= 900;
 
     if (isDesktop) {

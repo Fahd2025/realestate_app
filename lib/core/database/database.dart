@@ -20,7 +20,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(impl.connect());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration {
@@ -34,6 +34,11 @@ class AppDatabase extends _$AppDatabase {
           // Add new columns for version 2
           await m.addColumn(users, users.fullNameAr);
           await m.addColumn(users, users.nationalId);
+        }
+        if (from < 3) {
+          // Add new columns for version 3
+          await m.addColumn(properties, properties.titleAr);
+          await m.addColumn(properties, properties.descriptionAr);
         }
       },
     );

@@ -204,7 +204,7 @@ class _UserFormModalState extends State<UserFormModal> {
                   children: [
                     Expanded(
                       child: Text(
-                        isEdit ? 'Edit User' : 'Add New User',
+                        isEdit ? l10n.editUser : l10n.addNewUser,
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                     ),
@@ -239,69 +239,11 @@ class _UserFormModalState extends State<UserFormModal> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 16),
-
-                      // Password
-                      TextFormField(
-                        controller: _passwordController,
-                        decoration: InputDecoration(
-                          labelText: isEdit
-                              ? 'New Password (leave empty to keep current)'
-                              : l10n.password,
-                          prefixIcon: const Icon(Icons.lock),
-                        ),
-                        obscureText: true,
-                        validator: (value) {
-                          if (!isEdit && (value == null || value.isEmpty)) {
-                            return 'Password is required';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-
-                      // Email
-                      TextFormField(
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                          labelText: l10n.email,
-                          prefixIcon: const Icon(Icons.email),
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Email is required';
-                          }
-                          if (!value.contains('@')) {
-                            return 'Invalid email format';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-
-                      // Full Name (English)
-                      TextFormField(
-                        controller: _fullNameController,
-                        decoration: InputDecoration(
-                          labelText: l10n.fullName,
-                          prefixIcon: const Icon(Icons.badge),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Full name is required';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-
-                      // Full Name (Arabic)
                       TextFormField(
                         controller: _fullNameArController,
-                        decoration: const InputDecoration(
-                          labelText: 'Full Name (Arabic)',
-                          prefixIcon: Icon(Icons.badge),
+                        decoration: InputDecoration(
+                          labelText: l10n.fullNameArabic,
+                          prefixIcon: const Icon(Icons.badge),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -320,9 +262,9 @@ class _UserFormModalState extends State<UserFormModal> {
                       // National ID
                       TextFormField(
                         controller: _nationalIdController,
-                        decoration: const InputDecoration(
-                          labelText: 'National ID',
-                          prefixIcon: Icon(Icons.credit_card),
+                        decoration: InputDecoration(
+                          labelText: l10n.nationalId,
+                          prefixIcon: const Icon(Icons.credit_card),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -340,20 +282,20 @@ class _UserFormModalState extends State<UserFormModal> {
 
                       // Role
                       DropdownButtonFormField<String>(
-                        value: _selectedRole,
-                        decoration: const InputDecoration(
-                          labelText: 'Role',
-                          prefixIcon: Icon(Icons.work),
+                        initialValue: _selectedRole,
+                        decoration: InputDecoration(
+                          labelText: l10n.role,
+                          prefixIcon: const Icon(Icons.work),
                         ),
-                        items: const [
+                        items: [
                           DropdownMenuItem(
-                              value: 'admin', child: Text('Admin')),
+                              value: 'admin', child: Text(l10n.admin)),
                           DropdownMenuItem(
-                              value: 'owner', child: Text('Owner')),
+                              value: 'owner', child: Text(l10n.owner)),
                           DropdownMenuItem(
-                              value: 'tenant', child: Text('Tenant')),
+                              value: 'tenant', child: Text(l10n.tenant)),
                           DropdownMenuItem(
-                              value: 'buyer', child: Text('Buyer')),
+                              value: 'buyer', child: Text(l10n.buyer)),
                         ],
                         onChanged: (value) {
                           if (value != null) {
@@ -365,8 +307,8 @@ class _UserFormModalState extends State<UserFormModal> {
 
                       // Active status
                       SwitchListTile(
-                        title: const Text('Active'),
-                        subtitle: const Text('User can login to the system'),
+                        title: Text(l10n.active),
+                        subtitle: Text(l10n.userCanLogin),
                         value: _isActive,
                         onChanged: (value) => setState(() => _isActive = value),
                       ),
@@ -385,7 +327,7 @@ class _UserFormModalState extends State<UserFormModal> {
                                 child:
                                     CircularProgressIndicator(strokeWidth: 2),
                               )
-                            : Text(isEdit ? 'Update User' : 'Create User'),
+                            : Text(isEdit ? l10n.updateUser : l10n.createUser),
                       ),
                     ],
                   ),
@@ -398,19 +340,19 @@ class _UserFormModalState extends State<UserFormModal> {
     );
   }
 
-  static Future<bool?> show({
-    required BuildContext context,
-    required AppDatabase database,
-    User? user,
-  }) {
-    return showModalBottomSheet<bool>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => UserFormModal(
-        user: user,
-        database: database,
-      ),
-    );
-  }
+  // static Future<bool?> show({
+  //   required BuildContext context,
+  //   required AppDatabase database,
+  //   User? user,
+  // }) {
+  //   return showModalBottomSheet<bool>(
+  //     context: context,
+  //     isScrollControlled: true,
+  //     backgroundColor: Colors.transparent,
+  //     builder: (context) => UserFormModal(
+  //       user: user,
+  //       database: database,
+  //     ),
+  //   );
+  // }
 }

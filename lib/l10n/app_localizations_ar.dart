@@ -402,7 +402,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get phoneNumber => 'رقم الهاتف';
 
   @override
-  String get role => 'Role';
+  String get role => 'الدور';
 
   @override
   String get editProfile => 'تعديل الملف الشخصي';
@@ -455,4 +455,86 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get inactive => 'غير نشط';
+
+  @override
+  String get editUser => 'تعديل المستخدم';
+
+  @override
+  String get addNewUser => 'إضافة مستخدم جديد';
+
+  @override
+  String get updateUser => 'تحديث المستخدم';
+
+  @override
+  String get createUser => 'إنشاء مستخدم';
+
+  @override
+  String get fullNameArabic => 'الاسم الكامل (بالعربية)';
+
+  @override
+  String get newPasswordHint =>
+      'كلمة المرور الجديدة (اتركها فارغة للاحتفاظ بالحالية)';
+
+  @override
+  String get usernameRequired => 'اسم المستخدم مطلوب';
+
+  @override
+  String get passwordRequired => 'كلمة المرور مطلوبة';
+
+  @override
+  String get emailRequired => 'البريد الإلكتروني مطلوب';
+
+  @override
+  String get invalidEmail => 'صيغة البريد الإلكتروني غير صحيحة';
+
+  @override
+  String get fullNameRequired => 'الاسم الكامل مطلوب';
+
+  @override
+  String get userCanLogin => 'يمكن للمستخدم تسجيل الدخول إلى النظام';
+
+  @override
+  String get editProperty => 'تعديل العقار';
+
+  @override
+  String get addNewProperty => 'إضافة عقار جديد';
+
+  @override
+  String get updateProperty => 'تحديث العقار';
+
+  @override
+  String get createProperty => 'إنشاء عقار';
+
+  @override
+  String get titleArabic => 'العنوان (بالعربية)';
+
+  @override
+  String get descriptionArabic => 'الوصف (بالعربية)';
+
+  @override
+  String get listingType => 'نوع القائمة';
+
+  @override
+  String get priceRequired => 'السعر مطلوب';
+
+  @override
+  String get invalidPrice => 'السعر غير صحيح';
+
+  @override
+  String get areaRequired => 'المساحة مطلوبة';
+
+  @override
+  String get invalidArea => 'المساحة غير صحيحة';
+
+  @override
+  String get addressRequired => 'العنوان مطلوب';
+
+  @override
+  String get cityRequired => 'المدينة مطلوبة';
+
+  @override
+  String get countryRequired => 'الدولة مطلوبة';
+
+  @override
+  String get titleRequired => 'العنوان مطلوب';
 }

@@ -7,6 +7,7 @@ import '../features/profile/screens/profile_screen.dart';
 import '../core/constants/routes.dart';
 import '../core/models/enums.dart';
 import '../features/admin/screens/user_management_screen.dart';
+import '../features/admin/screens/property_management_screen.dart';
 import 'dashboard_router.dart';
 
 class AppRouter {
@@ -112,9 +113,46 @@ class AppRouter {
         );
 
       case AppRoutes.adminProperties:
-      case AppRoutes.adminContracts:
+        return MaterialPageRoute(
+          builder: (context) => BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is AuthAuthenticated) {
+                final database = context.read<AuthBloc>().database;
+                return PropertyManagementScreen(database: database);
+              } else if (state is AuthUnauthenticated) {
+                return const LoginScreen();
+              }
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            },
+          ),
+          settings: settings,
+        );
+
       // Owner Routes
       case AppRoutes.ownerProperties:
+        return MaterialPageRoute(
+          builder: (context) => BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is AuthAuthenticated) {
+                final database = context.read<AuthBloc>().database;
+                return PropertyManagementScreen(
+                  database: database,
+                  ownerId: state.user.id,
+                );
+              } else if (state is AuthUnauthenticated) {
+                return const LoginScreen();
+              }
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            },
+          ),
+          settings: settings,
+        );
+
+      case AppRoutes.adminContracts:
       case AppRoutes.ownerContracts:
       // Tenant Routes
       case AppRoutes.tenantContracts:
