@@ -31,12 +31,13 @@ class _ContractPaymentsModalState extends State<ContractPaymentsModal> {
   }
 
   void _showAddPaymentForm(BuildContext context) {
+    final paymentsBloc = context.read<PaymentsBloc>();
     showDialog(
       context: context,
-      builder: (context) => _AddPaymentDialog(
+      builder: (dialogContext) => _AddPaymentDialog(
         contractId: widget.contractId,
         payerId: widget.payerId,
-        bloc: context.read<PaymentsBloc>(),
+        bloc: paymentsBloc,
       ),
     );
   }
@@ -267,7 +268,7 @@ class _AddPaymentDialogState extends State<_AddPaymentDialog> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                value: _paymentType,
+                initialValue: _paymentType,
                 items: const [
                   DropdownMenuItem(value: 'lease', child: Text('Lease')),
                   DropdownMenuItem(value: 'deposit', child: Text('Deposit')),
@@ -296,7 +297,7 @@ class _AddPaymentDialogState extends State<_AddPaymentDialog> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                value: _status,
+                initialValue: _status,
                 items: const [
                   DropdownMenuItem(value: 'pending', child: Text('Pending')),
                   DropdownMenuItem(

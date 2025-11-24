@@ -790,4 +790,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selectStartDate => 'Select Start Date';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get signature => 'Signature';
+
+  @override
+  String get ownerSignature => 'Owner Signature';
+
+  @override
+  String get tenantSignature => 'Tenant Signature';
+
+  @override
+  String get buyerSignature => 'Buyer Signature';
 }

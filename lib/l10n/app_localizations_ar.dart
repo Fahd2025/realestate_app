@@ -790,4 +790,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get selectStartDate => 'اختر تاريخ البدء';
+
+  @override
+  String get date => 'التاريخ';
+
+  @override
+  String get signature => 'التوقيع';
+
+  @override
+  String get ownerSignature => 'توقيع المالك';
+
+  @override
+  String get tenantSignature => 'توقيع المستأجر';
+
+  @override
+  String get buyerSignature => 'توقيع المشتري';
 }

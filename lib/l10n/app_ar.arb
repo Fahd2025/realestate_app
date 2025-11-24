@@ -278,5 +278,10 @@
   "propertyStatus": "حالة العقار",
   "selectDate": "اختر التاريخ",
   "selectEndDate": "اختر تاريخ الانتهاء",
-  "selectStartDate": "اختر تاريخ البدء"
+  "selectStartDate": "اختر تاريخ البدء",
+  "date": "التاريخ",
+  "signature": "التوقيع",
+  "ownerSignature": "توقيع المالك",
+  "tenantSignature": "توقيع المستأجر",
+  "buyerSignature": "توقيع المشتري"
 }

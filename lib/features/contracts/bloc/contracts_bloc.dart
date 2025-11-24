@@ -29,9 +29,9 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
     emit(ContractsLoading());
     _contractsSubscription?.cancel();
     _contractsSubscription =
-        _repository.watchContracts(type: event.type).listen(
-      (contracts) {
-        add(_ContractsUpdated(contracts));
+        _repository.watchContractsWithDetails(type: event.type).listen(
+      (contractsWithDetails) {
+        add(_ContractsUpdated(contractsWithDetails));
       },
       onError: (error) {
         // We can't emit from here directly if we use a separate event handler for updates
@@ -43,7 +43,7 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
   // Private event to handle stream updates
   Future<void> _onContractsUpdated(
       _ContractsUpdated event, Emitter<ContractsState> emit) async {
-    emit(ContractsLoaded(event.contracts));
+    emit(ContractsLoaded(event.contractsWithDetails));
   }
 
   Future<void> _onAddContract(
@@ -145,14 +145,21 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
     final state = this.state;
     if (state is ContractsLoaded) {
       final query = event.query.toLowerCase();
-      final filtered = state.contracts.where((contract) {
-        // Basic search on ID, terms, description.
-        // Ideally we would search on joined property title or user name too.
+      final filtered = state.contractsWithDetails.where((item) {
+        final contract = item.contract;
+        final property = item.property;
+        final owner = item.owner;
+        final tenantBuyer = item.tenantBuyer;
+
         return contract.id.toLowerCase().contains(query) ||
             (contract.terms?.toLowerCase().contains(query) ?? false) ||
-            (contract.description?.toLowerCase().contains(query) ?? false);
+            (contract.description?.toLowerCase().contains(query) ?? false) ||
+            property.title.toLowerCase().contains(query) ||
+            (owner?.fullName.toLowerCase().contains(query) ?? false) ||
+            (tenantBuyer?.fullName.toLowerCase().contains(query) ?? false);
       }).toList();
-      emit(ContractsLoaded(state.contracts, filteredContracts: filtered));
+      emit(ContractsLoaded(state.contractsWithDetails,
+          filteredContracts: filtered));
     }
   }
 
@@ -164,8 +171,8 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
 }
 
 class _ContractsUpdated extends ContractsEvent {
-  final List<Contract> contracts;
-  const _ContractsUpdated(this.contracts);
+  final List<ContractWithDetails> contractsWithDetails;
+  const _ContractsUpdated(this.contractsWithDetails);
   @override
-  List<Object?> get props => [contracts];
+  List<Object?> get props => [contractsWithDetails];
 }

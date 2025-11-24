@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -14,8 +14,13 @@ class PaymentReceiptGenerator {
     String? payerName,
   }) async {
     final pdf = pw.Document();
-    final font = await PdfGoogleFonts.notoSansRegular();
-    final fontBold = await PdfGoogleFonts.notoSansBold();
+
+    // Load NotoSansArabic font from assets
+    final fontData =
+        await rootBundle.load('assets/fonts/NotoSansArabic-Regular.ttf');
+    final font = pw.Font.ttf(fontData);
+    // Use the same font for bold since we only have regular weight
+    final fontBold = font;
 
     pdf.addPage(
       pw.Page(
@@ -247,7 +252,8 @@ class PaymentReceiptGenerator {
     try {
       final pdfBytes = await generateReceipt(
         payment: payment,
-        contract: Contract( // Create a dummy contract with all required data
+        contract: Contract(
+          // Create a dummy contract with all required data
           id: payment.contractId,
           propertyId: payment.contractId,
           ownerId: '',

@@ -22,7 +22,10 @@ class PaymentsRepository {
   }
 
   Future<bool> updatePayment(PaymentsCompanion payment) async {
-    return await _database.update(_database.payments).replace(payment);
+    final rowsAffected = await (_database.update(_database.payments)
+          ..where((tbl) => tbl.id.equals(payment.id.value)))
+        .write(payment);
+    return rowsAffected > 0;
   }
 
   Future<int> deletePayment(String id) async {

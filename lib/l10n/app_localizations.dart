@@ -1645,6 +1645,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select Start Date'**
   String get selectStartDate;
+
+  /// No description provided for @date.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get date;
+
+  /// No description provided for @signature.
+  ///
+  /// In en, this message translates to:
+  /// **'Signature'**
+  String get signature;
+
+  /// No description provided for @ownerSignature.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner Signature'**
+  String get ownerSignature;
+
+  /// No description provided for @tenantSignature.
+  ///
+  /// In en, this message translates to:
+  /// **'Tenant Signature'**
+  String get tenantSignature;
+
+  /// No description provided for @buyerSignature.
+  ///
+  /// In en, this message translates to:
+  /// **'Buyer Signature'**
+  String get buyerSignature;
 }
 
 class _AppLocalizationsDelegate

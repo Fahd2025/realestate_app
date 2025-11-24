@@ -4,6 +4,8 @@ import 'package:realestate_app/core/database/database.dart';
 import 'package:realestate_app/features/contracts/bloc/contracts_bloc.dart';
 import 'package:realestate_app/features/contracts/bloc/contracts_event.dart';
 import 'package:realestate_app/features/contracts/bloc/contracts_state.dart';
+import 'package:realestate_app/features/contracts/data/repositories/contracts_repository.dart';
+import 'package:realestate_app/l10n/app_localizations.dart';
 import 'package:realestate_app/features/contracts/widgets/contract_form_modal.dart';
 import 'package:realestate_app/core/widgets/confirmation_dialog.dart';
 import 'package:realestate_app/features/contracts/utils/contract_pdf_generator.dart';
@@ -11,6 +13,7 @@ import 'package:realestate_app/features/auth/bloc/auth_bloc.dart';
 import 'package:realestate_app/features/payments/widgets/contract_payments_modal.dart';
 import 'package:realestate_app/features/payments/bloc/payments_bloc.dart';
 import 'package:realestate_app/features/payments/data/repositories/payments_repository.dart';
+import 'package:realestate_app/core/widgets/main_layout.dart';
 
 class ContractsView extends StatefulWidget {
   final String contractType; // 'buy' or 'rent'
@@ -44,11 +47,12 @@ class _ContractsViewState extends State<ContractsView> {
   }
 
   void _deleteContract(BuildContext context, String id) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (context) => ConfirmationDialog(
-        title: 'Delete Contract',
-        message: 'Are you sure you want to delete this contract?',
+        title: l10n.deleteContract,
+        message: l10n.deleteContractConfirmation,
         onConfirm: () {
           context.read<ContractsBloc>().add(DeleteContract(id));
         },
@@ -62,26 +66,26 @@ class _ContractsViewState extends State<ContractsView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-            widget.contractType == 'buy' ? 'Buy Contracts' : 'Rent Contracts'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () => _showForm(context),
-          ),
-        ],
-      ),
+    final l10n = AppLocalizations.of(context)!;
+    return MainLayout(
+      title: widget.contractType == 'purchase'
+          ? l10n.purchaseContracts
+          : l10n.leaseContracts,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.add),
+          onPressed: () => _showForm(context),
+        ),
+      ],
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
-              decoration: const InputDecoration(
-                labelText: 'Search',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: l10n.search,
+                prefixIcon: const Icon(Icons.search),
+                border: const OutlineInputBorder(),
               ),
               onChanged: (value) {
                 context.read<ContractsBloc>().add(SearchContracts(value));
@@ -98,15 +102,15 @@ class _ContractsViewState extends State<ContractsView> {
                 } else if (state is ContractsLoaded) {
                   final contracts = state.filteredContracts;
                   if (contracts.isEmpty) {
-                    return const Center(child: Text('No contracts found.'));
+                    return Center(child: Text(l10n.noContractsFound));
                   }
 
                   return LayoutBuilder(
                     builder: (context, constraints) {
                       if (constraints.maxWidth > 600) {
-                        return _buildDataTable(contracts);
+                        return _buildDataTable(state.filteredContracts);
                       } else {
-                        return _buildMobileList(contracts);
+                        return _buildMobileList(state.filteredContracts);
                       }
                     },
                   );
@@ -120,22 +124,33 @@ class _ContractsViewState extends State<ContractsView> {
     );
   }
 
-  Widget _buildDataTable(List<Contract> contracts) {
+  Widget _buildDataTable(List<ContractWithDetails> contractsWithDetails) {
+    final l10n = AppLocalizations.of(context)!;
     return SingleChildScrollView(
       child: DataTable(
-        columns: const [
-          DataColumn(label: Text('ID')),
-          DataColumn(label: Text('Property')),
-          DataColumn(label: Text('Start Date')),
-          DataColumn(label: Text('Amount')),
-          DataColumn(label: Text('Status')),
-          DataColumn(label: Text('Actions')),
+        columns: [
+          DataColumn(label: Text(l10n.contractId)),
+          DataColumn(label: Text(l10n.property)),
+          DataColumn(label: Text(l10n.owner)),
+          DataColumn(
+              label: Text(
+                  widget.contractType == 'lease' ? l10n.tenant : l10n.buyer)),
+          DataColumn(label: Text(l10n.startDate)),
+          DataColumn(label: Text(l10n.amount)),
+          DataColumn(label: Text(l10n.status)),
+          DataColumn(label: Text(l10n.actions)),
         ],
-        rows: contracts.map((contract) {
+        rows: contractsWithDetails.map((item) {
+          final contract = item.contract;
+          final property = item.property;
+          final owner = item.owner;
+          final tenantBuyer = item.tenantBuyer;
+
           return DataRow(cells: [
             DataCell(Text(_getShortString(contract.id, 8))),
-            DataCell(Text(_getShortString(
-                contract.propertyId, 8))), // TODO: Show Property Title
+            DataCell(Text(property.title)),
+            DataCell(Text(owner?.fullName ?? 'N/A')),
+            DataCell(Text(tenantBuyer?.fullName ?? 'N/A')),
             DataCell(Text(contract.startDate.toString().split(' ')[0])),
             DataCell(Text(widget.contractType == 'lease'
                 ? '${contract.monthlyRent}/mo'
@@ -154,7 +169,7 @@ class _ContractsViewState extends State<ContractsView> {
                 IconButton(
                   icon: const Icon(Icons.picture_as_pdf),
                   onPressed: () {
-                    ContractPdfGenerator.printContract(contract);
+                    ContractPdfGenerator.printContract(contract, l10n);
                   },
                 ),
                 IconButton(
@@ -169,45 +184,69 @@ class _ContractsViewState extends State<ContractsView> {
     );
   }
 
-  Widget _buildMobileList(List<Contract> contracts) {
+  Widget _buildMobileList(List<ContractWithDetails> contractsWithDetails) {
+    final l10n = AppLocalizations.of(context)!;
     return ListView.builder(
-      itemCount: contracts.length,
+      itemCount: contractsWithDetails.length,
       itemBuilder: (context, index) {
-        final contract = contracts[index];
+        final item = contractsWithDetails[index];
+        final contract = item.contract;
+        final property = item.property;
+        final owner = item.owner;
+        final tenantBuyer = item.tenantBuyer;
+
         return Card(
           child: ExpansionTile(
-            title: Text('Contract ${_getShortString(contract.id, 8)}'),
-            subtitle: Text(contract.startDate.toString().split(' ')[0]),
+            title: Text('${l10n.contract} ${_getShortString(contract.id, 8)}'),
+            subtitle: Text(property.title),
             children: [
               ListTile(
-                title: const Text('Property ID'),
-                subtitle: Text(contract.propertyId),
+                title: Text(l10n.property),
+                subtitle: Text(property.title),
               ),
               ListTile(
-                title: const Text('Amount'),
-                subtitle: Text(widget.contractType == 'lease'
-                    ? 'Monthly: ${contract.monthlyRent}'
-                    : 'Price: ${contract.salePrice}'),
+                title: Text(l10n.owner),
+                subtitle: Text(owner?.fullName ?? 'N/A'),
               ),
-              ButtonBar(
+              ListTile(
+                title: Text(
+                    widget.contractType == 'lease' ? l10n.tenant : l10n.buyer),
+                subtitle: Text(tenantBuyer?.fullName ?? 'N/A'),
+              ),
+              ListTile(
+                title: Text(l10n.startDate),
+                subtitle: Text(contract.startDate.toString().split(' ')[0]),
+              ),
+              ListTile(
+                title: Text(l10n.amount),
+                subtitle: Text(widget.contractType == 'lease'
+                    ? '${l10n.monthly}: ${contract.monthlyRent}'
+                    : '${l10n.price}: ${contract.salePrice}'),
+              ),
+              ListTile(
+                title: Text(l10n.status),
+                subtitle: Text(contract.status),
+              ),
+              OverflowBar(
+                alignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
                     onPressed: () => _showForm(context, contract: contract),
-                    child: const Text('Edit'),
+                    child: Text(l10n.edit),
                   ),
                   TextButton(
                     onPressed: () => _deleteContract(context, contract.id),
-                    child: const Text('Delete'),
+                    child: Text(l10n.delete),
                   ),
                   TextButton(
                     onPressed: () {
-                      ContractPdfGenerator.printContract(contract);
+                      ContractPdfGenerator.printContract(contract, l10n);
                     },
-                    child: const Text('PDF'),
+                    child: Text(l10n.generatePDF),
                   ),
                   TextButton(
                     onPressed: () => _showPayments(context, contract),
-                    child: const Text('Payments'),
+                    child: Text(l10n.payments),
                   ),
                 ],
               ),

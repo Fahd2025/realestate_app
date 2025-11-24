@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:realestate_app/features/payments/models/payment_frequency.dart';
 import 'package:realestate_app/features/payments/services/installment_service.dart';
 import 'package:realestate_app/features/payments/models/payment_schedule_item.dart';
+import 'package:realestate_app/l10n/app_localizations.dart';
 
 class ContractFormModal extends StatefulWidget {
   final Contract? contract;
@@ -185,7 +186,9 @@ class _ContractFormModalState extends State<ContractFormModal> {
   void _showSchedulePreview() {
     if (_endDate == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select an end date first')),
+        SnackBar(
+            content:
+                Text(AppLocalizations.of(context)!.pleaseSelectEndDateFirst)),
       );
       return;
     }
@@ -196,7 +199,9 @@ class _ContractFormModalState extends State<ContractFormModal> {
 
     if (totalAmount <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a valid amount')),
+        SnackBar(
+            content:
+                Text(AppLocalizations.of(context)!.pleaseEnterValidAmount)),
       );
       return;
     }
@@ -241,8 +246,9 @@ class _ContractFormModalState extends State<ContractFormModal> {
           _selectedPropertyId == null ||
           _selectedTenantBuyerId == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text('Please select owner, property, and tenant/buyer')),
+          SnackBar(
+              content: Text(AppLocalizations.of(context)!
+                  .pleaseSelectOwnerPropertyTenantBuyer)),
         );
         return;
       }
@@ -292,6 +298,8 @@ class _ContractFormModalState extends State<ContractFormModal> {
       );
     }
 
+    final l10n = AppLocalizations.of(context)!;
+
     return Container(
       padding: const EdgeInsets.all(16),
       child: Form(
@@ -300,14 +308,14 @@ class _ContractFormModalState extends State<ContractFormModal> {
           shrinkWrap: true,
           children: [
             Text(
-              widget.contract == null ? 'New Contract' : 'Edit Contract',
+              widget.contract == null ? l10n.newContract : l10n.editContract,
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 16),
 
             // Owner Dropdown
             DropdownButtonFormField<String>(
-              value: _selectedOwnerId,
+              initialValue: _selectedOwnerId,
               items: _owners.map((owner) {
                 return DropdownMenuItem(
                   value: owner.id,
@@ -324,14 +332,14 @@ class _ContractFormModalState extends State<ContractFormModal> {
                   await _loadPropertiesForOwner(value);
                 }
               },
-              decoration: const InputDecoration(labelText: 'Owner'),
-              validator: (value) => value == null ? 'Required' : null,
+              decoration: InputDecoration(labelText: l10n.owner),
+              validator: (value) => value == null ? l10n.required : null,
             ),
             const SizedBox(height: 16),
 
             // Property Dropdown
             DropdownButtonFormField<String>(
-              value: _selectedPropertyId,
+              initialValue: _selectedPropertyId,
               items: _properties.map((property) {
                 return DropdownMenuItem(
                   value: property.id,
@@ -343,14 +351,14 @@ class _ContractFormModalState extends State<ContractFormModal> {
                   _selectedPropertyId = value;
                 });
               },
-              decoration: const InputDecoration(labelText: 'Property'),
-              validator: (value) => value == null ? 'Required' : null,
+              decoration: InputDecoration(labelText: l10n.property),
+              validator: (value) => value == null ? l10n.required : null,
             ),
             const SizedBox(height: 16),
 
             // Tenant/Buyer Dropdown
             DropdownButtonFormField<String>(
-              value: _selectedTenantBuyerId,
+              initialValue: _selectedTenantBuyerId,
               items:
                   (_contractType == 'lease' ? _tenants : _buyers).map((user) {
                 return DropdownMenuItem(
@@ -364,9 +372,9 @@ class _ContractFormModalState extends State<ContractFormModal> {
                 });
               },
               decoration: InputDecoration(
-                labelText: _contractType == 'lease' ? 'Tenant' : 'Buyer',
+                labelText: _contractType == 'lease' ? l10n.tenant : l10n.buyer,
               ),
-              validator: (value) => value == null ? 'Required' : null,
+              validator: (value) => value == null ? l10n.required : null,
             ),
             const SizedBox(height: 16),
 
@@ -374,27 +382,26 @@ class _ContractFormModalState extends State<ContractFormModal> {
             if (_contractType == 'lease') ...[
               TextFormField(
                 controller: _monthlyLeaseController,
-                decoration:
-                    const InputDecoration(labelText: 'Monthly Lease Amount'),
+                decoration: InputDecoration(labelText: l10n.monthlyLeaseAmount),
                 keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 16),
             ] else ...[
               TextFormField(
                 controller: _purchasePriceController,
-                decoration: const InputDecoration(labelText: 'Purchase Price'),
+                decoration: InputDecoration(labelText: l10n.purchasePrice),
                 keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 16),
             ],
             TextFormField(
               controller: _depositAmountController,
-              decoration: const InputDecoration(labelText: 'Deposit Amount'),
+              decoration: InputDecoration(labelText: l10n.depositAmount),
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 16),
             ListTile(
-              title: const Text('Start Date'),
+              title: Text(l10n.startDate),
               subtitle: Text(_startDate.toString().split(' ')[0]),
               trailing: const Icon(Icons.calendar_today),
               onTap: () async {
@@ -410,9 +417,9 @@ class _ContractFormModalState extends State<ContractFormModal> {
               },
             ),
             ListTile(
-              title: const Text('End Date'),
+              title: Text(l10n.endDate),
               subtitle:
-                  Text(_endDate?.toString().split(' ')[0] ?? 'Select Date'),
+                  Text(_endDate?.toString().split(' ')[0] ?? l10n.selectDate),
               trailing: const Icon(Icons.calendar_today),
               onTap: () async {
                 final date = await showDatePicker(
@@ -429,32 +436,32 @@ class _ContractFormModalState extends State<ContractFormModal> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Description (En)'),
+              decoration: InputDecoration(labelText: l10n.descriptionEn),
               maxLines: 2,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _descriptionArController,
-              decoration: const InputDecoration(labelText: 'Description (Ar)'),
+              decoration: InputDecoration(labelText: l10n.descriptionAr),
               maxLines: 2,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _termsController,
-              decoration: const InputDecoration(labelText: 'Terms'),
+              decoration: InputDecoration(labelText: l10n.terms),
               maxLines: 3,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _concessionsController,
-              decoration: const InputDecoration(labelText: 'Concessions'),
+              decoration: InputDecoration(labelText: l10n.concessions),
               maxLines: 2,
             ),
             const SizedBox(height: 16),
             ListTile(
               title: Text(_fileUrl == null
-                  ? 'Upload Contract Image'
-                  : 'Image Selected'),
+                  ? l10n.uploadContractImage
+                  : l10n.imageSelected),
               subtitle: _fileUrl != null ? Text(_fileUrl!) : null,
               trailing: const Icon(Icons.upload_file),
               onTap: _pickImage,
@@ -463,12 +470,12 @@ class _ContractFormModalState extends State<ContractFormModal> {
 
             // Payment Frequency Section
             Text(
-              'Payment Schedule',
+              l10n.paymentSchedule,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
             DropdownButtonFormField<PaymentFrequency>(
-              value: _paymentFrequency,
+              initialValue: _paymentFrequency,
               items: PaymentFrequency.values.map((freq) {
                 return DropdownMenuItem(
                   value: freq,
@@ -480,25 +487,25 @@ class _ContractFormModalState extends State<ContractFormModal> {
                   _paymentFrequency = value!;
                 });
               },
-              decoration: const InputDecoration(labelText: 'Payment Frequency'),
+              decoration: InputDecoration(labelText: l10n.paymentFrequency),
             ),
             if (_paymentFrequency == PaymentFrequency.custom) ...[
               const SizedBox(height: 16),
               TextFormField(
                 controller: _customFrequencyController,
-                decoration: const InputDecoration(
-                  labelText: 'Custom Frequency (days)',
-                  hintText: 'e.g., 45',
+                decoration: InputDecoration(
+                  labelText: l10n.customFrequencyDays,
+                  hintText: l10n.customFrequencyHint,
                 ),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (_paymentFrequency == PaymentFrequency.custom) {
                     if (value == null || value.isEmpty) {
-                      return 'Required for custom frequency';
+                      return l10n.requiredForCustomFrequency;
                     }
                     final days = int.tryParse(value);
                     if (days == null || days <= 0) {
-                      return 'Must be a positive number';
+                      return l10n.mustBePositiveNumber;
                     }
                   }
                   return null;
@@ -509,12 +516,14 @@ class _ContractFormModalState extends State<ContractFormModal> {
             OutlinedButton.icon(
               onPressed: _showSchedulePreview,
               icon: const Icon(Icons.calendar_month),
-              label: const Text('Preview Payment Schedule'),
+              label: Text(l10n.previewPaymentSchedule),
             ),
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: _submit,
-              child: Text(widget.contract == null ? 'Create' : 'Update'),
+              child: Text(widget.contract == null
+                  ? l10n.createContract
+                  : l10n.updateContract),
             ),
             const SizedBox(height: 16),
           ],
@@ -532,8 +541,9 @@ class _SchedulePreviewDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return AlertDialog(
-      title: const Text('Payment Schedule Preview'),
+      title: Text(l10n.paymentSchedulePreview),
       content: SizedBox(
         width: double.maxFinite,
         child: ListView.builder(
@@ -546,7 +556,8 @@ class _SchedulePreviewDialog extends StatelessWidget {
                 child: Text('${item.installmentNumber}'),
               ),
               title: Text('\$${item.amount.toStringAsFixed(2)}'),
-              subtitle: Text('Due: ${item.dueDate.toString().split(' ')[0]}'),
+              subtitle:
+                  Text('${l10n.due}: ${item.dueDate.toString().split(' ')[0]}'),
               trailing: Chip(
                 label: Text(item.paymentType.toUpperCase()),
               ),
@@ -557,7 +568,7 @@ class _SchedulePreviewDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Close'),
+          child: Text(l10n.close),
         ),
       ],
     );

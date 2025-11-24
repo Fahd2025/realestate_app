@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:realestate_app/core/database/database.dart';
+import 'package:realestate_app/features/contracts/data/repositories/contracts_repository.dart';
 
 abstract class ContractsState extends Equatable {
   const ContractsState();
@@ -13,14 +13,15 @@ class ContractsInitial extends ContractsState {}
 class ContractsLoading extends ContractsState {}
 
 class ContractsLoaded extends ContractsState {
-  final List<Contract> contracts;
-  final List<Contract> filteredContracts;
+  final List<ContractWithDetails> contractsWithDetails;
+  final List<ContractWithDetails> filteredContracts;
 
-  const ContractsLoaded(this.contracts, {List<Contract>? filteredContracts})
-      : filteredContracts = filteredContracts ?? contracts;
+  const ContractsLoaded(this.contractsWithDetails,
+      {List<ContractWithDetails>? filteredContracts})
+      : filteredContracts = filteredContracts ?? contractsWithDetails;
 
   @override
-  List<Object?> get props => [contracts, filteredContracts];
+  List<Object?> get props => [contractsWithDetails, filteredContracts];
 }
 
 class ContractsError extends ContractsState {

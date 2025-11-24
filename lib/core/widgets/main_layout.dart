@@ -279,11 +279,11 @@ class _MainLayoutState extends State<MainLayout> {
               icon: Icons.home_work,
               route: AppRoutes.adminProperties),
           _NavItem(
-              label: 'Purchase Contracts',
+              label: l10n.purchaseContracts,
               icon: Icons.shopping_cart,
               route: AppRoutes.contractsPurchase),
           _NavItem(
-              label: 'Lease Contracts',
+              label: l10n.leaseContracts,
               icon: Icons.key,
               route: AppRoutes.contractsLease),
         ];
@@ -295,11 +295,11 @@ class _MainLayoutState extends State<MainLayout> {
               icon: Icons.home,
               route: AppRoutes.ownerProperties),
           _NavItem(
-              label: 'Purchase Contracts',
+              label: l10n.purchaseContracts,
               icon: Icons.shopping_cart,
               route: AppRoutes.contractsPurchase),
           _NavItem(
-              label: 'Lease Contracts',
+              label: l10n.leaseContracts,
               icon: Icons.key,
               route: AppRoutes.contractsLease),
         ];

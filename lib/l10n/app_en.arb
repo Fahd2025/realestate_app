@@ -278,5 +278,10 @@
   "propertyStatus": "Property Status",
   "selectDate": "Select Date",
   "selectEndDate": "Select End Date",
-  "selectStartDate": "Select Start Date"
+  "selectStartDate": "Select Start Date",
+  "date": "Date",
+  "signature": "Signature",
+  "ownerSignature": "Owner Signature",
+  "tenantSignature": "Tenant Signature",
+  "buyerSignature": "Buyer Signature"
 }

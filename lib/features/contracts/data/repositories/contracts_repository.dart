@@ -44,20 +44,23 @@ class ContractsRepository {
 
   // Advanced query with joins to get property and user details
   Stream<List<ContractWithDetails>> watchContractsWithDetails({String? type}) {
+    // Create aliases for multiple joins on users table
+    final ownerAlias = _database.alias(_database.users, 'owner');
+    final tenantBuyerAlias = _database.alias(_database.users, 'tenant_buyer');
+
     final query = _database.select(_database.contracts).join([
       innerJoin(
         _database.properties,
         _database.properties.id.equalsExp(_database.contracts.propertyId),
       ),
-      innerJoin(
-        _database.users,
-        _database.users.id.equalsExp(_database.contracts.ownerId),
-        useColumns: false,
+      leftOuterJoin(
+        ownerAlias,
+        ownerAlias.id.equalsExp(_database.contracts.ownerId),
       ),
-      // We might need to join users table twice for owner and tenant/buyer,
-      // but Drift's simple join might be tricky with same table twice without aliases.
-      // For now, let's just get the contract and property.
-      // To properly handle multiple joins on same table, we'd need aliases which Drift supports via `alias`.
+      leftOuterJoin(
+        tenantBuyerAlias,
+        tenantBuyerAlias.id.equalsExp(_database.contracts.tenantBuyerId),
+      ),
     ]);
 
     if (type != null) {
@@ -69,7 +72,8 @@ class ContractsRepository {
         return ContractWithDetails(
           contract: row.readTable(_database.contracts),
           property: row.readTable(_database.properties),
-          // owner: row.readTable(_database.users), // This would be ambiguous without aliases
+          owner: row.readTableOrNull(ownerAlias),
+          tenantBuyer: row.readTableOrNull(tenantBuyerAlias),
         );
       }).toList();
     });
@@ -79,9 +83,13 @@ class ContractsRepository {
 class ContractWithDetails {
   final Contract contract;
   final Property property;
+  final User? owner;
+  final User? tenantBuyer;
 
   ContractWithDetails({
     required this.contract,
     required this.property,
+    this.owner,
+    this.tenantBuyer,
   });
 }

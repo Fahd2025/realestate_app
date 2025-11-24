@@ -300,5 +300,212 @@ class AppDatabase extends _$AppDatabase {
             ));
       });
     }
+
+    // Add more sample data if contracts are few (e.g. only the initial one)
+    final contractCount =
+        await (select(contracts).get()).then((list) => list.length);
+
+    if (contractCount < 5) {
+      const uuid = Uuid();
+      final now = DateTime.now();
+      final passwordHash = sha256.convert(utf8.encode('123')).toString();
+
+      // Fetch existing users to link data or create new ones if needed
+      // For simplicity, let's create a new set of users to ensure we have valid IDs
+      final owner2Id = uuid.v4();
+      final tenant2Id = uuid.v4();
+      final buyer2Id = uuid.v4();
+
+      await batch((batch) {
+        // Owner 2
+        batch.insert(
+            users,
+            UsersCompanion.insert(
+              id: owner2Id,
+              username: 'owner2',
+              passwordHash: passwordHash,
+              email: 'owner2@realestate.com',
+              fullName: 'Sarah Owner',
+              phone: const Value('+1234567894'),
+              role: 'owner',
+              address: const Value('456 Second St, City'),
+              createdAt: now,
+              updatedAt: now,
+            ));
+
+        // Tenant 2
+        batch.insert(
+            users,
+            UsersCompanion.insert(
+              id: tenant2Id,
+              username: 'tenant2',
+              passwordHash: passwordHash,
+              email: 'tenant2@realestate.com',
+              fullName: 'Mike Tenant',
+              phone: const Value('+1234567895'),
+              role: 'tenant',
+              createdAt: now,
+              updatedAt: now,
+            ));
+
+        // Buyer 2
+        batch.insert(
+            users,
+            UsersCompanion.insert(
+              id: buyer2Id,
+              username: 'buyer2',
+              passwordHash: passwordHash,
+              email: 'buyer2@realestate.com',
+              fullName: 'Alice Buyer',
+              phone: const Value('+1234567896'),
+              role: 'buyer',
+              createdAt: now,
+              updatedAt: now,
+            ));
+      });
+
+      // Create more properties
+      final prop4Id = uuid.v4();
+      final prop5Id = uuid.v4();
+      final prop6Id = uuid.v4();
+      final prop7Id = uuid.v4();
+
+      await batch((batch) {
+        batch.insert(
+            properties,
+            PropertiesCompanion.insert(
+              id: prop4Id,
+              ownerId: owner2Id,
+              title: 'Suburban Family Home',
+              description: const Value('Great for families, near schools'),
+              propertyType: 'house',
+              listingType: 'sale',
+              price: 450000.0,
+              area: 200.0,
+              bedrooms: const Value(4),
+              bathrooms: const Value(3),
+              address: '101 Maple Dr',
+              city: 'Suburbia',
+              country: 'USA',
+              createdAt: now,
+              updatedAt: now,
+            ));
+
+        batch.insert(
+            properties,
+            PropertiesCompanion.insert(
+              id: prop5Id,
+              ownerId: owner2Id,
+              title: 'City Center Loft',
+              description: const Value('Modern loft with city views'),
+              propertyType: 'apartment',
+              listingType: 'rent',
+              price: 1800.0,
+              area: 80.0,
+              bedrooms: const Value(1),
+              bathrooms: const Value(1),
+              address: '202 High St',
+              city: 'Metropolis',
+              country: 'USA',
+              createdAt: now,
+              updatedAt: now,
+            ));
+
+        batch.insert(
+            properties,
+            PropertiesCompanion.insert(
+              id: prop6Id,
+              ownerId: owner2Id, // Using owner2 for variety
+              title: 'Commercial Space',
+              description: const Value('Prime location for retail'),
+              propertyType: 'commercial',
+              listingType: 'rent',
+              price: 5000.0,
+              area: 150.0,
+              address: '303 Market St',
+              city: 'Metropolis',
+              country: 'USA',
+              createdAt: now,
+              updatedAt: now,
+            ));
+
+        batch.insert(
+            properties,
+            PropertiesCompanion.insert(
+              id: prop7Id,
+              ownerId: owner2Id,
+              title: 'Seaside Villa',
+              description: const Value('Luxury villa with ocean view'),
+              propertyType: 'villa',
+              listingType: 'sale',
+              price: 1200000.0,
+              area: 400.0,
+              bedrooms: const Value(6),
+              bathrooms: const Value(5),
+              address: '404 Ocean Blvd',
+              city: 'Beach City',
+              country: 'USA',
+              createdAt: now,
+              updatedAt: now,
+            ));
+      });
+
+      // Create more contracts
+      await batch((batch) {
+        // Contract 2: Lease for prop5 (Loft)
+        batch.insert(
+            contracts,
+            ContractsCompanion.insert(
+              id: uuid.v4(),
+              propertyId: prop5Id,
+              ownerId: owner2Id,
+              tenantBuyerId: tenant2Id,
+              contractType: 'lease',
+              startDate: now,
+              endDate: Value(now.add(const Duration(days: 365))),
+              monthlyRent: const Value(1800.0),
+              depositAmount: const Value(3600.0),
+              terms: const Value('Standard lease'),
+              createdAt: now,
+              updatedAt: now,
+            ));
+
+        // Contract 3: Purchase for prop4 (Family Home)
+        batch.insert(
+            contracts,
+            ContractsCompanion.insert(
+              id: uuid.v4(),
+              propertyId: prop4Id,
+              ownerId: owner2Id,
+              tenantBuyerId: buyer2Id,
+              contractType: 'purchase',
+              startDate: now,
+              salePrice: const Value(450000.0),
+              depositAmount: const Value(45000.0),
+              terms: const Value('Cash purchase'),
+              status: const Value('completed'),
+              createdAt: now,
+              updatedAt: now,
+            ));
+
+        // Contract 4: Lease for prop6 (Commercial)
+        batch.insert(
+            contracts,
+            ContractsCompanion.insert(
+              id: uuid.v4(),
+              propertyId: prop6Id,
+              ownerId: owner2Id,
+              tenantBuyerId: tenant2Id,
+              contractType: 'lease',
+              startDate: now,
+              endDate: Value(now.add(const Duration(days: 730))),
+              monthlyRent: const Value(5000.0),
+              depositAmount: const Value(10000.0),
+              terms: const Value('Commercial lease 2 years'),
+              createdAt: now,
+              updatedAt: now,
+            ));
+      });
+    }
   }
 }
