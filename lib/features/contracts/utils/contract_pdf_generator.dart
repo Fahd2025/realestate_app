@@ -10,65 +10,145 @@ class ContractPdfGenerator {
       Contract contract, AppLocalizations l10n) async {
     final pdf = pw.Document();
 
-    // Load NotoSansArabic font from assets
-    final fontData =
+    // Load Arabic fonts from assets
+    final arabicFontData =
         await rootBundle.load('assets/fonts/NotoSansArabic-Regular.ttf');
-    final font = pw.Font.ttf(fontData);
+    final arabicFont = pw.Font.ttf(arabicFontData);
+
+    // Determine if the current locale is Arabic
+    final isArabic = l10n.localeName == 'ar';
 
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
-        theme: pw.ThemeData.withFont(base: font),
+        textDirection: isArabic ? pw.TextDirection.rtl : pw.TextDirection.ltr,
+        theme: pw.ThemeData.withFont(base: arabicFont),
         build: (pw.Context context) {
-          return pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              pw.Header(
-                level: 0,
-                child: pw.Text(l10n.contractDetails,
+          return pw.Directionality(
+            textDirection:
+                isArabic ? pw.TextDirection.rtl : pw.TextDirection.ltr,
+            child: pw.Column(
+              crossAxisAlignment: isArabic
+                  ? pw.CrossAxisAlignment.end
+                  : pw.CrossAxisAlignment.start,
+              children: [
+                pw.Header(
+                  level: 0,
+                  child: pw.Text(
+                    l10n.contractDetails,
                     style: pw.TextStyle(
-                        fontSize: 24, fontWeight: pw.FontWeight.bold)),
-              ),
-              pw.SizedBox(height: 20),
-              pw.Text('${l10n.contractId}: ${contract.id}'),
-              pw.Text(
-                  '${l10n.date}: ${contract.createdAt.toString().split(' ')[0]}'),
-              pw.SizedBox(height: 20),
-              pw.Text('${l10n.propertyId}: ${contract.propertyId}'),
-              pw.Text('${l10n.ownerId}: ${contract.ownerId}'),
-              pw.Text(
-                  '${contract.contractType == 'lease' ? l10n.tenantId : l10n.buyerId}: ${contract.tenantBuyerId}'),
-              pw.SizedBox(height: 20),
-              pw.Text('${l10n.terms}:'),
-              pw.Text(contract.terms ?? 'N/A'),
-              pw.SizedBox(height: 20),
-              pw.Text('${l10n.description}:'),
-              pw.Text(contract.description ?? 'N/A'),
-              pw.SizedBox(height: 40),
-              pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                children: [
-                  pw.Column(
-                    children: [
-                      pw.Text(l10n.ownerSignature),
-                      pw.SizedBox(height: 50),
-                      pw.Container(
-                          height: 1, width: 100, color: PdfColors.black),
-                    ],
+                      fontSize: 24,
+                      fontWeight: pw.FontWeight.bold,
+                      font: arabicFont,
+                    ),
+                    textDirection:
+                        isArabic ? pw.TextDirection.rtl : pw.TextDirection.ltr,
                   ),
-                  pw.Column(
-                    children: [
-                      pw.Text(contract.contractType == 'lease'
-                          ? l10n.tenantSignature
-                          : l10n.buyerSignature),
-                      pw.SizedBox(height: 50),
-                      pw.Container(
-                          height: 1, width: 100, color: PdfColors.black),
-                    ],
-                  ),
-                ],
-              ),
-            ],
+                ),
+                pw.SizedBox(height: 20),
+                pw.Text(
+                  '${l10n.contractId}: ${contract.id}',
+                  style: pw.TextStyle(font: arabicFont),
+                  textDirection:
+                      isArabic ? pw.TextDirection.rtl : pw.TextDirection.ltr,
+                ),
+                pw.Text(
+                  '${l10n.date}: ${contract.createdAt.toString().split(' ')[0]}',
+                  style: pw.TextStyle(font: arabicFont),
+                  textDirection:
+                      isArabic ? pw.TextDirection.rtl : pw.TextDirection.ltr,
+                ),
+                pw.SizedBox(height: 20),
+                pw.Text(
+                  '${l10n.propertyId}: ${contract.propertyId}',
+                  style: pw.TextStyle(font: arabicFont),
+                  textDirection:
+                      isArabic ? pw.TextDirection.rtl : pw.TextDirection.ltr,
+                ),
+                pw.Text(
+                  '${l10n.ownerId}: ${contract.ownerId}',
+                  style: pw.TextStyle(font: arabicFont),
+                  textDirection:
+                      isArabic ? pw.TextDirection.rtl : pw.TextDirection.ltr,
+                ),
+                pw.Text(
+                  '${contract.contractType == 'lease' ? l10n.tenantId : l10n.buyerId}: ${contract.tenantBuyerId}',
+                  style: pw.TextStyle(font: arabicFont),
+                  textDirection:
+                      isArabic ? pw.TextDirection.rtl : pw.TextDirection.ltr,
+                ),
+                pw.SizedBox(height: 20),
+                pw.Text(
+                  '${l10n.terms}:',
+                  style: pw.TextStyle(
+                      font: arabicFont, fontWeight: pw.FontWeight.bold),
+                  textDirection:
+                      isArabic ? pw.TextDirection.rtl : pw.TextDirection.ltr,
+                ),
+                pw.Text(
+                  contract.terms ?? 'N/A',
+                  style: pw.TextStyle(font: arabicFont),
+                  textDirection:
+                      isArabic ? pw.TextDirection.rtl : pw.TextDirection.ltr,
+                ),
+                pw.SizedBox(height: 20),
+                pw.Text(
+                  '${l10n.description}:',
+                  style: pw.TextStyle(
+                      font: arabicFont, fontWeight: pw.FontWeight.bold),
+                  textDirection:
+                      isArabic ? pw.TextDirection.rtl : pw.TextDirection.ltr,
+                ),
+                pw.Text(
+                  contract.description ?? 'N/A',
+                  style: pw.TextStyle(font: arabicFont),
+                  textDirection:
+                      isArabic ? pw.TextDirection.rtl : pw.TextDirection.ltr,
+                ),
+                pw.SizedBox(height: 40),
+                pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Column(
+                      children: [
+                        pw.Text(
+                          l10n.ownerSignature,
+                          style: pw.TextStyle(font: arabicFont),
+                          textDirection: isArabic
+                              ? pw.TextDirection.rtl
+                              : pw.TextDirection.ltr,
+                        ),
+                        pw.SizedBox(height: 50),
+                        pw.Container(
+                          height: 1,
+                          width: 100,
+                          color: PdfColors.black,
+                        ),
+                      ],
+                    ),
+                    pw.Column(
+                      children: [
+                        pw.Text(
+                          contract.contractType == 'lease'
+                              ? l10n.tenantSignature
+                              : l10n.buyerSignature,
+                          style: pw.TextStyle(font: arabicFont),
+                          textDirection: isArabic
+                              ? pw.TextDirection.rtl
+                              : pw.TextDirection.ltr,
+                        ),
+                        pw.SizedBox(height: 50),
+                        pw.Container(
+                          height: 1,
+                          width: 100,
+                          color: PdfColors.black,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
           );
         },
       ),
