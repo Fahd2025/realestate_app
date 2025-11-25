@@ -4548,6 +4548,1038 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
   }
 }
 
+class $PropertyRequestsTable extends PropertyRequests
+    with TableInfo<$PropertyRequestsTable, PropertyRequest> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PropertyRequestsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _buyerIdMeta =
+      const VerificationMeta('buyerId');
+  @override
+  late final GeneratedColumn<String> buyerId = GeneratedColumn<String>(
+      'buyer_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES users (id)'));
+  static const VerificationMeta _propertyCategoryMeta =
+      const VerificationMeta('propertyCategory');
+  @override
+  late final GeneratedColumn<String> propertyCategory = GeneratedColumn<String>(
+      'property_category', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _propertyTypeMeta =
+      const VerificationMeta('propertyType');
+  @override
+  late final GeneratedColumn<String> propertyType = GeneratedColumn<String>(
+      'property_type', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _minPriceMeta =
+      const VerificationMeta('minPrice');
+  @override
+  late final GeneratedColumn<double> minPrice = GeneratedColumn<double>(
+      'min_price', aliasedName, true,
+      type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _maxPriceMeta =
+      const VerificationMeta('maxPrice');
+  @override
+  late final GeneratedColumn<double> maxPrice = GeneratedColumn<double>(
+      'max_price', aliasedName, true,
+      type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _locationMeta =
+      const VerificationMeta('location');
+  @override
+  late final GeneratedColumn<String> location = GeneratedColumn<String>(
+      'location', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _urgencyMeta =
+      const VerificationMeta('urgency');
+  @override
+  late final GeneratedColumn<String> urgency = GeneratedColumn<String>(
+      'urgency', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+      'status', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('pending'));
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _syncStatusMeta =
+      const VerificationMeta('syncStatus');
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+      'sync_status', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('synced'));
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        buyerId,
+        propertyCategory,
+        propertyType,
+        minPrice,
+        maxPrice,
+        location,
+        urgency,
+        status,
+        createdAt,
+        updatedAt,
+        syncStatus
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'property_requests';
+  @override
+  VerificationContext validateIntegrity(Insertable<PropertyRequest> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('buyer_id')) {
+      context.handle(_buyerIdMeta,
+          buyerId.isAcceptableOrUnknown(data['buyer_id']!, _buyerIdMeta));
+    } else if (isInserting) {
+      context.missing(_buyerIdMeta);
+    }
+    if (data.containsKey('property_category')) {
+      context.handle(
+          _propertyCategoryMeta,
+          propertyCategory.isAcceptableOrUnknown(
+              data['property_category']!, _propertyCategoryMeta));
+    } else if (isInserting) {
+      context.missing(_propertyCategoryMeta);
+    }
+    if (data.containsKey('property_type')) {
+      context.handle(
+          _propertyTypeMeta,
+          propertyType.isAcceptableOrUnknown(
+              data['property_type']!, _propertyTypeMeta));
+    }
+    if (data.containsKey('min_price')) {
+      context.handle(_minPriceMeta,
+          minPrice.isAcceptableOrUnknown(data['min_price']!, _minPriceMeta));
+    }
+    if (data.containsKey('max_price')) {
+      context.handle(_maxPriceMeta,
+          maxPrice.isAcceptableOrUnknown(data['max_price']!, _maxPriceMeta));
+    }
+    if (data.containsKey('location')) {
+      context.handle(_locationMeta,
+          location.isAcceptableOrUnknown(data['location']!, _locationMeta));
+    } else if (isInserting) {
+      context.missing(_locationMeta);
+    }
+    if (data.containsKey('urgency')) {
+      context.handle(_urgencyMeta,
+          urgency.isAcceptableOrUnknown(data['urgency']!, _urgencyMeta));
+    } else if (isInserting) {
+      context.missing(_urgencyMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(_statusMeta,
+          status.isAcceptableOrUnknown(data['status']!, _statusMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+          _syncStatusMeta,
+          syncStatus.isAcceptableOrUnknown(
+              data['sync_status']!, _syncStatusMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  PropertyRequest map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PropertyRequest(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      buyerId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}buyer_id'])!,
+      propertyCategory: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}property_category'])!,
+      propertyType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}property_type']),
+      minPrice: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}min_price']),
+      maxPrice: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}max_price']),
+      location: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}location'])!,
+      urgency: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}urgency'])!,
+      status: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}status'])!,
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
+      syncStatus: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sync_status'])!,
+    );
+  }
+
+  @override
+  $PropertyRequestsTable createAlias(String alias) {
+    return $PropertyRequestsTable(attachedDatabase, alias);
+  }
+}
+
+class PropertyRequest extends DataClass implements Insertable<PropertyRequest> {
+  final String id;
+  final String buyerId;
+  final String propertyCategory;
+  final String? propertyType;
+  final double? minPrice;
+  final double? maxPrice;
+  final String location;
+  final String urgency;
+  final String status;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final String syncStatus;
+  const PropertyRequest(
+      {required this.id,
+      required this.buyerId,
+      required this.propertyCategory,
+      this.propertyType,
+      this.minPrice,
+      this.maxPrice,
+      required this.location,
+      required this.urgency,
+      required this.status,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.syncStatus});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['buyer_id'] = Variable<String>(buyerId);
+    map['property_category'] = Variable<String>(propertyCategory);
+    if (!nullToAbsent || propertyType != null) {
+      map['property_type'] = Variable<String>(propertyType);
+    }
+    if (!nullToAbsent || minPrice != null) {
+      map['min_price'] = Variable<double>(minPrice);
+    }
+    if (!nullToAbsent || maxPrice != null) {
+      map['max_price'] = Variable<double>(maxPrice);
+    }
+    map['location'] = Variable<String>(location);
+    map['urgency'] = Variable<String>(urgency);
+    map['status'] = Variable<String>(status);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['sync_status'] = Variable<String>(syncStatus);
+    return map;
+  }
+
+  PropertyRequestsCompanion toCompanion(bool nullToAbsent) {
+    return PropertyRequestsCompanion(
+      id: Value(id),
+      buyerId: Value(buyerId),
+      propertyCategory: Value(propertyCategory),
+      propertyType: propertyType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(propertyType),
+      minPrice: minPrice == null && nullToAbsent
+          ? const Value.absent()
+          : Value(minPrice),
+      maxPrice: maxPrice == null && nullToAbsent
+          ? const Value.absent()
+          : Value(maxPrice),
+      location: Value(location),
+      urgency: Value(urgency),
+      status: Value(status),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      syncStatus: Value(syncStatus),
+    );
+  }
+
+  factory PropertyRequest.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PropertyRequest(
+      id: serializer.fromJson<String>(json['id']),
+      buyerId: serializer.fromJson<String>(json['buyerId']),
+      propertyCategory: serializer.fromJson<String>(json['propertyCategory']),
+      propertyType: serializer.fromJson<String?>(json['propertyType']),
+      minPrice: serializer.fromJson<double?>(json['minPrice']),
+      maxPrice: serializer.fromJson<double?>(json['maxPrice']),
+      location: serializer.fromJson<String>(json['location']),
+      urgency: serializer.fromJson<String>(json['urgency']),
+      status: serializer.fromJson<String>(json['status']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'buyerId': serializer.toJson<String>(buyerId),
+      'propertyCategory': serializer.toJson<String>(propertyCategory),
+      'propertyType': serializer.toJson<String?>(propertyType),
+      'minPrice': serializer.toJson<double?>(minPrice),
+      'maxPrice': serializer.toJson<double?>(maxPrice),
+      'location': serializer.toJson<String>(location),
+      'urgency': serializer.toJson<String>(urgency),
+      'status': serializer.toJson<String>(status),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+    };
+  }
+
+  PropertyRequest copyWith(
+          {String? id,
+          String? buyerId,
+          String? propertyCategory,
+          Value<String?> propertyType = const Value.absent(),
+          Value<double?> minPrice = const Value.absent(),
+          Value<double?> maxPrice = const Value.absent(),
+          String? location,
+          String? urgency,
+          String? status,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          String? syncStatus}) =>
+      PropertyRequest(
+        id: id ?? this.id,
+        buyerId: buyerId ?? this.buyerId,
+        propertyCategory: propertyCategory ?? this.propertyCategory,
+        propertyType:
+            propertyType.present ? propertyType.value : this.propertyType,
+        minPrice: minPrice.present ? minPrice.value : this.minPrice,
+        maxPrice: maxPrice.present ? maxPrice.value : this.maxPrice,
+        location: location ?? this.location,
+        urgency: urgency ?? this.urgency,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        syncStatus: syncStatus ?? this.syncStatus,
+      );
+  PropertyRequest copyWithCompanion(PropertyRequestsCompanion data) {
+    return PropertyRequest(
+      id: data.id.present ? data.id.value : this.id,
+      buyerId: data.buyerId.present ? data.buyerId.value : this.buyerId,
+      propertyCategory: data.propertyCategory.present
+          ? data.propertyCategory.value
+          : this.propertyCategory,
+      propertyType: data.propertyType.present
+          ? data.propertyType.value
+          : this.propertyType,
+      minPrice: data.minPrice.present ? data.minPrice.value : this.minPrice,
+      maxPrice: data.maxPrice.present ? data.maxPrice.value : this.maxPrice,
+      location: data.location.present ? data.location.value : this.location,
+      urgency: data.urgency.present ? data.urgency.value : this.urgency,
+      status: data.status.present ? data.status.value : this.status,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      syncStatus:
+          data.syncStatus.present ? data.syncStatus.value : this.syncStatus,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PropertyRequest(')
+          ..write('id: $id, ')
+          ..write('buyerId: $buyerId, ')
+          ..write('propertyCategory: $propertyCategory, ')
+          ..write('propertyType: $propertyType, ')
+          ..write('minPrice: $minPrice, ')
+          ..write('maxPrice: $maxPrice, ')
+          ..write('location: $location, ')
+          ..write('urgency: $urgency, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id,
+      buyerId,
+      propertyCategory,
+      propertyType,
+      minPrice,
+      maxPrice,
+      location,
+      urgency,
+      status,
+      createdAt,
+      updatedAt,
+      syncStatus);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PropertyRequest &&
+          other.id == this.id &&
+          other.buyerId == this.buyerId &&
+          other.propertyCategory == this.propertyCategory &&
+          other.propertyType == this.propertyType &&
+          other.minPrice == this.minPrice &&
+          other.maxPrice == this.maxPrice &&
+          other.location == this.location &&
+          other.urgency == this.urgency &&
+          other.status == this.status &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.syncStatus == this.syncStatus);
+}
+
+class PropertyRequestsCompanion extends UpdateCompanion<PropertyRequest> {
+  final Value<String> id;
+  final Value<String> buyerId;
+  final Value<String> propertyCategory;
+  final Value<String?> propertyType;
+  final Value<double?> minPrice;
+  final Value<double?> maxPrice;
+  final Value<String> location;
+  final Value<String> urgency;
+  final Value<String> status;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> syncStatus;
+  final Value<int> rowid;
+  const PropertyRequestsCompanion({
+    this.id = const Value.absent(),
+    this.buyerId = const Value.absent(),
+    this.propertyCategory = const Value.absent(),
+    this.propertyType = const Value.absent(),
+    this.minPrice = const Value.absent(),
+    this.maxPrice = const Value.absent(),
+    this.location = const Value.absent(),
+    this.urgency = const Value.absent(),
+    this.status = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  PropertyRequestsCompanion.insert({
+    required String id,
+    required String buyerId,
+    required String propertyCategory,
+    this.propertyType = const Value.absent(),
+    this.minPrice = const Value.absent(),
+    this.maxPrice = const Value.absent(),
+    required String location,
+    required String urgency,
+    this.status = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.syncStatus = const Value.absent(),
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        buyerId = Value(buyerId),
+        propertyCategory = Value(propertyCategory),
+        location = Value(location),
+        urgency = Value(urgency),
+        createdAt = Value(createdAt),
+        updatedAt = Value(updatedAt);
+  static Insertable<PropertyRequest> custom({
+    Expression<String>? id,
+    Expression<String>? buyerId,
+    Expression<String>? propertyCategory,
+    Expression<String>? propertyType,
+    Expression<double>? minPrice,
+    Expression<double>? maxPrice,
+    Expression<String>? location,
+    Expression<String>? urgency,
+    Expression<String>? status,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? syncStatus,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (buyerId != null) 'buyer_id': buyerId,
+      if (propertyCategory != null) 'property_category': propertyCategory,
+      if (propertyType != null) 'property_type': propertyType,
+      if (minPrice != null) 'min_price': minPrice,
+      if (maxPrice != null) 'max_price': maxPrice,
+      if (location != null) 'location': location,
+      if (urgency != null) 'urgency': urgency,
+      if (status != null) 'status': status,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  PropertyRequestsCompanion copyWith(
+      {Value<String>? id,
+      Value<String>? buyerId,
+      Value<String>? propertyCategory,
+      Value<String?>? propertyType,
+      Value<double?>? minPrice,
+      Value<double?>? maxPrice,
+      Value<String>? location,
+      Value<String>? urgency,
+      Value<String>? status,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt,
+      Value<String>? syncStatus,
+      Value<int>? rowid}) {
+    return PropertyRequestsCompanion(
+      id: id ?? this.id,
+      buyerId: buyerId ?? this.buyerId,
+      propertyCategory: propertyCategory ?? this.propertyCategory,
+      propertyType: propertyType ?? this.propertyType,
+      minPrice: minPrice ?? this.minPrice,
+      maxPrice: maxPrice ?? this.maxPrice,
+      location: location ?? this.location,
+      urgency: urgency ?? this.urgency,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (buyerId.present) {
+      map['buyer_id'] = Variable<String>(buyerId.value);
+    }
+    if (propertyCategory.present) {
+      map['property_category'] = Variable<String>(propertyCategory.value);
+    }
+    if (propertyType.present) {
+      map['property_type'] = Variable<String>(propertyType.value);
+    }
+    if (minPrice.present) {
+      map['min_price'] = Variable<double>(minPrice.value);
+    }
+    if (maxPrice.present) {
+      map['max_price'] = Variable<double>(maxPrice.value);
+    }
+    if (location.present) {
+      map['location'] = Variable<String>(location.value);
+    }
+    if (urgency.present) {
+      map['urgency'] = Variable<String>(urgency.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PropertyRequestsCompanion(')
+          ..write('id: $id, ')
+          ..write('buyerId: $buyerId, ')
+          ..write('propertyCategory: $propertyCategory, ')
+          ..write('propertyType: $propertyType, ')
+          ..write('minPrice: $minPrice, ')
+          ..write('maxPrice: $maxPrice, ')
+          ..write('location: $location, ')
+          ..write('urgency: $urgency, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $NotificationsTable extends Notifications
+    with TableInfo<$NotificationsTable, Notification> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $NotificationsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+      'user_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES users (id)'));
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+      'title', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _messageMeta =
+      const VerificationMeta('message');
+  @override
+  late final GeneratedColumn<String> message = GeneratedColumn<String>(
+      'message', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _isReadMeta = const VerificationMeta('isRead');
+  @override
+  late final GeneratedColumn<bool> isRead = GeneratedColumn<bool>(
+      'is_read', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("is_read" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _relatedIdMeta =
+      const VerificationMeta('relatedId');
+  @override
+  late final GeneratedColumn<String> relatedId = GeneratedColumn<String>(
+      'related_id', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _syncStatusMeta =
+      const VerificationMeta('syncStatus');
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+      'sync_status', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('synced'));
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, userId, title, message, isRead, relatedId, createdAt, syncStatus];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'notifications';
+  @override
+  VerificationContext validateIntegrity(Insertable<Notification> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+          _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('message')) {
+      context.handle(_messageMeta,
+          message.isAcceptableOrUnknown(data['message']!, _messageMeta));
+    } else if (isInserting) {
+      context.missing(_messageMeta);
+    }
+    if (data.containsKey('is_read')) {
+      context.handle(_isReadMeta,
+          isRead.isAcceptableOrUnknown(data['is_read']!, _isReadMeta));
+    }
+    if (data.containsKey('related_id')) {
+      context.handle(_relatedIdMeta,
+          relatedId.isAcceptableOrUnknown(data['related_id']!, _relatedIdMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+          _syncStatusMeta,
+          syncStatus.isAcceptableOrUnknown(
+              data['sync_status']!, _syncStatusMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Notification map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Notification(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      userId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}user_id'])!,
+      title: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
+      message: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}message'])!,
+      isRead: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_read'])!,
+      relatedId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}related_id']),
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      syncStatus: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sync_status'])!,
+    );
+  }
+
+  @override
+  $NotificationsTable createAlias(String alias) {
+    return $NotificationsTable(attachedDatabase, alias);
+  }
+}
+
+class Notification extends DataClass implements Insertable<Notification> {
+  final String id;
+  final String userId;
+  final String title;
+  final String message;
+  final bool isRead;
+  final String? relatedId;
+  final DateTime createdAt;
+  final String syncStatus;
+  const Notification(
+      {required this.id,
+      required this.userId,
+      required this.title,
+      required this.message,
+      required this.isRead,
+      this.relatedId,
+      required this.createdAt,
+      required this.syncStatus});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['title'] = Variable<String>(title);
+    map['message'] = Variable<String>(message);
+    map['is_read'] = Variable<bool>(isRead);
+    if (!nullToAbsent || relatedId != null) {
+      map['related_id'] = Variable<String>(relatedId);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['sync_status'] = Variable<String>(syncStatus);
+    return map;
+  }
+
+  NotificationsCompanion toCompanion(bool nullToAbsent) {
+    return NotificationsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      title: Value(title),
+      message: Value(message),
+      isRead: Value(isRead),
+      relatedId: relatedId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(relatedId),
+      createdAt: Value(createdAt),
+      syncStatus: Value(syncStatus),
+    );
+  }
+
+  factory Notification.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Notification(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      title: serializer.fromJson<String>(json['title']),
+      message: serializer.fromJson<String>(json['message']),
+      isRead: serializer.fromJson<bool>(json['isRead']),
+      relatedId: serializer.fromJson<String?>(json['relatedId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'title': serializer.toJson<String>(title),
+      'message': serializer.toJson<String>(message),
+      'isRead': serializer.toJson<bool>(isRead),
+      'relatedId': serializer.toJson<String?>(relatedId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+    };
+  }
+
+  Notification copyWith(
+          {String? id,
+          String? userId,
+          String? title,
+          String? message,
+          bool? isRead,
+          Value<String?> relatedId = const Value.absent(),
+          DateTime? createdAt,
+          String? syncStatus}) =>
+      Notification(
+        id: id ?? this.id,
+        userId: userId ?? this.userId,
+        title: title ?? this.title,
+        message: message ?? this.message,
+        isRead: isRead ?? this.isRead,
+        relatedId: relatedId.present ? relatedId.value : this.relatedId,
+        createdAt: createdAt ?? this.createdAt,
+        syncStatus: syncStatus ?? this.syncStatus,
+      );
+  Notification copyWithCompanion(NotificationsCompanion data) {
+    return Notification(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      title: data.title.present ? data.title.value : this.title,
+      message: data.message.present ? data.message.value : this.message,
+      isRead: data.isRead.present ? data.isRead.value : this.isRead,
+      relatedId: data.relatedId.present ? data.relatedId.value : this.relatedId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      syncStatus:
+          data.syncStatus.present ? data.syncStatus.value : this.syncStatus,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Notification(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('title: $title, ')
+          ..write('message: $message, ')
+          ..write('isRead: $isRead, ')
+          ..write('relatedId: $relatedId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('syncStatus: $syncStatus')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id, userId, title, message, isRead, relatedId, createdAt, syncStatus);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Notification &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.title == this.title &&
+          other.message == this.message &&
+          other.isRead == this.isRead &&
+          other.relatedId == this.relatedId &&
+          other.createdAt == this.createdAt &&
+          other.syncStatus == this.syncStatus);
+}
+
+class NotificationsCompanion extends UpdateCompanion<Notification> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<String> title;
+  final Value<String> message;
+  final Value<bool> isRead;
+  final Value<String?> relatedId;
+  final Value<DateTime> createdAt;
+  final Value<String> syncStatus;
+  final Value<int> rowid;
+  const NotificationsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.title = const Value.absent(),
+    this.message = const Value.absent(),
+    this.isRead = const Value.absent(),
+    this.relatedId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  NotificationsCompanion.insert({
+    required String id,
+    required String userId,
+    required String title,
+    required String message,
+    this.isRead = const Value.absent(),
+    this.relatedId = const Value.absent(),
+    required DateTime createdAt,
+    this.syncStatus = const Value.absent(),
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        userId = Value(userId),
+        title = Value(title),
+        message = Value(message),
+        createdAt = Value(createdAt);
+  static Insertable<Notification> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<String>? title,
+    Expression<String>? message,
+    Expression<bool>? isRead,
+    Expression<String>? relatedId,
+    Expression<DateTime>? createdAt,
+    Expression<String>? syncStatus,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (title != null) 'title': title,
+      if (message != null) 'message': message,
+      if (isRead != null) 'is_read': isRead,
+      if (relatedId != null) 'related_id': relatedId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  NotificationsCompanion copyWith(
+      {Value<String>? id,
+      Value<String>? userId,
+      Value<String>? title,
+      Value<String>? message,
+      Value<bool>? isRead,
+      Value<String?>? relatedId,
+      Value<DateTime>? createdAt,
+      Value<String>? syncStatus,
+      Value<int>? rowid}) {
+    return NotificationsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      title: title ?? this.title,
+      message: message ?? this.message,
+      isRead: isRead ?? this.isRead,
+      relatedId: relatedId ?? this.relatedId,
+      createdAt: createdAt ?? this.createdAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (message.present) {
+      map['message'] = Variable<String>(message.value);
+    }
+    if (isRead.present) {
+      map['is_read'] = Variable<bool>(isRead.value);
+    }
+    if (relatedId.present) {
+      map['related_id'] = Variable<String>(relatedId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NotificationsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('title: $title, ')
+          ..write('message: $message, ')
+          ..write('isRead: $isRead, ')
+          ..write('relatedId: $relatedId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -4559,6 +5591,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $PurchaseRequestsTable purchaseRequests =
       $PurchaseRequestsTable(this);
   late final $SettingsTable settings = $SettingsTable(this);
+  late final $PropertyRequestsTable propertyRequests =
+      $PropertyRequestsTable(this);
+  late final $NotificationsTable notifications = $NotificationsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -4570,7 +5605,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         contracts,
         payments,
         purchaseRequests,
-        settings
+        settings,
+        propertyRequests,
+        notifications
       ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules(
@@ -4668,6 +5705,38 @@ final class $$UsersTableReferences
 
     final cache =
         $_typedResult.readTableOrNull(_purchaseRequestsRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$PropertyRequestsTable, List<PropertyRequest>>
+      _propertyRequestsRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.propertyRequests,
+              aliasName: $_aliasNameGenerator(
+                  db.users.id, db.propertyRequests.buyerId));
+
+  $$PropertyRequestsTableProcessedTableManager get propertyRequestsRefs {
+    final manager =
+        $$PropertyRequestsTableTableManager($_db, $_db.propertyRequests)
+            .filter((f) => f.buyerId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache =
+        $_typedResult.readTableOrNull(_propertyRequestsRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$NotificationsTable, List<Notification>>
+      _notificationsRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.notifications,
+              aliasName:
+                  $_aliasNameGenerator(db.users.id, db.notifications.userId));
+
+  $$NotificationsTableProcessedTableManager get notificationsRefs {
+    final manager = $$NotificationsTableTableManager($_db, $_db.notifications)
+        .filter((f) => f.userId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_notificationsRefsTable($_db));
     return ProcessedTableManager(
         manager.$state.copyWith(prefetchedData: cache));
   }
@@ -4781,6 +5850,48 @@ class $$UsersTableFilterComposer extends Composer<_$AppDatabase, $UsersTable> {
             $$PurchaseRequestsTableFilterComposer(
               $db: $db,
               $table: $db.purchaseRequests,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+
+  Expression<bool> propertyRequestsRefs(
+      Expression<bool> Function($$PropertyRequestsTableFilterComposer f) f) {
+    final $$PropertyRequestsTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.propertyRequests,
+        getReferencedColumn: (t) => t.buyerId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$PropertyRequestsTableFilterComposer(
+              $db: $db,
+              $table: $db.propertyRequests,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+
+  Expression<bool> notificationsRefs(
+      Expression<bool> Function($$NotificationsTableFilterComposer f) f) {
+    final $$NotificationsTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.notifications,
+        getReferencedColumn: (t) => t.userId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$NotificationsTableFilterComposer(
+              $db: $db,
+              $table: $db.notifications,
               $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
               joinBuilder: joinBuilder,
               $removeJoinBuilderFromRootComposer:
@@ -4962,6 +6073,48 @@ class $$UsersTableAnnotationComposer
             ));
     return f(composer);
   }
+
+  Expression<T> propertyRequestsRefs<T extends Object>(
+      Expression<T> Function($$PropertyRequestsTableAnnotationComposer a) f) {
+    final $$PropertyRequestsTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.propertyRequests,
+        getReferencedColumn: (t) => t.buyerId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$PropertyRequestsTableAnnotationComposer(
+              $db: $db,
+              $table: $db.propertyRequests,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+
+  Expression<T> notificationsRefs<T extends Object>(
+      Expression<T> Function($$NotificationsTableAnnotationComposer a) f) {
+    final $$NotificationsTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.notifications,
+        getReferencedColumn: (t) => t.userId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$NotificationsTableAnnotationComposer(
+              $db: $db,
+              $table: $db.notifications,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
 }
 
 class $$UsersTableTableManager extends RootTableManager<
@@ -4976,7 +6129,11 @@ class $$UsersTableTableManager extends RootTableManager<
     (User, $$UsersTableReferences),
     User,
     PrefetchHooks Function(
-        {bool propertiesRefs, bool paymentsRefs, bool purchaseRequestsRefs})> {
+        {bool propertiesRefs,
+        bool paymentsRefs,
+        bool purchaseRequestsRefs,
+        bool propertyRequestsRefs,
+        bool notificationsRefs})> {
   $$UsersTableTableManager(_$AppDatabase db, $UsersTable table)
       : super(TableManagerState(
           db: db,
@@ -5066,13 +6223,17 @@ class $$UsersTableTableManager extends RootTableManager<
           prefetchHooksCallback: (
               {propertiesRefs = false,
               paymentsRefs = false,
-              purchaseRequestsRefs = false}) {
+              purchaseRequestsRefs = false,
+              propertyRequestsRefs = false,
+              notificationsRefs = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [
                 if (propertiesRefs) db.properties,
                 if (paymentsRefs) db.payments,
-                if (purchaseRequestsRefs) db.purchaseRequests
+                if (purchaseRequestsRefs) db.purchaseRequests,
+                if (propertyRequestsRefs) db.propertyRequests,
+                if (notificationsRefs) db.notifications
               ],
               addJoins: null,
               getPrefetchedDataCallback: (items) async {
@@ -5112,6 +6273,31 @@ class $$UsersTableTableManager extends RootTableManager<
                         referencedItemsForCurrentItem: (item,
                                 referencedItems) =>
                             referencedItems.where((e) => e.buyerId == item.id),
+                        typedResults: items),
+                  if (propertyRequestsRefs)
+                    await $_getPrefetchedData<User, $UsersTable,
+                            PropertyRequest>(
+                        currentTable: table,
+                        referencedTable: $$UsersTableReferences
+                            ._propertyRequestsRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$UsersTableReferences(db, table, p0)
+                                .propertyRequestsRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.buyerId == item.id),
+                        typedResults: items),
+                  if (notificationsRefs)
+                    await $_getPrefetchedData<User, $UsersTable, Notification>(
+                        currentTable: table,
+                        referencedTable:
+                            $$UsersTableReferences._notificationsRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$UsersTableReferences(db, table, p0)
+                                .notificationsRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.userId == item.id),
                         typedResults: items)
                 ];
               },
@@ -5132,7 +6318,11 @@ typedef $$UsersTableProcessedTableManager = ProcessedTableManager<
     (User, $$UsersTableReferences),
     User,
     PrefetchHooks Function(
-        {bool propertiesRefs, bool paymentsRefs, bool purchaseRequestsRefs})>;
+        {bool propertiesRefs,
+        bool paymentsRefs,
+        bool purchaseRequestsRefs,
+        bool propertyRequestsRefs,
+        bool notificationsRefs})>;
 typedef $$PropertiesTableCreateCompanionBuilder = PropertiesCompanion Function({
   required String id,
   required String ownerId,
@@ -7987,6 +9177,710 @@ typedef $$SettingsTableProcessedTableManager = ProcessedTableManager<
     (Setting, BaseReferences<_$AppDatabase, $SettingsTable, Setting>),
     Setting,
     PrefetchHooks Function()>;
+typedef $$PropertyRequestsTableCreateCompanionBuilder
+    = PropertyRequestsCompanion Function({
+  required String id,
+  required String buyerId,
+  required String propertyCategory,
+  Value<String?> propertyType,
+  Value<double?> minPrice,
+  Value<double?> maxPrice,
+  required String location,
+  required String urgency,
+  Value<String> status,
+  required DateTime createdAt,
+  required DateTime updatedAt,
+  Value<String> syncStatus,
+  Value<int> rowid,
+});
+typedef $$PropertyRequestsTableUpdateCompanionBuilder
+    = PropertyRequestsCompanion Function({
+  Value<String> id,
+  Value<String> buyerId,
+  Value<String> propertyCategory,
+  Value<String?> propertyType,
+  Value<double?> minPrice,
+  Value<double?> maxPrice,
+  Value<String> location,
+  Value<String> urgency,
+  Value<String> status,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+  Value<String> syncStatus,
+  Value<int> rowid,
+});
+
+final class $$PropertyRequestsTableReferences extends BaseReferences<
+    _$AppDatabase, $PropertyRequestsTable, PropertyRequest> {
+  $$PropertyRequestsTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static $UsersTable _buyerIdTable(_$AppDatabase db) => db.users.createAlias(
+      $_aliasNameGenerator(db.propertyRequests.buyerId, db.users.id));
+
+  $$UsersTableProcessedTableManager get buyerId {
+    final $_column = $_itemColumn<String>('buyer_id')!;
+
+    final manager = $$UsersTableTableManager($_db, $_db.users)
+        .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_buyerIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$PropertyRequestsTableFilterComposer
+    extends Composer<_$AppDatabase, $PropertyRequestsTable> {
+  $$PropertyRequestsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get propertyCategory => $composableBuilder(
+      column: $table.propertyCategory,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get propertyType => $composableBuilder(
+      column: $table.propertyType, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<double> get minPrice => $composableBuilder(
+      column: $table.minPrice, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<double> get maxPrice => $composableBuilder(
+      column: $table.maxPrice, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get location => $composableBuilder(
+      column: $table.location, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get urgency => $composableBuilder(
+      column: $table.urgency, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get status => $composableBuilder(
+      column: $table.status, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+      column: $table.syncStatus, builder: (column) => ColumnFilters(column));
+
+  $$UsersTableFilterComposer get buyerId {
+    final $$UsersTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.buyerId,
+        referencedTable: $db.users,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UsersTableFilterComposer(
+              $db: $db,
+              $table: $db.users,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$PropertyRequestsTableOrderingComposer
+    extends Composer<_$AppDatabase, $PropertyRequestsTable> {
+  $$PropertyRequestsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get propertyCategory => $composableBuilder(
+      column: $table.propertyCategory,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get propertyType => $composableBuilder(
+      column: $table.propertyType,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<double> get minPrice => $composableBuilder(
+      column: $table.minPrice, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<double> get maxPrice => $composableBuilder(
+      column: $table.maxPrice, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get location => $composableBuilder(
+      column: $table.location, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get urgency => $composableBuilder(
+      column: $table.urgency, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get status => $composableBuilder(
+      column: $table.status, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+      column: $table.syncStatus, builder: (column) => ColumnOrderings(column));
+
+  $$UsersTableOrderingComposer get buyerId {
+    final $$UsersTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.buyerId,
+        referencedTable: $db.users,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UsersTableOrderingComposer(
+              $db: $db,
+              $table: $db.users,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$PropertyRequestsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PropertyRequestsTable> {
+  $$PropertyRequestsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get propertyCategory => $composableBuilder(
+      column: $table.propertyCategory, builder: (column) => column);
+
+  GeneratedColumn<String> get propertyType => $composableBuilder(
+      column: $table.propertyType, builder: (column) => column);
+
+  GeneratedColumn<double> get minPrice =>
+      $composableBuilder(column: $table.minPrice, builder: (column) => column);
+
+  GeneratedColumn<double> get maxPrice =>
+      $composableBuilder(column: $table.maxPrice, builder: (column) => column);
+
+  GeneratedColumn<String> get location =>
+      $composableBuilder(column: $table.location, builder: (column) => column);
+
+  GeneratedColumn<String> get urgency =>
+      $composableBuilder(column: $table.urgency, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+      column: $table.syncStatus, builder: (column) => column);
+
+  $$UsersTableAnnotationComposer get buyerId {
+    final $$UsersTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.buyerId,
+        referencedTable: $db.users,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UsersTableAnnotationComposer(
+              $db: $db,
+              $table: $db.users,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$PropertyRequestsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $PropertyRequestsTable,
+    PropertyRequest,
+    $$PropertyRequestsTableFilterComposer,
+    $$PropertyRequestsTableOrderingComposer,
+    $$PropertyRequestsTableAnnotationComposer,
+    $$PropertyRequestsTableCreateCompanionBuilder,
+    $$PropertyRequestsTableUpdateCompanionBuilder,
+    (PropertyRequest, $$PropertyRequestsTableReferences),
+    PropertyRequest,
+    PrefetchHooks Function({bool buyerId})> {
+  $$PropertyRequestsTableTableManager(
+      _$AppDatabase db, $PropertyRequestsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PropertyRequestsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$PropertyRequestsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$PropertyRequestsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String> buyerId = const Value.absent(),
+            Value<String> propertyCategory = const Value.absent(),
+            Value<String?> propertyType = const Value.absent(),
+            Value<double?> minPrice = const Value.absent(),
+            Value<double?> maxPrice = const Value.absent(),
+            Value<String> location = const Value.absent(),
+            Value<String> urgency = const Value.absent(),
+            Value<String> status = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<DateTime> updatedAt = const Value.absent(),
+            Value<String> syncStatus = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              PropertyRequestsCompanion(
+            id: id,
+            buyerId: buyerId,
+            propertyCategory: propertyCategory,
+            propertyType: propertyType,
+            minPrice: minPrice,
+            maxPrice: maxPrice,
+            location: location,
+            urgency: urgency,
+            status: status,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            syncStatus: syncStatus,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            required String buyerId,
+            required String propertyCategory,
+            Value<String?> propertyType = const Value.absent(),
+            Value<double?> minPrice = const Value.absent(),
+            Value<double?> maxPrice = const Value.absent(),
+            required String location,
+            required String urgency,
+            Value<String> status = const Value.absent(),
+            required DateTime createdAt,
+            required DateTime updatedAt,
+            Value<String> syncStatus = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              PropertyRequestsCompanion.insert(
+            id: id,
+            buyerId: buyerId,
+            propertyCategory: propertyCategory,
+            propertyType: propertyType,
+            minPrice: minPrice,
+            maxPrice: maxPrice,
+            location: location,
+            urgency: urgency,
+            status: status,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            syncStatus: syncStatus,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$PropertyRequestsTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({buyerId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (buyerId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.buyerId,
+                    referencedTable:
+                        $$PropertyRequestsTableReferences._buyerIdTable(db),
+                    referencedColumn:
+                        $$PropertyRequestsTableReferences._buyerIdTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$PropertyRequestsTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $PropertyRequestsTable,
+    PropertyRequest,
+    $$PropertyRequestsTableFilterComposer,
+    $$PropertyRequestsTableOrderingComposer,
+    $$PropertyRequestsTableAnnotationComposer,
+    $$PropertyRequestsTableCreateCompanionBuilder,
+    $$PropertyRequestsTableUpdateCompanionBuilder,
+    (PropertyRequest, $$PropertyRequestsTableReferences),
+    PropertyRequest,
+    PrefetchHooks Function({bool buyerId})>;
+typedef $$NotificationsTableCreateCompanionBuilder = NotificationsCompanion
+    Function({
+  required String id,
+  required String userId,
+  required String title,
+  required String message,
+  Value<bool> isRead,
+  Value<String?> relatedId,
+  required DateTime createdAt,
+  Value<String> syncStatus,
+  Value<int> rowid,
+});
+typedef $$NotificationsTableUpdateCompanionBuilder = NotificationsCompanion
+    Function({
+  Value<String> id,
+  Value<String> userId,
+  Value<String> title,
+  Value<String> message,
+  Value<bool> isRead,
+  Value<String?> relatedId,
+  Value<DateTime> createdAt,
+  Value<String> syncStatus,
+  Value<int> rowid,
+});
+
+final class $$NotificationsTableReferences
+    extends BaseReferences<_$AppDatabase, $NotificationsTable, Notification> {
+  $$NotificationsTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static $UsersTable _userIdTable(_$AppDatabase db) => db.users
+      .createAlias($_aliasNameGenerator(db.notifications.userId, db.users.id));
+
+  $$UsersTableProcessedTableManager get userId {
+    final $_column = $_itemColumn<String>('user_id')!;
+
+    final manager = $$UsersTableTableManager($_db, $_db.users)
+        .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_userIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$NotificationsTableFilterComposer
+    extends Composer<_$AppDatabase, $NotificationsTable> {
+  $$NotificationsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get title => $composableBuilder(
+      column: $table.title, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get message => $composableBuilder(
+      column: $table.message, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isRead => $composableBuilder(
+      column: $table.isRead, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get relatedId => $composableBuilder(
+      column: $table.relatedId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+      column: $table.syncStatus, builder: (column) => ColumnFilters(column));
+
+  $$UsersTableFilterComposer get userId {
+    final $$UsersTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.userId,
+        referencedTable: $db.users,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UsersTableFilterComposer(
+              $db: $db,
+              $table: $db.users,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$NotificationsTableOrderingComposer
+    extends Composer<_$AppDatabase, $NotificationsTable> {
+  $$NotificationsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get title => $composableBuilder(
+      column: $table.title, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get message => $composableBuilder(
+      column: $table.message, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get isRead => $composableBuilder(
+      column: $table.isRead, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get relatedId => $composableBuilder(
+      column: $table.relatedId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+      column: $table.syncStatus, builder: (column) => ColumnOrderings(column));
+
+  $$UsersTableOrderingComposer get userId {
+    final $$UsersTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.userId,
+        referencedTable: $db.users,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UsersTableOrderingComposer(
+              $db: $db,
+              $table: $db.users,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$NotificationsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $NotificationsTable> {
+  $$NotificationsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<String> get message =>
+      $composableBuilder(column: $table.message, builder: (column) => column);
+
+  GeneratedColumn<bool> get isRead =>
+      $composableBuilder(column: $table.isRead, builder: (column) => column);
+
+  GeneratedColumn<String> get relatedId =>
+      $composableBuilder(column: $table.relatedId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+      column: $table.syncStatus, builder: (column) => column);
+
+  $$UsersTableAnnotationComposer get userId {
+    final $$UsersTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.userId,
+        referencedTable: $db.users,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UsersTableAnnotationComposer(
+              $db: $db,
+              $table: $db.users,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$NotificationsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $NotificationsTable,
+    Notification,
+    $$NotificationsTableFilterComposer,
+    $$NotificationsTableOrderingComposer,
+    $$NotificationsTableAnnotationComposer,
+    $$NotificationsTableCreateCompanionBuilder,
+    $$NotificationsTableUpdateCompanionBuilder,
+    (Notification, $$NotificationsTableReferences),
+    Notification,
+    PrefetchHooks Function({bool userId})> {
+  $$NotificationsTableTableManager(_$AppDatabase db, $NotificationsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$NotificationsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$NotificationsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$NotificationsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String> userId = const Value.absent(),
+            Value<String> title = const Value.absent(),
+            Value<String> message = const Value.absent(),
+            Value<bool> isRead = const Value.absent(),
+            Value<String?> relatedId = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<String> syncStatus = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              NotificationsCompanion(
+            id: id,
+            userId: userId,
+            title: title,
+            message: message,
+            isRead: isRead,
+            relatedId: relatedId,
+            createdAt: createdAt,
+            syncStatus: syncStatus,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            required String userId,
+            required String title,
+            required String message,
+            Value<bool> isRead = const Value.absent(),
+            Value<String?> relatedId = const Value.absent(),
+            required DateTime createdAt,
+            Value<String> syncStatus = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              NotificationsCompanion.insert(
+            id: id,
+            userId: userId,
+            title: title,
+            message: message,
+            isRead: isRead,
+            relatedId: relatedId,
+            createdAt: createdAt,
+            syncStatus: syncStatus,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$NotificationsTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({userId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (userId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.userId,
+                    referencedTable:
+                        $$NotificationsTableReferences._userIdTable(db),
+                    referencedColumn:
+                        $$NotificationsTableReferences._userIdTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$NotificationsTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $NotificationsTable,
+    Notification,
+    $$NotificationsTableFilterComposer,
+    $$NotificationsTableOrderingComposer,
+    $$NotificationsTableAnnotationComposer,
+    $$NotificationsTableCreateCompanionBuilder,
+    $$NotificationsTableUpdateCompanionBuilder,
+    (Notification, $$NotificationsTableReferences),
+    Notification,
+    PrefetchHooks Function({bool userId})>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -8005,4 +9899,8 @@ class $AppDatabaseManager {
       $$PurchaseRequestsTableTableManager(_db, _db.purchaseRequests);
   $$SettingsTableTableManager get settings =>
       $$SettingsTableTableManager(_db, _db.settings);
+  $$PropertyRequestsTableTableManager get propertyRequests =>
+      $$PropertyRequestsTableTableManager(_db, _db.propertyRequests);
+  $$NotificationsTableTableManager get notifications =>
+      $$NotificationsTableTableManager(_db, _db.notifications);
 }

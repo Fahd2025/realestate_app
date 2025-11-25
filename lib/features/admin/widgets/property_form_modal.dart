@@ -324,7 +324,7 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
 
                       // Property Category
                       DropdownButtonFormField<String>(
-                        value: _selectedCategory,
+                        initialValue: _selectedCategory,
                         decoration: InputDecoration(
                           labelText: l10n.category,
                           prefixIcon: const Icon(Icons.category),
@@ -355,7 +355,7 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
 
                       // Property Type
                       DropdownButtonFormField<String>(
-                        value: _selectedPropertyType,
+                        initialValue: _selectedPropertyType,
                         decoration: InputDecoration(
                           labelText: l10n.type,
                           prefixIcon: const Icon(Icons.home_work),
@@ -371,7 +371,7 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
 
                       // Listing Type
                       DropdownButtonFormField<String>(
-                        value: _selectedListingType,
+                        initialValue: _selectedListingType,
                         decoration: InputDecoration(
                           labelText: l10n.listingType,
                           prefixIcon: const Icon(Icons.sell),
@@ -502,7 +502,7 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
 
                       // Status
                       DropdownButtonFormField<String>(
-                        value: _selectedStatus,
+                        initialValue: _selectedStatus,
                         decoration: InputDecoration(
                           labelText: l10n.status,
                           prefixIcon: const Icon(Icons.info),

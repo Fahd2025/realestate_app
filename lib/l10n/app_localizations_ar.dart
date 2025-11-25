@@ -288,6 +288,78 @@ class AppLocalizationsAr extends AppLocalizations {
   String get negotiating => 'قيد التفاوض';
 
   @override
+  String get propertyRequest => 'طلب عقار';
+
+  @override
+  String get placeRequest => 'تقديم طلب';
+
+  @override
+  String get urgency => 'الاستعجال';
+
+  @override
+  String get sooner => 'في أقرب وقت';
+
+  @override
+  String get afterAWhile => 'بعد فترة';
+
+  @override
+  String get canWait => 'يمكن الانتظار';
+
+  @override
+  String get minPrice => 'الحد الأدنى للسعر';
+
+  @override
+  String get maxPrice => 'الحد الأقصى للسعر';
+
+  @override
+  String get preferredLocation => 'الموقع المفضل';
+
+  @override
+  String get requestStatus => 'حالة الطلب';
+
+  @override
+  String get buyerRequests => 'طلبات المشترين';
+
+  @override
+  String get notification => 'إشعار';
+
+  @override
+  String get notifications => 'الإشعارات';
+
+  @override
+  String get requestDetails => 'تفاصيل الطلب';
+
+  @override
+  String get changeStatus => 'تغيير الحالة';
+
+  @override
+  String get confirmed => 'مؤكد';
+
+  @override
+  String get markAsRead => 'وضع علامة كمقروء';
+
+  @override
+  String get noNotifications => 'لا توجد إشعارات';
+
+  @override
+  String get noRequests => 'لا توجد طلبات';
+
+  @override
+  String get requestSubmitted => 'تم تقديم الطلب بنجاح';
+
+  @override
+  String get statusUpdated => 'تم تحديث الحالة بنجاح';
+
+  @override
+  String get optional => 'اختياري';
+
+  @override
+  String get noBuyersFound => 'لا يوجد مشترون في النظام';
+
+  @override
+  String get location => 'الموقع';
+
+  @override
   String get theme => 'المظهر';
 
   @override

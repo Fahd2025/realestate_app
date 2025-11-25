@@ -17,6 +17,7 @@ class AppRoutes {
   static const String adminContracts = '/admin/contracts';
   static const String adminPayments = '/admin/payments';
   static const String adminPurchaseRequests = '/admin/purchase-requests';
+  static const String adminBuyerRequests = '/admin/buyer-requests';
 
   // Owner routes
   static const String ownerDashboard = '/owner/dashboard';

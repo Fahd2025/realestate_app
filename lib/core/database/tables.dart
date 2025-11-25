@@ -142,3 +142,37 @@ class Settings extends Table {
   @override
   Set<Column> get primaryKey => {key};
 }
+
+// Property Requests table
+class PropertyRequests extends Table {
+  TextColumn get id => text()();
+  TextColumn get buyerId => text().references(Users, #id)();
+  TextColumn get propertyCategory => text()(); // residential, commercial
+  TextColumn get propertyType => text().nullable()();
+  RealColumn get minPrice => real().nullable()();
+  RealColumn get maxPrice => real().nullable()();
+  TextColumn get location => text()();
+  TextColumn get urgency => text()(); // sooner, after_a_while, can_wait
+  TextColumn get status => text().withDefault(const Constant('pending'))();
+  DateTimeColumn get createdAt => dateTime()();
+  DateTimeColumn get updatedAt => dateTime()();
+  TextColumn get syncStatus => text().withDefault(const Constant('synced'))();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+// Notifications table
+class Notifications extends Table {
+  TextColumn get id => text()();
+  TextColumn get userId => text().references(Users, #id)();
+  TextColumn get title => text()();
+  TextColumn get message => text()();
+  BoolColumn get isRead => boolean().withDefault(const Constant(false))();
+  TextColumn get relatedId => text().nullable()(); // e.g., orderId
+  DateTimeColumn get createdAt => dateTime()();
+  TextColumn get syncStatus => text().withDefault(const Constant('synced'))();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}

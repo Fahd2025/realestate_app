@@ -8,12 +8,15 @@ import '../core/constants/routes.dart';
 import '../core/models/enums.dart';
 import '../features/admin/screens/user_management_screen.dart';
 import '../features/admin/screens/property_management_screen.dart';
+import '../features/admin/screens/admin_buyer_orders_screen.dart';
 import 'dashboard_router.dart';
 import '../features/contracts/data/repositories/contracts_repository.dart';
 import '../features/contracts/bloc/contracts_bloc.dart';
 import '../features/contracts/screens/purchase_contracts_screen.dart';
 import '../features/contracts/screens/lease_contracts_screen.dart';
 import '../features/payments/data/repositories/payments_repository.dart';
+import '../features/buyer/screens/buyer_browse_screen.dart';
+import '../features/buyer/screens/buyer_requests_screen.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -135,6 +138,24 @@ class AppRouter {
           settings: settings,
         );
 
+      case AppRoutes.adminBuyerRequests:
+        return MaterialPageRoute(
+          builder: (context) => BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is AuthAuthenticated) {
+                final database = context.read<AuthBloc>().database;
+                return AdminBuyerRequestsScreen(database: database);
+              } else if (state is AuthUnauthenticated) {
+                return const LoginScreen();
+              }
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            },
+          ),
+          settings: settings,
+        );
+
       // Owner Routes
       case AppRoutes.ownerProperties:
         return MaterialPageRoute(
@@ -162,9 +183,6 @@ class AppRouter {
       // Tenant Routes
       case AppRoutes.tenantContracts:
       case AppRoutes.tenantPayments:
-      // Buyer Routes
-      case AppRoutes.buyerBrowse:
-      case AppRoutes.buyerRequests:
       // Contract Routes
       case AppRoutes.contractsPurchase:
         return MaterialPageRoute(
@@ -189,6 +207,45 @@ class AppRouter {
           ),
           settings: settings,
         );
+
+      // Buyer Routes - Separate handling
+      case AppRoutes.buyerBrowse:
+        return MaterialPageRoute(
+          builder: (_) => const BuyerBrowseScreen(),
+          settings: settings,
+        );
+
+      case AppRoutes.buyerRequests:
+        return MaterialPageRoute(
+          builder: (_) => const BuyerRequestsScreen(),
+          settings: settings,
+        );
+
+      case AppRoutes.buyerContracts:
+      case AppRoutes.buyerPayments:
+        return MaterialPageRoute(
+          builder: (context) => BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is AuthAuthenticated) {
+                final database = context.read<AuthBloc>().database;
+                return BlocProvider(
+                  create: (context) => ContractsBloc(
+                    ContractsRepository(database),
+                    PaymentsRepository(database),
+                  ),
+                  child: const PurchaseContractsScreen(),
+                );
+              } else if (state is AuthUnauthenticated) {
+                return const LoginScreen();
+              }
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            },
+          ),
+          settings: settings,
+        );
+
       case AppRoutes.contractsLease:
         return MaterialPageRoute(
           builder: (context) => BlocBuilder<AuthBloc, AuthState>(

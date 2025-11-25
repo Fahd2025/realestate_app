@@ -656,6 +656,150 @@ abstract class AppLocalizations {
   /// **'Negotiating'**
   String get negotiating;
 
+  /// No description provided for @propertyRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Property Request'**
+  String get propertyRequest;
+
+  /// No description provided for @placeRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Place Request'**
+  String get placeRequest;
+
+  /// No description provided for @urgency.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgency'**
+  String get urgency;
+
+  /// No description provided for @sooner.
+  ///
+  /// In en, this message translates to:
+  /// **'Sooner'**
+  String get sooner;
+
+  /// No description provided for @afterAWhile.
+  ///
+  /// In en, this message translates to:
+  /// **'After a while'**
+  String get afterAWhile;
+
+  /// No description provided for @canWait.
+  ///
+  /// In en, this message translates to:
+  /// **'Can wait'**
+  String get canWait;
+
+  /// No description provided for @minPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Min Price'**
+  String get minPrice;
+
+  /// No description provided for @maxPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Max Price'**
+  String get maxPrice;
+
+  /// No description provided for @preferredLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred Location'**
+  String get preferredLocation;
+
+  /// No description provided for @requestStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Status'**
+  String get requestStatus;
+
+  /// No description provided for @buyerRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Buyer Requests'**
+  String get buyerRequests;
+
+  /// No description provided for @notification.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification'**
+  String get notification;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @requestDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Details'**
+  String get requestDetails;
+
+  /// No description provided for @changeStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Status'**
+  String get changeStatus;
+
+  /// No description provided for @confirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed'**
+  String get confirmed;
+
+  /// No description provided for @markAsRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Read'**
+  String get markAsRead;
+
+  /// No description provided for @noNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications'**
+  String get noNotifications;
+
+  /// No description provided for @noRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'No requests found'**
+  String get noRequests;
+
+  /// No description provided for @requestSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Request submitted successfully'**
+  String get requestSubmitted;
+
+  /// No description provided for @statusUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Status updated successfully'**
+  String get statusUpdated;
+
+  /// No description provided for @optional.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get optional;
+
+  /// No description provided for @noBuyersFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No buyers found'**
+  String get noBuyersFound;
+
+  /// No description provided for @location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
   /// No description provided for @theme.
   ///
   /// In en, this message translates to:

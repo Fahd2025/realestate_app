@@ -15,12 +15,14 @@ part 'database.g.dart';
   Payments,
   PurchaseRequests,
   Settings,
+  PropertyRequests,
+  Notifications,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? e]) : super(e ?? impl.connect());
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration {
@@ -43,6 +45,11 @@ class AppDatabase extends _$AppDatabase {
         if (from < 4) {
           // Add new columns for version 4
           await m.addColumn(properties, properties.propertyCategory);
+        }
+        if (from < 5) {
+          // Add new tables for version 5
+          await m.createTable(propertyRequests);
+          await m.createTable(notifications);
         }
       },
     );

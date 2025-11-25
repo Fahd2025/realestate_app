@@ -288,6 +288,78 @@ class AppLocalizationsEn extends AppLocalizations {
   String get negotiating => 'Negotiating';
 
   @override
+  String get propertyRequest => 'Property Request';
+
+  @override
+  String get placeRequest => 'Place Request';
+
+  @override
+  String get urgency => 'Urgency';
+
+  @override
+  String get sooner => 'Sooner';
+
+  @override
+  String get afterAWhile => 'After a while';
+
+  @override
+  String get canWait => 'Can wait';
+
+  @override
+  String get minPrice => 'Min Price';
+
+  @override
+  String get maxPrice => 'Max Price';
+
+  @override
+  String get preferredLocation => 'Preferred Location';
+
+  @override
+  String get requestStatus => 'Request Status';
+
+  @override
+  String get buyerRequests => 'Buyer Requests';
+
+  @override
+  String get notification => 'Notification';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get requestDetails => 'Request Details';
+
+  @override
+  String get changeStatus => 'Change Status';
+
+  @override
+  String get confirmed => 'Confirmed';
+
+  @override
+  String get markAsRead => 'Mark as Read';
+
+  @override
+  String get noNotifications => 'No notifications';
+
+  @override
+  String get noRequests => 'No requests found';
+
+  @override
+  String get requestSubmitted => 'Request submitted successfully';
+
+  @override
+  String get statusUpdated => 'Status updated successfully';
+
+  @override
+  String get optional => 'Optional';
+
+  @override
+  String get noBuyersFound => 'No buyers found';
+
+  @override
+  String get location => 'Location';
+
+  @override
   String get theme => 'Theme';
 
   @override

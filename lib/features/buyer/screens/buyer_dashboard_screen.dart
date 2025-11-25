@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:realestate_app/l10n/app_localizations.dart';
 import '../../../features/auth/bloc/auth_bloc.dart';
 import '../../../core/constants/routes.dart';
+import '../../../core/widgets/main_layout.dart';
 
 class BuyerDashboardScreen extends StatelessWidget {
   const BuyerDashboardScreen({super.key});
@@ -12,31 +13,8 @@ class BuyerDashboardScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final user = context.read<AuthBloc>().currentUser!;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.dashboard),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.pushNamed(context, AppRoutes.settings);
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.person),
-            onPressed: () {
-              Navigator.pushNamed(context, AppRoutes.profile);
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              context.read<AuthBloc>().add(LogoutRequested());
-              Navigator.pushReplacementNamed(context, AppRoutes.login);
-            },
-          ),
-        ],
-      ),
+    return MainLayout(
+      title: l10n.dashboard,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -70,7 +48,10 @@ class BuyerDashboardScreen extends StatelessWidget {
                           ),
                           Text(
                             l10n.buyer,
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
                           ),
@@ -88,7 +69,7 @@ class BuyerDashboardScreen extends StatelessWidget {
               color: Theme.of(context).colorScheme.primaryContainer,
               child: InkWell(
                 onTap: () {
-                  // TODO: Navigate to browse properties
+                  Navigator.pushNamed(context, AppRoutes.buyerBrowse);
                 },
                 borderRadius: BorderRadius.circular(12),
                 child: Padding(
@@ -107,7 +88,10 @@ class BuyerDashboardScreen extends StatelessWidget {
                           children: [
                             Text(
                               l10n.browseProperties,
-                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge
+                                  ?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
                             ),
@@ -133,10 +117,10 @@ class BuyerDashboardScreen extends StatelessWidget {
             _buildMenuCard(
               context,
               icon: Icons.request_page,
-              title: l10n.purchaseRequests,
-              subtitle: 'View your purchase requests',
+              title: l10n.myRequests,
+              subtitle: 'View your property requests',
               onTap: () {
-                // TODO: Navigate to purchase requests
+                Navigator.pushNamed(context, AppRoutes.buyerRequests);
               },
             ),
             const SizedBox(height: 12),
@@ -146,7 +130,7 @@ class BuyerDashboardScreen extends StatelessWidget {
               title: l10n.myContracts,
               subtitle: 'View your contracts',
               onTap: () {
-                // TODO: Navigate to contracts
+                Navigator.pushNamed(context, AppRoutes.buyerContracts);
               },
             ),
             const SizedBox(height: 12),
@@ -156,7 +140,7 @@ class BuyerDashboardScreen extends StatelessWidget {
               title: l10n.paymentHistory,
               subtitle: 'View payment history',
               onTap: () {
-                // TODO: Navigate to payments
+                Navigator.pushNamed(context, AppRoutes.buyerPayments);
               },
             ),
           ],

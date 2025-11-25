@@ -107,7 +107,9 @@ class _ContractsViewState extends State<ContractsView> {
 
                   return LayoutBuilder(
                     builder: (context, constraints) {
-                      if (constraints.maxWidth > 600) {
+                      final isLargeScreen = constraints.maxWidth >= 900;
+
+                      if (isLargeScreen) {
                         return _buildDataTable(state.filteredContracts);
                       } else {
                         return _buildMobileList(state.filteredContracts);
@@ -127,59 +129,62 @@ class _ContractsViewState extends State<ContractsView> {
   Widget _buildDataTable(List<ContractWithDetails> contractsWithDetails) {
     final l10n = AppLocalizations.of(context)!;
     return SingleChildScrollView(
-      child: DataTable(
-        columns: [
-          DataColumn(label: Text(l10n.contractId)),
-          DataColumn(label: Text(l10n.property)),
-          DataColumn(label: Text(l10n.owner)),
-          DataColumn(
-              label: Text(
-                  widget.contractType == 'lease' ? l10n.tenant : l10n.buyer)),
-          DataColumn(label: Text(l10n.startDate)),
-          DataColumn(label: Text(l10n.amount)),
-          DataColumn(label: Text(l10n.status)),
-          DataColumn(label: Text(l10n.actions)),
-        ],
-        rows: contractsWithDetails.map((item) {
-          final contract = item.contract;
-          final property = item.property;
-          final owner = item.owner;
-          final tenantBuyer = item.tenantBuyer;
+      scrollDirection: Axis.horizontal,
+      child: SingleChildScrollView(
+        child: DataTable(
+          columns: [
+            DataColumn(label: Text(l10n.contractId)),
+            DataColumn(label: Text(l10n.property)),
+            DataColumn(label: Text(l10n.owner)),
+            DataColumn(
+                label: Text(
+                    widget.contractType == 'lease' ? l10n.tenant : l10n.buyer)),
+            DataColumn(label: Text(l10n.startDate)),
+            DataColumn(label: Text(l10n.amount)),
+            DataColumn(label: Text(l10n.status)),
+            DataColumn(label: Text(l10n.actions)),
+          ],
+          rows: contractsWithDetails.map((item) {
+            final contract = item.contract;
+            final property = item.property;
+            final owner = item.owner;
+            final tenantBuyer = item.tenantBuyer;
 
-          return DataRow(cells: [
-            DataCell(Text(_getShortString(contract.id, 8))),
-            DataCell(Text(property.title)),
-            DataCell(Text(owner?.fullName ?? 'N/A')),
-            DataCell(Text(tenantBuyer?.fullName ?? 'N/A')),
-            DataCell(Text(contract.startDate.toString().split(' ')[0])),
-            DataCell(Text(widget.contractType == 'lease'
-                ? '${contract.monthlyRent}/mo'
-                : '${contract.salePrice}')),
-            DataCell(Text(contract.status)),
-            DataCell(Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: () => _showForm(context, contract: contract),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () => _deleteContract(context, contract.id),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.picture_as_pdf),
-                  onPressed: () {
-                    ContractPdfGenerator.printContract(contract, l10n);
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.payment),
-                  onPressed: () => _showPayments(context, contract),
-                ),
-              ],
-            )),
-          ]);
-        }).toList(),
+            return DataRow(cells: [
+              DataCell(Text(_getShortString(contract.id, 8))),
+              DataCell(Text(property.title)),
+              DataCell(Text(owner?.fullName ?? 'N/A')),
+              DataCell(Text(tenantBuyer?.fullName ?? 'N/A')),
+              DataCell(Text(contract.startDate.toString().split(' ')[0])),
+              DataCell(Text(widget.contractType == 'lease'
+                  ? '${contract.monthlyRent}/mo'
+                  : '${contract.salePrice}')),
+              DataCell(Text(contract.status)),
+              DataCell(Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () => _showForm(context, contract: contract),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () => _deleteContract(context, contract.id),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.picture_as_pdf),
+                    onPressed: () {
+                      ContractPdfGenerator.printContract(contract, l10n);
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.payment),
+                    onPressed: () => _showPayments(context, contract),
+                  ),
+                ],
+              )),
+            ]);
+          }).toList(),
+        ),
       ),
     );
   }

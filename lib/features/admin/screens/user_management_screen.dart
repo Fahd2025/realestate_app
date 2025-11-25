@@ -170,15 +170,16 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isDesktop = MediaQuery.of(context).size.width >= 900;
 
     return MainLayout(
       title: l10n.manageUsers,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _handleAddUser,
-        icon: const Icon(Icons.add),
-        label: Text(l10n.addUser),
-      ),
+      actions: [
+        IconButton(
+          onPressed: _handleAddUser,
+          icon: const Icon(Icons.add),
+          tooltip: l10n.addUser,
+        ),
+      ],
       body: Column(
         children: [
           // Search and filter bar
@@ -245,9 +246,17 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                           ],
                         ),
                       )
-                    : isDesktop
-                        ? _buildDesktopView()
-                        : _buildMobileView(),
+                    : LayoutBuilder(
+                        builder: (context, constraints) {
+                          final isLargeScreen = constraints.maxWidth >= 900;
+
+                          if (isLargeScreen) {
+                            return _buildDesktopView();
+                          } else {
+                            return _buildMobileView();
+                          }
+                        },
+                      ),
           ),
         ],
       ),

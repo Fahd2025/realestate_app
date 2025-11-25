@@ -24,7 +24,8 @@ class MainLayout extends StatefulWidget {
 }
 
 class _MainLayoutState extends State<MainLayout> {
-  bool _isDrawerOpen = true;
+  // Static variable to persist sidebar state across navigation
+  static bool _isDrawerOpen = true;
 
   @override
   Widget build(BuildContext context) {
@@ -128,6 +129,15 @@ class _MainLayoutState extends State<MainLayout> {
               ),
             ),
           ),
+          otherAccountsPictures: [
+            IconButton(
+              icon: const Icon(Icons.person, color: Colors.white),
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, AppRoutes.profile);
+              },
+              tooltip: l10n.profile,
+            ),
+          ],
         ),
         Expanded(
           child: ListView(
@@ -253,12 +263,6 @@ class _MainLayoutState extends State<MainLayout> {
       route: AppRoutes.dashboard,
     );
 
-    final profile = _NavItem(
-      label: l10n.profile,
-      icon: Icons.person,
-      route: AppRoutes.profile,
-    );
-
     final settings = _NavItem(
       label: l10n.settings,
       icon: Icons.settings,
@@ -279,8 +283,12 @@ class _MainLayoutState extends State<MainLayout> {
               icon: Icons.home_work,
               route: AppRoutes.adminProperties),
           _NavItem(
-              label: l10n.purchaseContracts,
+              label: l10n.buyerRequests,
               icon: Icons.shopping_cart,
+              route: AppRoutes.adminBuyerRequests),
+          _NavItem(
+              label: l10n.purchaseContracts,
+              icon: Icons.description,
               route: AppRoutes.contractsPurchase),
           _NavItem(
               label: l10n.leaseContracts,
@@ -326,11 +334,15 @@ class _MainLayoutState extends State<MainLayout> {
               label: l10n.myRequests,
               icon: Icons.request_quote,
               route: AppRoutes.buyerRequests),
+          _NavItem(
+              label: l10n.purchaseContracts,
+              icon: Icons.description,
+              route: AppRoutes.buyerContracts),
         ];
         break;
     }
 
-    return [dashboard, ...roleItems, profile, settings];
+    return [dashboard, ...roleItems, settings];
   }
 }
 

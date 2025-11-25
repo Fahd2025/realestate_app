@@ -211,15 +211,16 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isDesktop = MediaQuery.of(context).size.width >= 900;
 
     return MainLayout(
       title: l10n.manageProperties,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _handleAddProperty,
-        icon: const Icon(Icons.add),
-        label: Text(l10n.add),
-      ),
+      actions: [
+        IconButton(
+          onPressed: _handleAddProperty,
+          icon: const Icon(Icons.add),
+          tooltip: l10n.add,
+        ),
+      ],
       body: Column(
         children: [
           // Search and filter bar
@@ -287,9 +288,17 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
                           ],
                         ),
                       )
-                    : isDesktop
-                        ? _buildDesktopView()
-                        : _buildMobileView(),
+                    : LayoutBuilder(
+                        builder: (context, constraints) {
+                          final isLargeScreen = constraints.maxWidth >= 900;
+
+                          if (isLargeScreen) {
+                            return _buildDesktopView();
+                          } else {
+                            return _buildMobileView();
+                          }
+                        },
+                      ),
           ),
         ],
       ),
