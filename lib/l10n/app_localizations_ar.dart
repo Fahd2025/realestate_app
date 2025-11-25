@@ -165,6 +165,45 @@ class AppLocalizationsAr extends AppLocalizations {
   String get rent => 'إيجار';
 
   @override
+  String get category => 'الفئة';
+
+  @override
+  String get residential => 'سكني';
+
+  @override
+  String get commercial => 'تجاري';
+
+  @override
+  String get penthouse => 'بنتاهاوس';
+
+  @override
+  String get townhouse => 'تاون هاوس';
+
+  @override
+  String get chalet => 'شاليه';
+
+  @override
+  String get twinHouse => 'توين هاوس';
+
+  @override
+  String get duplex => 'دوبلكس';
+
+  @override
+  String get office => 'مكتب';
+
+  @override
+  String get business => 'أعمال';
+
+  @override
+  String get industrial => 'صناعي';
+
+  @override
+  String get commercialStore => 'محل تجاري';
+
+  @override
+  String get medical => 'طبي';
+
+  @override
   String get apartment => 'شقة';
 
   @override
@@ -175,9 +214,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get land => 'أرض';
-
-  @override
-  String get commercial => 'تجاري';
 
   @override
   String get startDate => 'تاريخ البدء';

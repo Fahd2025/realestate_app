@@ -778,6 +778,12 @@ class $PropertiesTable extends Properties
   late final GeneratedColumn<String> propertyType = GeneratedColumn<String>(
       'property_type', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _propertyCategoryMeta =
+      const VerificationMeta('propertyCategory');
+  @override
+  late final GeneratedColumn<String> propertyCategory = GeneratedColumn<String>(
+      'property_category', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _listingTypeMeta =
       const VerificationMeta('listingType');
   @override
@@ -871,6 +877,7 @@ class $PropertiesTable extends Properties
         description,
         descriptionAr,
         propertyType,
+        propertyCategory,
         listingType,
         price,
         area,
@@ -936,6 +943,12 @@ class $PropertiesTable extends Properties
               data['property_type']!, _propertyTypeMeta));
     } else if (isInserting) {
       context.missing(_propertyTypeMeta);
+    }
+    if (data.containsKey('property_category')) {
+      context.handle(
+          _propertyCategoryMeta,
+          propertyCategory.isAcceptableOrUnknown(
+              data['property_category']!, _propertyCategoryMeta));
     }
     if (data.containsKey('listing_type')) {
       context.handle(
@@ -1036,6 +1049,8 @@ class $PropertiesTable extends Properties
           .read(DriftSqlType.string, data['${effectivePrefix}description_ar']),
       propertyType: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}property_type'])!,
+      propertyCategory: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}property_category']),
       listingType: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}listing_type'])!,
       price: attachedDatabase.typeMapping
@@ -1081,6 +1096,7 @@ class Property extends DataClass implements Insertable<Property> {
   final String? description;
   final String? descriptionAr;
   final String propertyType;
+  final String? propertyCategory;
   final String listingType;
   final double price;
   final double area;
@@ -1103,6 +1119,7 @@ class Property extends DataClass implements Insertable<Property> {
       this.description,
       this.descriptionAr,
       required this.propertyType,
+      this.propertyCategory,
       required this.listingType,
       required this.price,
       required this.area,
@@ -1133,6 +1150,9 @@ class Property extends DataClass implements Insertable<Property> {
       map['description_ar'] = Variable<String>(descriptionAr);
     }
     map['property_type'] = Variable<String>(propertyType);
+    if (!nullToAbsent || propertyCategory != null) {
+      map['property_category'] = Variable<String>(propertyCategory);
+    }
     map['listing_type'] = Variable<String>(listingType);
     map['price'] = Variable<double>(price);
     map['area'] = Variable<double>(area);
@@ -1173,6 +1193,9 @@ class Property extends DataClass implements Insertable<Property> {
           ? const Value.absent()
           : Value(descriptionAr),
       propertyType: Value(propertyType),
+      propertyCategory: propertyCategory == null && nullToAbsent
+          ? const Value.absent()
+          : Value(propertyCategory),
       listingType: Value(listingType),
       price: Value(price),
       area: Value(area),
@@ -1209,6 +1232,7 @@ class Property extends DataClass implements Insertable<Property> {
       description: serializer.fromJson<String?>(json['description']),
       descriptionAr: serializer.fromJson<String?>(json['descriptionAr']),
       propertyType: serializer.fromJson<String>(json['propertyType']),
+      propertyCategory: serializer.fromJson<String?>(json['propertyCategory']),
       listingType: serializer.fromJson<String>(json['listingType']),
       price: serializer.fromJson<double>(json['price']),
       area: serializer.fromJson<double>(json['area']),
@@ -1236,6 +1260,7 @@ class Property extends DataClass implements Insertable<Property> {
       'description': serializer.toJson<String?>(description),
       'descriptionAr': serializer.toJson<String?>(descriptionAr),
       'propertyType': serializer.toJson<String>(propertyType),
+      'propertyCategory': serializer.toJson<String?>(propertyCategory),
       'listingType': serializer.toJson<String>(listingType),
       'price': serializer.toJson<double>(price),
       'area': serializer.toJson<double>(area),
@@ -1261,6 +1286,7 @@ class Property extends DataClass implements Insertable<Property> {
           Value<String?> description = const Value.absent(),
           Value<String?> descriptionAr = const Value.absent(),
           String? propertyType,
+          Value<String?> propertyCategory = const Value.absent(),
           String? listingType,
           double? price,
           double? area,
@@ -1284,6 +1310,9 @@ class Property extends DataClass implements Insertable<Property> {
         descriptionAr:
             descriptionAr.present ? descriptionAr.value : this.descriptionAr,
         propertyType: propertyType ?? this.propertyType,
+        propertyCategory: propertyCategory.present
+            ? propertyCategory.value
+            : this.propertyCategory,
         listingType: listingType ?? this.listingType,
         price: price ?? this.price,
         area: area ?? this.area,
@@ -1313,6 +1342,9 @@ class Property extends DataClass implements Insertable<Property> {
       propertyType: data.propertyType.present
           ? data.propertyType.value
           : this.propertyType,
+      propertyCategory: data.propertyCategory.present
+          ? data.propertyCategory.value
+          : this.propertyCategory,
       listingType:
           data.listingType.present ? data.listingType.value : this.listingType,
       price: data.price.present ? data.price.value : this.price,
@@ -1342,6 +1374,7 @@ class Property extends DataClass implements Insertable<Property> {
           ..write('description: $description, ')
           ..write('descriptionAr: $descriptionAr, ')
           ..write('propertyType: $propertyType, ')
+          ..write('propertyCategory: $propertyCategory, ')
           ..write('listingType: $listingType, ')
           ..write('price: $price, ')
           ..write('area: $area, ')
@@ -1369,6 +1402,7 @@ class Property extends DataClass implements Insertable<Property> {
         description,
         descriptionAr,
         propertyType,
+        propertyCategory,
         listingType,
         price,
         area,
@@ -1395,6 +1429,7 @@ class Property extends DataClass implements Insertable<Property> {
           other.description == this.description &&
           other.descriptionAr == this.descriptionAr &&
           other.propertyType == this.propertyType &&
+          other.propertyCategory == this.propertyCategory &&
           other.listingType == this.listingType &&
           other.price == this.price &&
           other.area == this.area &&
@@ -1419,6 +1454,7 @@ class PropertiesCompanion extends UpdateCompanion<Property> {
   final Value<String?> description;
   final Value<String?> descriptionAr;
   final Value<String> propertyType;
+  final Value<String?> propertyCategory;
   final Value<String> listingType;
   final Value<double> price;
   final Value<double> area;
@@ -1442,6 +1478,7 @@ class PropertiesCompanion extends UpdateCompanion<Property> {
     this.description = const Value.absent(),
     this.descriptionAr = const Value.absent(),
     this.propertyType = const Value.absent(),
+    this.propertyCategory = const Value.absent(),
     this.listingType = const Value.absent(),
     this.price = const Value.absent(),
     this.area = const Value.absent(),
@@ -1466,6 +1503,7 @@ class PropertiesCompanion extends UpdateCompanion<Property> {
     this.description = const Value.absent(),
     this.descriptionAr = const Value.absent(),
     required String propertyType,
+    this.propertyCategory = const Value.absent(),
     required String listingType,
     required double price,
     required double area,
@@ -1501,6 +1539,7 @@ class PropertiesCompanion extends UpdateCompanion<Property> {
     Expression<String>? description,
     Expression<String>? descriptionAr,
     Expression<String>? propertyType,
+    Expression<String>? propertyCategory,
     Expression<String>? listingType,
     Expression<double>? price,
     Expression<double>? area,
@@ -1525,6 +1564,7 @@ class PropertiesCompanion extends UpdateCompanion<Property> {
       if (description != null) 'description': description,
       if (descriptionAr != null) 'description_ar': descriptionAr,
       if (propertyType != null) 'property_type': propertyType,
+      if (propertyCategory != null) 'property_category': propertyCategory,
       if (listingType != null) 'listing_type': listingType,
       if (price != null) 'price': price,
       if (area != null) 'area': area,
@@ -1551,6 +1591,7 @@ class PropertiesCompanion extends UpdateCompanion<Property> {
       Value<String?>? description,
       Value<String?>? descriptionAr,
       Value<String>? propertyType,
+      Value<String?>? propertyCategory,
       Value<String>? listingType,
       Value<double>? price,
       Value<double>? area,
@@ -1574,6 +1615,7 @@ class PropertiesCompanion extends UpdateCompanion<Property> {
       description: description ?? this.description,
       descriptionAr: descriptionAr ?? this.descriptionAr,
       propertyType: propertyType ?? this.propertyType,
+      propertyCategory: propertyCategory ?? this.propertyCategory,
       listingType: listingType ?? this.listingType,
       price: price ?? this.price,
       area: area ?? this.area,
@@ -1615,6 +1657,9 @@ class PropertiesCompanion extends UpdateCompanion<Property> {
     }
     if (propertyType.present) {
       map['property_type'] = Variable<String>(propertyType.value);
+    }
+    if (propertyCategory.present) {
+      map['property_category'] = Variable<String>(propertyCategory.value);
     }
     if (listingType.present) {
       map['listing_type'] = Variable<String>(listingType.value);
@@ -1674,6 +1719,7 @@ class PropertiesCompanion extends UpdateCompanion<Property> {
           ..write('description: $description, ')
           ..write('descriptionAr: $descriptionAr, ')
           ..write('propertyType: $propertyType, ')
+          ..write('propertyCategory: $propertyCategory, ')
           ..write('listingType: $listingType, ')
           ..write('price: $price, ')
           ..write('area: $area, ')
@@ -5095,6 +5141,7 @@ typedef $$PropertiesTableCreateCompanionBuilder = PropertiesCompanion Function({
   Value<String?> description,
   Value<String?> descriptionAr,
   required String propertyType,
+  Value<String?> propertyCategory,
   required String listingType,
   required double price,
   required double area,
@@ -5119,6 +5166,7 @@ typedef $$PropertiesTableUpdateCompanionBuilder = PropertiesCompanion Function({
   Value<String?> description,
   Value<String?> descriptionAr,
   Value<String> propertyType,
+  Value<String?> propertyCategory,
   Value<String> listingType,
   Value<double> price,
   Value<double> area,
@@ -5228,6 +5276,10 @@ class $$PropertiesTableFilterComposer
 
   ColumnFilters<String> get propertyType => $composableBuilder(
       column: $table.propertyType, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get propertyCategory => $composableBuilder(
+      column: $table.propertyCategory,
+      builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get listingType => $composableBuilder(
       column: $table.listingType, builder: (column) => ColumnFilters(column));
@@ -5384,6 +5436,10 @@ class $$PropertiesTableOrderingComposer
       column: $table.propertyType,
       builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get propertyCategory => $composableBuilder(
+      column: $table.propertyCategory,
+      builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<String> get listingType => $composableBuilder(
       column: $table.listingType, builder: (column) => ColumnOrderings(column));
 
@@ -5473,6 +5529,9 @@ class $$PropertiesTableAnnotationComposer
 
   GeneratedColumn<String> get propertyType => $composableBuilder(
       column: $table.propertyType, builder: (column) => column);
+
+  GeneratedColumn<String> get propertyCategory => $composableBuilder(
+      column: $table.propertyCategory, builder: (column) => column);
 
   GeneratedColumn<String> get listingType => $composableBuilder(
       column: $table.listingType, builder: (column) => column);
@@ -5634,6 +5693,7 @@ class $$PropertiesTableTableManager extends RootTableManager<
             Value<String?> description = const Value.absent(),
             Value<String?> descriptionAr = const Value.absent(),
             Value<String> propertyType = const Value.absent(),
+            Value<String?> propertyCategory = const Value.absent(),
             Value<String> listingType = const Value.absent(),
             Value<double> price = const Value.absent(),
             Value<double> area = const Value.absent(),
@@ -5658,6 +5718,7 @@ class $$PropertiesTableTableManager extends RootTableManager<
             description: description,
             descriptionAr: descriptionAr,
             propertyType: propertyType,
+            propertyCategory: propertyCategory,
             listingType: listingType,
             price: price,
             area: area,
@@ -5682,6 +5743,7 @@ class $$PropertiesTableTableManager extends RootTableManager<
             Value<String?> description = const Value.absent(),
             Value<String?> descriptionAr = const Value.absent(),
             required String propertyType,
+            Value<String?> propertyCategory = const Value.absent(),
             required String listingType,
             required double price,
             required double area,
@@ -5706,6 +5768,7 @@ class $$PropertiesTableTableManager extends RootTableManager<
             description: description,
             descriptionAr: descriptionAr,
             propertyType: propertyType,
+            propertyCategory: propertyCategory,
             listingType: listingType,
             price: price,
             area: area,

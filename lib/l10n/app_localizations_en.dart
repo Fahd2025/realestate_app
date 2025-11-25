@@ -165,6 +165,45 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rent => 'Rent';
 
   @override
+  String get category => 'Category';
+
+  @override
+  String get residential => 'Residential';
+
+  @override
+  String get commercial => 'Commercial';
+
+  @override
+  String get penthouse => 'Penthouse';
+
+  @override
+  String get townhouse => 'Townhouse';
+
+  @override
+  String get chalet => 'Chalet';
+
+  @override
+  String get twinHouse => 'Twin House';
+
+  @override
+  String get duplex => 'Duplex';
+
+  @override
+  String get office => 'Office';
+
+  @override
+  String get business => 'Business';
+
+  @override
+  String get industrial => 'Industrial';
+
+  @override
+  String get commercialStore => 'Commercial Store';
+
+  @override
+  String get medical => 'Medical';
+
+  @override
   String get apartment => 'Apartment';
 
   @override
@@ -175,9 +214,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get land => 'Land';
-
-  @override
-  String get commercial => 'Commercial';
 
   @override
   String get startDate => 'Start Date';

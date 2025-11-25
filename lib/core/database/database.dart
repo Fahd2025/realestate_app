@@ -17,10 +17,10 @@ part 'database.g.dart';
   Settings,
 ])
 class AppDatabase extends _$AppDatabase {
-  AppDatabase() : super(impl.connect());
+  AppDatabase([QueryExecutor? e]) : super(e ?? impl.connect());
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration {
@@ -39,6 +39,10 @@ class AppDatabase extends _$AppDatabase {
           // Add new columns for version 3
           await m.addColumn(properties, properties.titleAr);
           await m.addColumn(properties, properties.descriptionAr);
+        }
+        if (from < 4) {
+          // Add new columns for version 4
+          await m.addColumn(properties, properties.propertyCategory);
         }
       },
     );
@@ -139,6 +143,7 @@ class AppDatabase extends _$AppDatabase {
               description: const Value(
                   'Beautiful 3-bedroom apartment in the heart of the city'),
               propertyType: 'apartment',
+              propertyCategory: const Value('residential'),
               listingType: 'rent',
               price: 2500.0,
               area: 120.0,
@@ -160,6 +165,7 @@ class AppDatabase extends _$AppDatabase {
               description: const Value(
                   'Spacious 5-bedroom villa with private pool and garden'),
               propertyType: 'villa',
+              propertyCategory: const Value('residential'),
               listingType: 'sale',
               price: 850000.0,
               area: 350.0,
@@ -181,6 +187,7 @@ class AppDatabase extends _$AppDatabase {
               description:
                   const Value('Perfect for students or young professionals'),
               propertyType: 'apartment',
+              propertyCategory: const Value('residential'),
               listingType: 'rent',
               price: 1200.0,
               area: 45.0,
@@ -379,6 +386,7 @@ class AppDatabase extends _$AppDatabase {
               title: 'Suburban Family Home',
               description: const Value('Great for families, near schools'),
               propertyType: 'house',
+              propertyCategory: const Value('residential'),
               listingType: 'sale',
               price: 450000.0,
               area: 200.0,
@@ -399,6 +407,7 @@ class AppDatabase extends _$AppDatabase {
               title: 'City Center Loft',
               description: const Value('Modern loft with city views'),
               propertyType: 'apartment',
+              propertyCategory: const Value('residential'),
               listingType: 'rent',
               price: 1800.0,
               area: 80.0,
@@ -418,7 +427,8 @@ class AppDatabase extends _$AppDatabase {
               ownerId: owner2Id, // Using owner2 for variety
               title: 'Commercial Space',
               description: const Value('Prime location for retail'),
-              propertyType: 'commercial',
+              propertyType: 'commercial_store',
+              propertyCategory: const Value('commercial'),
               listingType: 'rent',
               price: 5000.0,
               area: 150.0,
@@ -437,6 +447,7 @@ class AppDatabase extends _$AppDatabase {
               title: 'Seaside Villa',
               description: const Value('Luxury villa with ocean view'),
               propertyType: 'villa',
+              propertyCategory: const Value('residential'),
               listingType: 'sale',
               price: 1200000.0,
               area: 400.0,

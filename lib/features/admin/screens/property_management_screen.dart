@@ -29,6 +29,7 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
   List<Property> _filteredProperties = [];
   bool _isLoading = true;
   String _searchQuery = '';
+  String? _selectedCategoryFilter;
   String? _selectedTypeFilter;
   String? _selectedListingFilter;
   String? _selectedStatusFilter;
@@ -82,6 +83,10 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
           property.address.toLowerCase().contains(_searchQuery.toLowerCase()) ||
           property.city.toLowerCase().contains(_searchQuery.toLowerCase());
 
+      // Category filter
+      final matchesCategory = _selectedCategoryFilter == null ||
+          property.propertyCategory == _selectedCategoryFilter;
+
       // Type filter
       final matchesType = _selectedTypeFilter == null ||
           property.propertyType == _selectedTypeFilter;
@@ -94,13 +99,25 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
       final matchesStatus = _selectedStatusFilter == null ||
           property.status == _selectedStatusFilter;
 
-      return matchesSearch && matchesType && matchesListing && matchesStatus;
+      return matchesSearch &&
+          matchesCategory &&
+          matchesType &&
+          matchesListing &&
+          matchesStatus;
     }).toList();
   }
 
   void _onSearchChanged(String query) {
     setState(() {
       _searchQuery = query;
+      _applyFilters();
+    });
+  }
+
+  void _onCategoryFilterChanged(String? category) {
+    setState(() {
+      _selectedCategoryFilter = category;
+      _selectedTypeFilter = null; // Reset type filter when category changes
       _applyFilters();
     });
   }
@@ -210,39 +227,34 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
             searchHint: '${l10n.search}...',
             onSearchChanged: _onSearchChanged,
             filterChips: [
-              // Type filters
+              // Category filters
               FilterChip(
                 label: Text(l10n.all),
-                selected: _selectedTypeFilter == null,
-                onSelected: (_) => _onTypeFilterChanged(null),
+                selected: _selectedCategoryFilter == null,
+                onSelected: (_) => _onCategoryFilterChanged(null),
               ),
               FilterChip(
-                label: Text(l10n.apartment),
-                selected: _selectedTypeFilter == 'apartment',
-                onSelected: (_) => _onTypeFilterChanged('apartment'),
-              ),
-              FilterChip(
-                label: Text(l10n.house),
-                selected: _selectedTypeFilter == 'house',
-                onSelected: (_) => _onTypeFilterChanged('house'),
-              ),
-              FilterChip(
-                label: Text(l10n.villa),
-                selected: _selectedTypeFilter == 'villa',
-                onSelected: (_) => _onTypeFilterChanged('villa'),
-              ),
-              FilterChip(
-                label: Text(l10n.land),
-                selected: _selectedTypeFilter == 'land',
-                onSelected: (_) => _onTypeFilterChanged('land'),
+                label: Text(l10n.residential),
+                selected: _selectedCategoryFilter == 'residential',
+                onSelected: (_) => _onCategoryFilterChanged('residential'),
               ),
               FilterChip(
                 label: Text(l10n.commercial),
-                selected: _selectedTypeFilter == 'commercial',
-                onSelected: (_) => _onTypeFilterChanged('commercial'),
+                selected: _selectedCategoryFilter == 'commercial',
+                onSelected: (_) => _onCategoryFilterChanged('commercial'),
               ),
             ],
           ),
+          if (_selectedCategoryFilter != null)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: _buildTypeFilterChips(l10n),
+                ),
+              ),
+            ),
 
           // Data display
           Expanded(
@@ -284,6 +296,43 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
     );
   }
 
+  List<Widget> _buildTypeFilterChips(AppLocalizations l10n) {
+    final chips = <Widget>[];
+    if (_selectedCategoryFilter == 'residential') {
+      chips.addAll([
+        _buildTypeChip(l10n.apartment, 'apartment'),
+        _buildTypeChip(l10n.villa, 'villa'),
+        _buildTypeChip(l10n.penthouse, 'penthouse'),
+        _buildTypeChip(l10n.townhouse, 'townhouse'),
+        _buildTypeChip(l10n.chalet, 'chalet'),
+        _buildTypeChip(l10n.twinHouse, 'twin_house'),
+        _buildTypeChip(l10n.duplex, 'duplex'),
+        _buildTypeChip(l10n.land, 'land'),
+      ]);
+    } else if (_selectedCategoryFilter == 'commercial') {
+      chips.addAll([
+        _buildTypeChip(l10n.office, 'office'),
+        _buildTypeChip(l10n.business, 'business'),
+        _buildTypeChip(l10n.industrial, 'industrial'),
+        _buildTypeChip(l10n.commercialStore, 'commercial_store'),
+        _buildTypeChip(l10n.medical, 'medical'),
+      ]);
+    }
+    return chips;
+  }
+
+  Widget _buildTypeChip(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 8.0),
+      child: FilterChip(
+        label: Text(label),
+        selected: _selectedTypeFilter == value,
+        onSelected: (_) =>
+            _onTypeFilterChanged(value == _selectedTypeFilter ? null : value),
+      ),
+    );
+  }
+
   Widget _buildDesktopView() {
     final l10n = AppLocalizations.of(context)!;
     return ResponsiveDataTable<Property>(
@@ -292,6 +341,10 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
         DataTableColumnConfig(
           label: l10n.title,
           getValue: (property) => property.title,
+        ),
+        DataTableColumnConfig(
+          label: l10n.category,
+          getValue: (property) => _getCategoryLabel(property.propertyCategory),
         ),
         DataTableColumnConfig(
           label: l10n.type,
@@ -346,6 +399,10 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
       ),
       fields: [
         CardField(
+          label: l10n.category,
+          getValue: (property) => _getCategoryLabel(property.propertyCategory),
+        ),
+        CardField(
           label: l10n.type,
           getValue: (property) => _getPropertyTypeLabel(property.propertyType),
         ),
@@ -379,6 +436,18 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
     );
   }
 
+  String _getCategoryLabel(String? category) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (category) {
+      case 'residential':
+        return l10n.residential;
+      case 'commercial':
+        return l10n.commercial;
+      default:
+        return category ?? '-';
+    }
+  }
+
   String _getPropertyTypeLabel(String type) {
     final l10n = AppLocalizations.of(context)!;
     switch (type) {
@@ -388,10 +457,28 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
         return l10n.house;
       case 'villa':
         return l10n.villa;
+      case 'penthouse':
+        return l10n.penthouse;
+      case 'townhouse':
+        return l10n.townhouse;
+      case 'chalet':
+        return l10n.chalet;
+      case 'twin_house':
+        return l10n.twinHouse;
+      case 'duplex':
+        return l10n.duplex;
       case 'land':
         return l10n.land;
-      case 'commercial':
-        return l10n.commercial;
+      case 'office':
+        return l10n.office;
+      case 'business':
+        return l10n.business;
+      case 'industrial':
+        return l10n.industrial;
+      case 'commercial_store':
+        return l10n.commercialStore;
+      case 'medical':
+        return l10n.medical;
       default:
         return type;
     }
@@ -421,10 +508,28 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
         return Icons.house;
       case 'villa':
         return Icons.villa;
+      case 'penthouse':
+        return Icons.star;
+      case 'townhouse':
+        return Icons.home_work;
+      case 'chalet':
+        return Icons.beach_access;
+      case 'twin_house':
+        return Icons.home;
+      case 'duplex':
+        return Icons.layers;
       case 'land':
         return Icons.landscape;
-      case 'commercial':
-        return Icons.business;
+      case 'office':
+        return Icons.business_center;
+      case 'business':
+        return Icons.store;
+      case 'industrial':
+        return Icons.factory;
+      case 'commercial_store':
+        return Icons.storefront;
+      case 'medical':
+        return Icons.local_hospital;
       default:
         return Icons.home;
     }

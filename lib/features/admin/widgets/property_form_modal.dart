@@ -35,6 +35,7 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
   late TextEditingController _cityController;
   late TextEditingController _countryController;
 
+  String _selectedCategory = 'residential';
   String _selectedPropertyType = 'apartment';
   String _selectedListingType = 'rent';
   String _selectedStatus = 'available';
@@ -64,6 +65,7 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
     _countryController = TextEditingController(text: property?.country ?? '');
 
     if (property != null) {
+      _selectedCategory = property.propertyCategory ?? 'residential';
       _selectedPropertyType = property.propertyType;
       _selectedListingType = property.listingType;
       _selectedStatus = property.status;
@@ -84,6 +86,31 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
     _cityController.dispose();
     _countryController.dispose();
     super.dispose();
+  }
+
+  List<DropdownMenuItem<String>> _getPropertyTypeItems() {
+    final l10n = AppLocalizations.of(context)!;
+    if (_selectedCategory == 'residential') {
+      return [
+        DropdownMenuItem(value: 'apartment', child: Text(l10n.apartment)),
+        DropdownMenuItem(value: 'villa', child: Text(l10n.villa)),
+        DropdownMenuItem(value: 'penthouse', child: Text(l10n.penthouse)),
+        DropdownMenuItem(value: 'townhouse', child: Text(l10n.townhouse)),
+        DropdownMenuItem(value: 'chalet', child: Text(l10n.chalet)),
+        DropdownMenuItem(value: 'twin_house', child: Text(l10n.twinHouse)),
+        DropdownMenuItem(value: 'duplex', child: Text(l10n.duplex)),
+        DropdownMenuItem(value: 'land', child: Text(l10n.land)),
+      ];
+    } else {
+      return [
+        DropdownMenuItem(value: 'office', child: Text(l10n.office)),
+        DropdownMenuItem(value: 'business', child: Text(l10n.business)),
+        DropdownMenuItem(value: 'industrial', child: Text(l10n.industrial)),
+        DropdownMenuItem(
+            value: 'commercial_store', child: Text(l10n.commercialStore)),
+        DropdownMenuItem(value: 'medical', child: Text(l10n.medical)),
+      ];
+    }
   }
 
   Future<void> _saveProperty() async {
@@ -120,6 +147,7 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
                     _descriptionArController.text.trim().isEmpty
                         ? null
                         : _descriptionArController.text.trim()),
+                propertyCategory: drift.Value(_selectedCategory),
                 propertyType: _selectedPropertyType,
                 listingType: _selectedListingType,
                 price: price,
@@ -151,6 +179,7 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
                 _descriptionArController.text.trim().isEmpty
                     ? null
                     : _descriptionArController.text.trim()),
+            propertyCategory: drift.Value(_selectedCategory),
             propertyType: drift.Value(_selectedPropertyType),
             listingType: drift.Value(_selectedListingType),
             price: drift.Value(price),
@@ -293,26 +322,45 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
                       ),
                       const SizedBox(height: 16),
 
-                      // Property Type
+                      // Property Category
                       DropdownButtonFormField<String>(
-                        initialValue: _selectedPropertyType,
+                        value: _selectedCategory,
                         decoration: InputDecoration(
-                          labelText: l10n.type,
-                          prefixIcon: const Icon(Icons.home_work),
+                          labelText: l10n.category,
+                          prefixIcon: const Icon(Icons.category),
                         ),
                         items: [
                           DropdownMenuItem(
-                              value: 'apartment', child: Text(l10n.apartment)),
-                          DropdownMenuItem(
-                              value: 'house', child: Text(l10n.house)),
-                          DropdownMenuItem(
-                              value: 'villa', child: Text(l10n.villa)),
-                          DropdownMenuItem(
-                              value: 'land', child: Text(l10n.land)),
+                              value: 'residential',
+                              child: Text(l10n.residential)),
                           DropdownMenuItem(
                               value: 'commercial',
                               child: Text(l10n.commercial)),
                         ],
+                        onChanged: (value) {
+                          if (value != null) {
+                            setState(() {
+                              _selectedCategory = value;
+                              // Reset type when category changes
+                              if (_selectedCategory == 'residential') {
+                                _selectedPropertyType = 'apartment';
+                              } else {
+                                _selectedPropertyType = 'office';
+                              }
+                            });
+                          }
+                        },
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Property Type
+                      DropdownButtonFormField<String>(
+                        value: _selectedPropertyType,
+                        decoration: InputDecoration(
+                          labelText: l10n.type,
+                          prefixIcon: const Icon(Icons.home_work),
+                        ),
+                        items: _getPropertyTypeItems(),
                         onChanged: (value) {
                           if (value != null) {
                             setState(() => _selectedPropertyType = value);
@@ -323,7 +371,7 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
 
                       // Listing Type
                       DropdownButtonFormField<String>(
-                        initialValue: _selectedListingType,
+                        value: _selectedListingType,
                         decoration: InputDecoration(
                           labelText: l10n.listingType,
                           prefixIcon: const Icon(Icons.sell),
@@ -454,7 +502,7 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
 
                       // Status
                       DropdownButtonFormField<String>(
-                        initialValue: _selectedStatus,
+                        value: _selectedStatus,
                         decoration: InputDecoration(
                           labelText: l10n.status,
                           prefixIcon: const Icon(Icons.info),

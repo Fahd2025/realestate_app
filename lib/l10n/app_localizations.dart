@@ -410,6 +410,84 @@ abstract class AppLocalizations {
   /// **'Rent'**
   String get rent;
 
+  /// No description provided for @category.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get category;
+
+  /// No description provided for @residential.
+  ///
+  /// In en, this message translates to:
+  /// **'Residential'**
+  String get residential;
+
+  /// No description provided for @commercial.
+  ///
+  /// In en, this message translates to:
+  /// **'Commercial'**
+  String get commercial;
+
+  /// No description provided for @penthouse.
+  ///
+  /// In en, this message translates to:
+  /// **'Penthouse'**
+  String get penthouse;
+
+  /// No description provided for @townhouse.
+  ///
+  /// In en, this message translates to:
+  /// **'Townhouse'**
+  String get townhouse;
+
+  /// No description provided for @chalet.
+  ///
+  /// In en, this message translates to:
+  /// **'Chalet'**
+  String get chalet;
+
+  /// No description provided for @twinHouse.
+  ///
+  /// In en, this message translates to:
+  /// **'Twin House'**
+  String get twinHouse;
+
+  /// No description provided for @duplex.
+  ///
+  /// In en, this message translates to:
+  /// **'Duplex'**
+  String get duplex;
+
+  /// No description provided for @office.
+  ///
+  /// In en, this message translates to:
+  /// **'Office'**
+  String get office;
+
+  /// No description provided for @business.
+  ///
+  /// In en, this message translates to:
+  /// **'Business'**
+  String get business;
+
+  /// No description provided for @industrial.
+  ///
+  /// In en, this message translates to:
+  /// **'Industrial'**
+  String get industrial;
+
+  /// No description provided for @commercialStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Commercial Store'**
+  String get commercialStore;
+
+  /// No description provided for @medical.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical'**
+  String get medical;
+
   /// No description provided for @apartment.
   ///
   /// In en, this message translates to:
@@ -433,12 +511,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Land'**
   String get land;
-
-  /// No description provided for @commercial.
-  ///
-  /// In en, this message translates to:
-  /// **'Commercial'**
-  String get commercial;
 
   /// No description provided for @startDate.
   ///

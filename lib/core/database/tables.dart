@@ -31,6 +31,8 @@ class Properties extends Table {
   TextColumn get description => text().nullable()();
   TextColumn get descriptionAr => text().nullable()();
   TextColumn get propertyType => text()();
+  TextColumn get propertyCategory =>
+      text().nullable()(); // residential, commercial
   TextColumn get listingType => text()();
   RealColumn get price => real()();
   RealColumn get area => real()();
