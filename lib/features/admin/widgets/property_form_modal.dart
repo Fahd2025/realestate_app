@@ -3,6 +3,9 @@ import 'package:realestate_app/l10n/app_localizations.dart';
 import '../../../core/database/database.dart';
 import 'package:uuid/uuid.dart';
 import 'package:drift/drift.dart' as drift;
+import 'unit_form_modal.dart';
+import 'temp_unit_models.dart';
+import 'temp_unit_form_dialog.dart';
 
 /// Property form modal bottom sheet for creating and editing properties
 class PropertyFormModal extends StatefulWidget {
@@ -40,11 +43,22 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
   String _selectedListingType = 'rent';
   String _selectedStatus = 'available';
   bool _isLoading = false;
+  late Stream<List<UnitWithDescription>> _unitsStream;
+  final List<TempUnit> _tempUnits = []; // For new properties
+  bool _useTemporaryUnits = false; // Flag to determine which list to use
 
   @override
   void initState() {
     super.initState();
     final property = widget.property;
+
+    if (property != null) {
+      _unitsStream = _watchUnits(property.id);
+      _useTemporaryUnits = false;
+    } else {
+      _unitsStream = Stream.value([]);
+      _useTemporaryUnits = true; // Use temp list for new properties
+    }
 
     _titleController = TextEditingController(text: property?.title ?? '');
     _titleArController = TextEditingController(text: property?.titleAr ?? '');
@@ -100,6 +114,7 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
         DropdownMenuItem(value: 'twin_house', child: Text(l10n.twinHouse)),
         DropdownMenuItem(value: 'duplex', child: Text(l10n.duplex)),
         DropdownMenuItem(value: 'land', child: Text(l10n.land)),
+        DropdownMenuItem(value: 'building', child: Text(l10n.building)),
       ];
     } else {
       return [
@@ -109,15 +124,191 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
         DropdownMenuItem(
             value: 'commercial_store', child: Text(l10n.commercialStore)),
         DropdownMenuItem(value: 'medical', child: Text(l10n.medical)),
+        DropdownMenuItem(value: 'building', child: Text(l10n.building)),
       ];
     }
   }
 
+  Stream<List<UnitWithDescription>> _watchUnits(String propertyId) {
+    final query = widget.database.select(widget.database.buildingUnits).join([
+      drift.leftOuterJoin(
+        widget.database.unitDescriptions,
+        widget.database.unitDescriptions.unitId
+            .equalsExp(widget.database.buildingUnits.id),
+      ),
+    ])
+      ..where(widget.database.buildingUnits.propertyId.equals(propertyId));
+
+    return query.watch().map((rows) {
+      return rows.map((row) {
+        return UnitWithDescription(
+          unit: row.readTable(widget.database.buildingUnits),
+          description: row.readTableOrNull(widget.database.unitDescriptions),
+        );
+      }).toList();
+    });
+  }
+
+  Future<void> _deleteUnit(String unitId) async {
+    final l10n = AppLocalizations.of(context)!;
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.deleteUnit),
+        content: Text(l10n.deleteUnitConfirmation),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(l10n.delete,
+                style: TextStyle(color: Theme.of(context).colorScheme.error)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      await (widget.database.delete(widget.database.buildingUnits)
+            ..where((tbl) => tbl.id.equals(unitId)))
+          .go();
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.success),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    }
+  }
+
+  void _showUnitForm(
+      {BuildingUnit? unit,
+      UnitDescription? description,
+      TempUnit? tempUnit,
+      int? tempIndex}) {
+    // For new properties (temporary mode)
+    if (_useTemporaryUnits) {
+      showDialog(
+        context: context,
+        builder: (context) => TempUnitFormDialog(
+          unit: tempUnit,
+          onSave: (newUnit) {
+            setState(() {
+              if (tempIndex != null) {
+                // Edit existing temp unit
+                _tempUnits[tempIndex] = newUnit;
+              } else {
+                // Add new temp unit
+                _tempUnits.add(newUnit);
+              }
+            });
+          },
+        ),
+      );
+      return;
+    }
+
+    // For existing properties (database mode)
+    if (widget.property == null) return;
+
+    showDialog(
+      context: context,
+      builder: (context) => UnitFormModal(
+        propertyId: widget.property!.id,
+        database: widget.database,
+        unit: unit,
+        description: description,
+      ),
+    ).then((result) {
+      if (result == true && mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.success),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    });
+  }
+
+  void _deleteTempUnit(int index) async {
+    final l10n = AppLocalizations.of(context)!;
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.deleteUnit),
+        content: Text(l10n.deleteUnitConfirmation),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(l10n.delete,
+                style: TextStyle(color: Theme.of(context).colorScheme.error)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      setState(() {
+        _tempUnits.removeAt(index);
+      });
+    }
+  }
+
+  IconData _getUnitIcon(String type) {
+    switch (type) {
+      case 'apartment':
+        return Icons.apartment;
+      case 'office':
+        return Icons.business;
+      case 'shop':
+        return Icons.store;
+      case 'floor':
+        return Icons.layers;
+      default:
+        return Icons.home;
+    }
+  }
+
+  String _getUnitTypeName(String type, AppLocalizations l10n) {
+    switch (type) {
+      case 'apartment':
+        return l10n.apartment;
+      case 'office':
+        return l10n.office;
+      case 'shop':
+        return l10n.shop;
+      case 'floor':
+        return l10n.floor;
+      default:
+        return type;
+    }
+  }
+
+  String _getStatusName(String status, AppLocalizations l10n) {
+    switch (status) {
+      case 'available':
+        return l10n.available;
+      case 'rented':
+        return l10n.rented;
+      case 'sold':
+        return l10n.sold;
+      default:
+        return status;
+    }
+  }
+
   Future<void> _saveProperty() async {
-    if (!_formKey.currentState!.validate()) return;
-
-    setState(() => _isLoading = true);
-
     try {
       final now = DateTime.now();
       final price = double.parse(_priceController.text);
@@ -131,9 +322,10 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
 
       if (widget.property == null) {
         // Create new property
+        final propertyId = const Uuid().v4();
         await widget.database.into(widget.database.properties).insert(
               PropertiesCompanion.insert(
-                id: const Uuid().v4(),
+                id: propertyId,
                 ownerId: widget.ownerId ?? '',
                 title: _titleController.text.trim(),
                 titleAr: drift.Value(_titleArController.text.trim().isEmpty
@@ -162,6 +354,43 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
                 updatedAt: now,
               ),
             );
+
+        // Save temporary units if any
+        if (_tempUnits.isNotEmpty) {
+          for (final tempUnit in _tempUnits) {
+            final unitId = const Uuid().v4();
+
+            // Insert unit
+            await widget.database.into(widget.database.buildingUnits).insert(
+                  BuildingUnitsCompanion.insert(
+                    id: unitId,
+                    propertyId: propertyId,
+                    unitType: tempUnit.unitType,
+                    unitNumber: tempUnit.unitNumber,
+                    floorNumber: drift.Value(tempUnit.floorNumber),
+                    status: drift.Value(tempUnit.status),
+                    createdAt: now,
+                    updatedAt: now,
+                  ),
+                );
+
+            // Insert unit description
+            await widget.database.into(widget.database.unitDescriptions).insert(
+                  UnitDescriptionsCompanion.insert(
+                    id: const Uuid().v4(),
+                    unitId: unitId,
+                    rooms: drift.Value(tempUnit.description.rooms),
+                    bathrooms: drift.Value(tempUnit.description.bathrooms),
+                    kitchens: drift.Value(tempUnit.description.kitchens),
+                    description: drift.Value(tempUnit.description.description),
+                    descriptionAr:
+                        drift.Value(tempUnit.description.descriptionAr),
+                    createdAt: now,
+                    updatedAt: now,
+                  ),
+                );
+          }
+        }
       } else {
         // Update existing property
         await (widget.database.update(widget.database.properties)
@@ -215,6 +444,39 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
     }
   }
 
+  Future<void> _handleClose() async {
+    // Check if we are in "create mode" (temporary units) and have unsaved units
+    final hasUnsavedUnits = _useTemporaryUnits && _tempUnits.isNotEmpty;
+
+    if (hasUnsavedUnits) {
+      final l10n = AppLocalizations.of(context)!;
+      final shouldDiscard = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(l10n.discardChanges),
+          content: Text(l10n.discardChangesConfirmation),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(l10n.cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(l10n.discard,
+                  style: TextStyle(color: Theme.of(context).colorScheme.error)),
+            ),
+          ],
+        ),
+      );
+
+      if (shouldDiscard == true) {
+        if (mounted) Navigator.of(context).pop();
+      }
+    } else {
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -260,7 +522,7 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
                     ),
                     IconButton(
                       icon: const Icon(Icons.close),
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: _handleClose,
                     ),
                   ],
                 ),
@@ -430,27 +692,31 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
                       ),
                       const SizedBox(height: 16),
 
-                      // Bedrooms
-                      TextFormField(
-                        controller: _bedroomsController,
-                        decoration: InputDecoration(
-                          labelText: l10n.bedrooms,
-                          prefixIcon: const Icon(Icons.bed),
+                      // Bedrooms (hidden for buildings)
+                      if (_selectedPropertyType != 'building') ...[
+                        TextFormField(
+                          controller: _bedroomsController,
+                          decoration: InputDecoration(
+                            labelText: l10n.bedrooms,
+                            prefixIcon: const Icon(Icons.bed),
+                          ),
+                          keyboardType: TextInputType.number,
                         ),
-                        keyboardType: TextInputType.number,
-                      ),
-                      const SizedBox(height: 16),
+                        const SizedBox(height: 16),
+                      ],
 
-                      // Bathrooms
-                      TextFormField(
-                        controller: _bathroomsController,
-                        decoration: InputDecoration(
-                          labelText: l10n.bathrooms,
-                          prefixIcon: const Icon(Icons.bathroom),
+                      // Bathrooms (hidden for buildings)
+                      if (_selectedPropertyType != 'building') ...[
+                        TextFormField(
+                          controller: _bathroomsController,
+                          decoration: InputDecoration(
+                            labelText: l10n.bathrooms,
+                            prefixIcon: const Icon(Icons.bathroom),
+                          ),
+                          keyboardType: TextInputType.number,
                         ),
-                        keyboardType: TextInputType.number,
-                      ),
-                      const SizedBox(height: 16),
+                        const SizedBox(height: 16),
+                      ],
 
                       // Address
                       TextFormField(
@@ -523,6 +789,211 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
                           }
                         },
                       ),
+                      const SizedBox(height: 16),
+
+                      // Embedded Unit Management
+                      if (_selectedPropertyType == 'building') ...[
+                        const SizedBox(height: 24),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(l10n.units,
+                                style: Theme.of(context).textTheme.titleLarge),
+                            IconButton(
+                              onPressed: () => _showUnitForm(),
+                              icon: const Icon(Icons.add_circle),
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+
+                        // Info banner
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          margin: const EdgeInsets.only(bottom: 12),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .primaryContainer
+                                .withValues(alpha: 0.3),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withValues(alpha: 0.3),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.info_outline,
+                                size: 20,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Text(
+                                  _useTemporaryUnits
+                                      ? 'Units will be saved when you create the property'
+                                      : 'Unit changes are saved immediately to the database',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        // Unit list - Temporary mode (new property)
+                        if (_useTemporaryUnits)
+                          _tempUnits.isEmpty
+                              ? Container(
+                                  padding: const EdgeInsets.all(24),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Theme.of(context).dividerColor),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Center(child: Text(l10n.noUnitsFound)),
+                                )
+                              : ListView.separated(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: _tempUnits.length,
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(height: 8),
+                                  itemBuilder: (context, index) {
+                                    final tempUnit = _tempUnits[index];
+                                    return Card(
+                                      margin: EdgeInsets.zero,
+                                      child: ListTile(
+                                        leading: CircleAvatar(
+                                          radius: 16,
+                                          child: Icon(
+                                              _getUnitIcon(tempUnit.unitType),
+                                              size: 16),
+                                        ),
+                                        title: Text(
+                                            '${_getUnitTypeName(tempUnit.unitType, l10n)} ${tempUnit.unitNumber}'),
+                                        subtitle: Text(
+                                            '${l10n.status}: ${_getStatusName(tempUnit.status, l10n)}'),
+                                        trailing: PopupMenuButton(
+                                          padding: EdgeInsets.zero,
+                                          itemBuilder: (context) => [
+                                            PopupMenuItem(
+                                              value: 'edit',
+                                              child: Text(l10n.edit),
+                                            ),
+                                            PopupMenuItem(
+                                              value: 'delete',
+                                              child: Text(l10n.delete,
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .error)),
+                                            ),
+                                          ],
+                                          onSelected: (value) {
+                                            if (value == 'edit') {
+                                              _showUnitForm(
+                                                  tempUnit: tempUnit,
+                                                  tempIndex: index);
+                                            } else if (value == 'delete') {
+                                              _deleteTempUnit(index);
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                )
+                        // Unit list - Database mode (existing property)
+                        else
+                          StreamBuilder<List<UnitWithDescription>>(
+                            stream: _unitsStream,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('${l10n.error}: ${snapshot.error}');
+                              }
+                              if (!snapshot.hasData) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              }
+                              final units = snapshot.data!;
+                              if (units.isEmpty) {
+                                return Container(
+                                  padding: const EdgeInsets.all(24),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Theme.of(context).dividerColor),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Center(child: Text(l10n.noUnitsFound)),
+                                );
+                              }
+                              return ListView.separated(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: units.length,
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(height: 8),
+                                itemBuilder: (context, index) {
+                                  final item = units[index];
+                                  final unit = item.unit;
+                                  final desc = item.description;
+                                  return Card(
+                                    margin: EdgeInsets.zero,
+                                    child: ListTile(
+                                      leading: CircleAvatar(
+                                        radius: 16,
+                                        child: Icon(_getUnitIcon(unit.unitType),
+                                            size: 16),
+                                      ),
+                                      title: Text(
+                                          '${_getUnitTypeName(unit.unitType, l10n)} ${unit.unitNumber}'),
+                                      subtitle: Text(
+                                          '${l10n.status}: ${_getStatusName(unit.status, l10n)}'),
+                                      trailing: PopupMenuButton(
+                                        padding: EdgeInsets.zero,
+                                        itemBuilder: (context) => [
+                                          PopupMenuItem(
+                                            value: 'edit',
+                                            child: Text(l10n.edit),
+                                          ),
+                                          PopupMenuItem(
+                                            value: 'delete',
+                                            child: Text(l10n.delete,
+                                                style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .error)),
+                                          ),
+                                        ],
+                                        onSelected: (value) {
+                                          if (value == 'edit') {
+                                            _showUnitForm(
+                                                unit: unit, description: desc);
+                                          } else if (value == 'delete') {
+                                            _deleteUnit(unit.id);
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                      ],
+
                       const SizedBox(height: 24),
 
                       // Save button

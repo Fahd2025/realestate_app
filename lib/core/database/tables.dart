@@ -176,3 +176,38 @@ class Notifications extends Table {
   @override
   Set<Column> get primaryKey => {id};
 }
+
+// Building Units table
+class BuildingUnits extends Table {
+  TextColumn get id => text()();
+  TextColumn get propertyId =>
+      text().references(Properties, #id, onDelete: KeyAction.cascade)();
+  TextColumn get unitType => text()(); // floor, apartment, office, shop
+  TextColumn get unitNumber => text()();
+  TextColumn get floorNumber => text().nullable()();
+  TextColumn get status => text().withDefault(const Constant('available'))();
+  DateTimeColumn get createdAt => dateTime()();
+  DateTimeColumn get updatedAt => dateTime()();
+  TextColumn get syncStatus => text().withDefault(const Constant('synced'))();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+// Unit Descriptions table
+class UnitDescriptions extends Table {
+  TextColumn get id => text()();
+  TextColumn get unitId =>
+      text().references(BuildingUnits, #id, onDelete: KeyAction.cascade)();
+  IntColumn get rooms => integer().nullable()();
+  IntColumn get bathrooms => integer().nullable()();
+  IntColumn get kitchens => integer().nullable()();
+  TextColumn get description => text().nullable()();
+  TextColumn get descriptionAr => text().nullable()();
+  DateTimeColumn get createdAt => dateTime()();
+  DateTimeColumn get updatedAt => dateTime()();
+  TextColumn get syncStatus => text().withDefault(const Constant('synced'))();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}

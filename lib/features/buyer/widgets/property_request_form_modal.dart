@@ -92,6 +92,7 @@ class _PropertyRequestFormModalState extends State<PropertyRequestFormModal> {
         DropdownMenuItem(value: 'twin_house', child: Text(l10n.twinHouse)),
         DropdownMenuItem(value: 'duplex', child: Text(l10n.duplex)),
         DropdownMenuItem(value: 'land', child: Text(l10n.land)),
+        DropdownMenuItem(value: 'building', child: Text(l10n.building)),
       ];
     } else {
       return [
@@ -101,6 +102,7 @@ class _PropertyRequestFormModalState extends State<PropertyRequestFormModal> {
         DropdownMenuItem(
             value: 'commercial_store', child: Text(l10n.commercialStore)),
         DropdownMenuItem(value: 'medical', child: Text(l10n.medical)),
+        DropdownMenuItem(value: 'building', child: Text(l10n.building)),
       ];
     }
   }
@@ -277,7 +279,7 @@ class _PropertyRequestFormModalState extends State<PropertyRequestFormModal> {
 
                       // Category
                       DropdownButtonFormField<String>(
-                        value: _selectedCategory,
+                        initialValue: _selectedCategory,
                         decoration: InputDecoration(
                           labelText: l10n.category,
                           prefixIcon: const Icon(Icons.category),
@@ -305,7 +307,7 @@ class _PropertyRequestFormModalState extends State<PropertyRequestFormModal> {
 
                       // Property Type
                       DropdownButtonFormField<String>(
-                        value: _selectedPropertyType,
+                        initialValue: _selectedPropertyType,
                         decoration: InputDecoration(
                           labelText: '${l10n.type} (${l10n.optional})',
                           prefixIcon: const Icon(Icons.home_work),
@@ -388,7 +390,7 @@ class _PropertyRequestFormModalState extends State<PropertyRequestFormModal> {
 
                       // Urgency
                       DropdownButtonFormField<String>(
-                        value: _selectedUrgency,
+                        initialValue: _selectedUrgency,
                         decoration: InputDecoration(
                           labelText: l10n.urgency,
                           prefixIcon: const Icon(Icons.schedule),

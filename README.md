@@ -14,39 +14,44 @@ A comprehensive Flutter real estate application supporting buying, selling, and 
 ## Quick Start
 
 ### Prerequisites
+
 - Flutter SDK (latest stable version)
 - Chrome browser (for web testing)
 
 ### Installation
 
 1. **Install dependencies**:
+
 ```bash
 flutter pub get
 ```
 
 2. **Generate database code** (if needed):
+
 ```bash
 dart run build_runner build --delete-conflicting-outputs
 ```
 
 3. **Run on Chrome**:
+
 ```bash
 flutter run -d chrome
 ```
 
 4. **Build for web**:
+
 ```bash
 flutter build web
 ```
 
 ## Demo Credentials
 
-| Role | Username | Password |
-|------|----------|----------|
-| Admin | admin | 123 |
-| Owner | owner1 | 123 |
-| Tenant | tenant1 | 123 |
-| Buyer | buyer1 | 123 |
+| Role   | Username | Password |
+| ------ | -------- | -------- |
+| Admin  | admin    | 123      |
+| Owner  | owner1   | 123      |
+| Tenant | tenant1  | 123      |
+| Buyer  | buyer1   | 123      |
 
 ## Project Structure
 
@@ -73,13 +78,18 @@ lib/
 ## Database Schema
 
 The application uses Drift ORM with the following tables:
+
 - **users**: User accounts with role-based access
 - **properties**: Real estate listings
 - **property_images**: Property photos
 - **contracts**: Rental and sale agreements
 - **payments**: Payment transactions
 - **purchase_requests**: Buyer purchase requests
+- **building_units**: Units within a building property
+- **unit_descriptions**: Detailed descriptions for units
 - **settings**: App configuration
+
+See [Property and Unit Management](docs/property_and_unit_management.md) for details on the new building and unit features.
 
 ## API Integration
 
@@ -109,6 +119,7 @@ See `lib/core/constants/api_endpoints.dart` for the complete list of RESTful end
 1. Modify tables in `lib/core/database/tables.dart`
 2. Update schema version in `lib/core/database/database.dart`
 3. Run code generation:
+
 ```bash
 dart run build_runner build --delete-conflicting-outputs
 ```
@@ -121,6 +132,7 @@ dart run build_runner build --delete-conflicting-outputs
 ## Troubleshooting
 
 ### Build Runner Issues
+
 ```bash
 # Clean and rebuild
 flutter clean
@@ -130,9 +142,11 @@ dart run build_runner build --delete-conflicting-outputs
 ```
 
 ### Web Database Issues
+
 The app uses IndexedDB for web storage. Clear browser data if you encounter database issues.
 
 ### Localization Not Working
+
 Ensure `flutter pub get` has been run and the app has been restarted.
 
 ## License

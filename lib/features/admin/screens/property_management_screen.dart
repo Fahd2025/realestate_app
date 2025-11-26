@@ -317,6 +317,7 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
         _buildTypeChip(l10n.twinHouse, 'twin_house'),
         _buildTypeChip(l10n.duplex, 'duplex'),
         _buildTypeChip(l10n.land, 'land'),
+        _buildTypeChip(l10n.building, 'building'),
       ]);
     } else if (_selectedCategoryFilter == 'commercial') {
       chips.addAll([
@@ -325,6 +326,7 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
         _buildTypeChip(l10n.industrial, 'industrial'),
         _buildTypeChip(l10n.commercialStore, 'commercial_store'),
         _buildTypeChip(l10n.medical, 'medical'),
+        _buildTypeChip(l10n.building, 'building'),
       ]);
     }
     return chips;
@@ -488,6 +490,8 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
         return l10n.commercialStore;
       case 'medical':
         return l10n.medical;
+      case 'building':
+        return l10n.building;
       default:
         return type;
     }
@@ -539,6 +543,8 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
         return Icons.storefront;
       case 'medical':
         return Icons.local_hospital;
+      case 'building':
+        return Icons.domain;
       default:
         return Icons.home;
     }

@@ -319,5 +319,22 @@
   "signature": "Signature",
   "ownerSignature": "Owner Signature",
   "tenantSignature": "Tenant Signature",
-  "buyerSignature": "Buyer Signature"
+  "buyerSignature": "Buyer Signature",
+  "building": "Building",
+  "units": "Units",
+  "manageUnits": "Manage Units",
+  "unitType": "Unit Type",
+  "unitNumber": "Unit Number",
+  "floorNumber": "Floor Number",
+  "kitchens": "Kitchens",
+  "noUnitsFound": "No units found",
+  "addUnit": "Add Unit",
+  "editUnit": "Edit Unit",
+  "deleteUnit": "Delete Unit",
+  "deleteUnitConfirmation": "Are you sure you want to delete this unit?",
+  "discardChanges": "Discard Changes?",
+  "discardChangesConfirmation": "You have unsaved changes. Are you sure you want to discard them?",
+  "discard": "Discard",
+  "floor": "Floor",
+  "shop": "Shop"
 }

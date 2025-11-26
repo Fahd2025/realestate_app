@@ -913,4 +913,56 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get buyerSignature => 'توقيع المشتري';
+
+  @override
+  String get building => 'مبنى';
+
+  @override
+  String get units => 'الوحدات';
+
+  @override
+  String get manageUnits => 'إدارة الوحدات';
+
+  @override
+  String get unitType => 'نوع الوحدة';
+
+  @override
+  String get unitNumber => 'رقم الوحدة';
+
+  @override
+  String get floorNumber => 'رقم الطابق';
+
+  @override
+  String get kitchens => 'Kitchens';
+
+  @override
+  String get noUnitsFound => 'لا توجد وحدات';
+
+  @override
+  String get addUnit => 'إضافة وحدة';
+
+  @override
+  String get editUnit => 'تعديل الوحدة';
+
+  @override
+  String get deleteUnit => 'حذف الوحدة';
+
+  @override
+  String get deleteUnitConfirmation => 'هل أنت متأكد من حذف هذه الوحدة؟';
+
+  @override
+  String get discardChanges => 'تجاهل التغييرات؟';
+
+  @override
+  String get discardChangesConfirmation =>
+      'لديك تغييرات غير محفوظة. هل أنت متأكد أنك تريد تجاهلها؟';
+
+  @override
+  String get discard => 'تجاهل';
+
+  @override
+  String get floor => 'طابق';
+
+  @override
+  String get shop => 'محل';
 }

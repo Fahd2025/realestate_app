@@ -5580,6 +5580,1006 @@ class NotificationsCompanion extends UpdateCompanion<Notification> {
   }
 }
 
+class $BuildingUnitsTable extends BuildingUnits
+    with TableInfo<$BuildingUnitsTable, BuildingUnit> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $BuildingUnitsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _propertyIdMeta =
+      const VerificationMeta('propertyId');
+  @override
+  late final GeneratedColumn<String> propertyId = GeneratedColumn<String>(
+      'property_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES properties (id) ON DELETE CASCADE'));
+  static const VerificationMeta _unitTypeMeta =
+      const VerificationMeta('unitType');
+  @override
+  late final GeneratedColumn<String> unitType = GeneratedColumn<String>(
+      'unit_type', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _unitNumberMeta =
+      const VerificationMeta('unitNumber');
+  @override
+  late final GeneratedColumn<String> unitNumber = GeneratedColumn<String>(
+      'unit_number', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _floorNumberMeta =
+      const VerificationMeta('floorNumber');
+  @override
+  late final GeneratedColumn<String> floorNumber = GeneratedColumn<String>(
+      'floor_number', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+      'status', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('available'));
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _syncStatusMeta =
+      const VerificationMeta('syncStatus');
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+      'sync_status', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('synced'));
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        propertyId,
+        unitType,
+        unitNumber,
+        floorNumber,
+        status,
+        createdAt,
+        updatedAt,
+        syncStatus
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'building_units';
+  @override
+  VerificationContext validateIntegrity(Insertable<BuildingUnit> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('property_id')) {
+      context.handle(
+          _propertyIdMeta,
+          propertyId.isAcceptableOrUnknown(
+              data['property_id']!, _propertyIdMeta));
+    } else if (isInserting) {
+      context.missing(_propertyIdMeta);
+    }
+    if (data.containsKey('unit_type')) {
+      context.handle(_unitTypeMeta,
+          unitType.isAcceptableOrUnknown(data['unit_type']!, _unitTypeMeta));
+    } else if (isInserting) {
+      context.missing(_unitTypeMeta);
+    }
+    if (data.containsKey('unit_number')) {
+      context.handle(
+          _unitNumberMeta,
+          unitNumber.isAcceptableOrUnknown(
+              data['unit_number']!, _unitNumberMeta));
+    } else if (isInserting) {
+      context.missing(_unitNumberMeta);
+    }
+    if (data.containsKey('floor_number')) {
+      context.handle(
+          _floorNumberMeta,
+          floorNumber.isAcceptableOrUnknown(
+              data['floor_number']!, _floorNumberMeta));
+    }
+    if (data.containsKey('status')) {
+      context.handle(_statusMeta,
+          status.isAcceptableOrUnknown(data['status']!, _statusMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+          _syncStatusMeta,
+          syncStatus.isAcceptableOrUnknown(
+              data['sync_status']!, _syncStatusMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  BuildingUnit map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return BuildingUnit(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      propertyId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}property_id'])!,
+      unitType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}unit_type'])!,
+      unitNumber: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}unit_number'])!,
+      floorNumber: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}floor_number']),
+      status: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}status'])!,
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
+      syncStatus: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sync_status'])!,
+    );
+  }
+
+  @override
+  $BuildingUnitsTable createAlias(String alias) {
+    return $BuildingUnitsTable(attachedDatabase, alias);
+  }
+}
+
+class BuildingUnit extends DataClass implements Insertable<BuildingUnit> {
+  final String id;
+  final String propertyId;
+  final String unitType;
+  final String unitNumber;
+  final String? floorNumber;
+  final String status;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final String syncStatus;
+  const BuildingUnit(
+      {required this.id,
+      required this.propertyId,
+      required this.unitType,
+      required this.unitNumber,
+      this.floorNumber,
+      required this.status,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.syncStatus});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['property_id'] = Variable<String>(propertyId);
+    map['unit_type'] = Variable<String>(unitType);
+    map['unit_number'] = Variable<String>(unitNumber);
+    if (!nullToAbsent || floorNumber != null) {
+      map['floor_number'] = Variable<String>(floorNumber);
+    }
+    map['status'] = Variable<String>(status);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['sync_status'] = Variable<String>(syncStatus);
+    return map;
+  }
+
+  BuildingUnitsCompanion toCompanion(bool nullToAbsent) {
+    return BuildingUnitsCompanion(
+      id: Value(id),
+      propertyId: Value(propertyId),
+      unitType: Value(unitType),
+      unitNumber: Value(unitNumber),
+      floorNumber: floorNumber == null && nullToAbsent
+          ? const Value.absent()
+          : Value(floorNumber),
+      status: Value(status),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      syncStatus: Value(syncStatus),
+    );
+  }
+
+  factory BuildingUnit.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return BuildingUnit(
+      id: serializer.fromJson<String>(json['id']),
+      propertyId: serializer.fromJson<String>(json['propertyId']),
+      unitType: serializer.fromJson<String>(json['unitType']),
+      unitNumber: serializer.fromJson<String>(json['unitNumber']),
+      floorNumber: serializer.fromJson<String?>(json['floorNumber']),
+      status: serializer.fromJson<String>(json['status']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'propertyId': serializer.toJson<String>(propertyId),
+      'unitType': serializer.toJson<String>(unitType),
+      'unitNumber': serializer.toJson<String>(unitNumber),
+      'floorNumber': serializer.toJson<String?>(floorNumber),
+      'status': serializer.toJson<String>(status),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+    };
+  }
+
+  BuildingUnit copyWith(
+          {String? id,
+          String? propertyId,
+          String? unitType,
+          String? unitNumber,
+          Value<String?> floorNumber = const Value.absent(),
+          String? status,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          String? syncStatus}) =>
+      BuildingUnit(
+        id: id ?? this.id,
+        propertyId: propertyId ?? this.propertyId,
+        unitType: unitType ?? this.unitType,
+        unitNumber: unitNumber ?? this.unitNumber,
+        floorNumber: floorNumber.present ? floorNumber.value : this.floorNumber,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        syncStatus: syncStatus ?? this.syncStatus,
+      );
+  BuildingUnit copyWithCompanion(BuildingUnitsCompanion data) {
+    return BuildingUnit(
+      id: data.id.present ? data.id.value : this.id,
+      propertyId:
+          data.propertyId.present ? data.propertyId.value : this.propertyId,
+      unitType: data.unitType.present ? data.unitType.value : this.unitType,
+      unitNumber:
+          data.unitNumber.present ? data.unitNumber.value : this.unitNumber,
+      floorNumber:
+          data.floorNumber.present ? data.floorNumber.value : this.floorNumber,
+      status: data.status.present ? data.status.value : this.status,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      syncStatus:
+          data.syncStatus.present ? data.syncStatus.value : this.syncStatus,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BuildingUnit(')
+          ..write('id: $id, ')
+          ..write('propertyId: $propertyId, ')
+          ..write('unitType: $unitType, ')
+          ..write('unitNumber: $unitNumber, ')
+          ..write('floorNumber: $floorNumber, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, propertyId, unitType, unitNumber,
+      floorNumber, status, createdAt, updatedAt, syncStatus);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is BuildingUnit &&
+          other.id == this.id &&
+          other.propertyId == this.propertyId &&
+          other.unitType == this.unitType &&
+          other.unitNumber == this.unitNumber &&
+          other.floorNumber == this.floorNumber &&
+          other.status == this.status &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.syncStatus == this.syncStatus);
+}
+
+class BuildingUnitsCompanion extends UpdateCompanion<BuildingUnit> {
+  final Value<String> id;
+  final Value<String> propertyId;
+  final Value<String> unitType;
+  final Value<String> unitNumber;
+  final Value<String?> floorNumber;
+  final Value<String> status;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> syncStatus;
+  final Value<int> rowid;
+  const BuildingUnitsCompanion({
+    this.id = const Value.absent(),
+    this.propertyId = const Value.absent(),
+    this.unitType = const Value.absent(),
+    this.unitNumber = const Value.absent(),
+    this.floorNumber = const Value.absent(),
+    this.status = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  BuildingUnitsCompanion.insert({
+    required String id,
+    required String propertyId,
+    required String unitType,
+    required String unitNumber,
+    this.floorNumber = const Value.absent(),
+    this.status = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.syncStatus = const Value.absent(),
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        propertyId = Value(propertyId),
+        unitType = Value(unitType),
+        unitNumber = Value(unitNumber),
+        createdAt = Value(createdAt),
+        updatedAt = Value(updatedAt);
+  static Insertable<BuildingUnit> custom({
+    Expression<String>? id,
+    Expression<String>? propertyId,
+    Expression<String>? unitType,
+    Expression<String>? unitNumber,
+    Expression<String>? floorNumber,
+    Expression<String>? status,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? syncStatus,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (propertyId != null) 'property_id': propertyId,
+      if (unitType != null) 'unit_type': unitType,
+      if (unitNumber != null) 'unit_number': unitNumber,
+      if (floorNumber != null) 'floor_number': floorNumber,
+      if (status != null) 'status': status,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  BuildingUnitsCompanion copyWith(
+      {Value<String>? id,
+      Value<String>? propertyId,
+      Value<String>? unitType,
+      Value<String>? unitNumber,
+      Value<String?>? floorNumber,
+      Value<String>? status,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt,
+      Value<String>? syncStatus,
+      Value<int>? rowid}) {
+    return BuildingUnitsCompanion(
+      id: id ?? this.id,
+      propertyId: propertyId ?? this.propertyId,
+      unitType: unitType ?? this.unitType,
+      unitNumber: unitNumber ?? this.unitNumber,
+      floorNumber: floorNumber ?? this.floorNumber,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (propertyId.present) {
+      map['property_id'] = Variable<String>(propertyId.value);
+    }
+    if (unitType.present) {
+      map['unit_type'] = Variable<String>(unitType.value);
+    }
+    if (unitNumber.present) {
+      map['unit_number'] = Variable<String>(unitNumber.value);
+    }
+    if (floorNumber.present) {
+      map['floor_number'] = Variable<String>(floorNumber.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BuildingUnitsCompanion(')
+          ..write('id: $id, ')
+          ..write('propertyId: $propertyId, ')
+          ..write('unitType: $unitType, ')
+          ..write('unitNumber: $unitNumber, ')
+          ..write('floorNumber: $floorNumber, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $UnitDescriptionsTable extends UnitDescriptions
+    with TableInfo<$UnitDescriptionsTable, UnitDescription> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UnitDescriptionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _unitIdMeta = const VerificationMeta('unitId');
+  @override
+  late final GeneratedColumn<String> unitId = GeneratedColumn<String>(
+      'unit_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES building_units (id) ON DELETE CASCADE'));
+  static const VerificationMeta _roomsMeta = const VerificationMeta('rooms');
+  @override
+  late final GeneratedColumn<int> rooms = GeneratedColumn<int>(
+      'rooms', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _bathroomsMeta =
+      const VerificationMeta('bathrooms');
+  @override
+  late final GeneratedColumn<int> bathrooms = GeneratedColumn<int>(
+      'bathrooms', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _kitchensMeta =
+      const VerificationMeta('kitchens');
+  @override
+  late final GeneratedColumn<int> kitchens = GeneratedColumn<int>(
+      'kitchens', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+      'description', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _descriptionArMeta =
+      const VerificationMeta('descriptionAr');
+  @override
+  late final GeneratedColumn<String> descriptionAr = GeneratedColumn<String>(
+      'description_ar', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _syncStatusMeta =
+      const VerificationMeta('syncStatus');
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+      'sync_status', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('synced'));
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        unitId,
+        rooms,
+        bathrooms,
+        kitchens,
+        description,
+        descriptionAr,
+        createdAt,
+        updatedAt,
+        syncStatus
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'unit_descriptions';
+  @override
+  VerificationContext validateIntegrity(Insertable<UnitDescription> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('unit_id')) {
+      context.handle(_unitIdMeta,
+          unitId.isAcceptableOrUnknown(data['unit_id']!, _unitIdMeta));
+    } else if (isInserting) {
+      context.missing(_unitIdMeta);
+    }
+    if (data.containsKey('rooms')) {
+      context.handle(
+          _roomsMeta, rooms.isAcceptableOrUnknown(data['rooms']!, _roomsMeta));
+    }
+    if (data.containsKey('bathrooms')) {
+      context.handle(_bathroomsMeta,
+          bathrooms.isAcceptableOrUnknown(data['bathrooms']!, _bathroomsMeta));
+    }
+    if (data.containsKey('kitchens')) {
+      context.handle(_kitchensMeta,
+          kitchens.isAcceptableOrUnknown(data['kitchens']!, _kitchensMeta));
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
+    }
+    if (data.containsKey('description_ar')) {
+      context.handle(
+          _descriptionArMeta,
+          descriptionAr.isAcceptableOrUnknown(
+              data['description_ar']!, _descriptionArMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+          _syncStatusMeta,
+          syncStatus.isAcceptableOrUnknown(
+              data['sync_status']!, _syncStatusMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  UnitDescription map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UnitDescription(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      unitId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}unit_id'])!,
+      rooms: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}rooms']),
+      bathrooms: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}bathrooms']),
+      kitchens: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}kitchens']),
+      description: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}description']),
+      descriptionAr: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}description_ar']),
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
+      syncStatus: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sync_status'])!,
+    );
+  }
+
+  @override
+  $UnitDescriptionsTable createAlias(String alias) {
+    return $UnitDescriptionsTable(attachedDatabase, alias);
+  }
+}
+
+class UnitDescription extends DataClass implements Insertable<UnitDescription> {
+  final String id;
+  final String unitId;
+  final int? rooms;
+  final int? bathrooms;
+  final int? kitchens;
+  final String? description;
+  final String? descriptionAr;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final String syncStatus;
+  const UnitDescription(
+      {required this.id,
+      required this.unitId,
+      this.rooms,
+      this.bathrooms,
+      this.kitchens,
+      this.description,
+      this.descriptionAr,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.syncStatus});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['unit_id'] = Variable<String>(unitId);
+    if (!nullToAbsent || rooms != null) {
+      map['rooms'] = Variable<int>(rooms);
+    }
+    if (!nullToAbsent || bathrooms != null) {
+      map['bathrooms'] = Variable<int>(bathrooms);
+    }
+    if (!nullToAbsent || kitchens != null) {
+      map['kitchens'] = Variable<int>(kitchens);
+    }
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    if (!nullToAbsent || descriptionAr != null) {
+      map['description_ar'] = Variable<String>(descriptionAr);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['sync_status'] = Variable<String>(syncStatus);
+    return map;
+  }
+
+  UnitDescriptionsCompanion toCompanion(bool nullToAbsent) {
+    return UnitDescriptionsCompanion(
+      id: Value(id),
+      unitId: Value(unitId),
+      rooms:
+          rooms == null && nullToAbsent ? const Value.absent() : Value(rooms),
+      bathrooms: bathrooms == null && nullToAbsent
+          ? const Value.absent()
+          : Value(bathrooms),
+      kitchens: kitchens == null && nullToAbsent
+          ? const Value.absent()
+          : Value(kitchens),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      descriptionAr: descriptionAr == null && nullToAbsent
+          ? const Value.absent()
+          : Value(descriptionAr),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      syncStatus: Value(syncStatus),
+    );
+  }
+
+  factory UnitDescription.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UnitDescription(
+      id: serializer.fromJson<String>(json['id']),
+      unitId: serializer.fromJson<String>(json['unitId']),
+      rooms: serializer.fromJson<int?>(json['rooms']),
+      bathrooms: serializer.fromJson<int?>(json['bathrooms']),
+      kitchens: serializer.fromJson<int?>(json['kitchens']),
+      description: serializer.fromJson<String?>(json['description']),
+      descriptionAr: serializer.fromJson<String?>(json['descriptionAr']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'unitId': serializer.toJson<String>(unitId),
+      'rooms': serializer.toJson<int?>(rooms),
+      'bathrooms': serializer.toJson<int?>(bathrooms),
+      'kitchens': serializer.toJson<int?>(kitchens),
+      'description': serializer.toJson<String?>(description),
+      'descriptionAr': serializer.toJson<String?>(descriptionAr),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+    };
+  }
+
+  UnitDescription copyWith(
+          {String? id,
+          String? unitId,
+          Value<int?> rooms = const Value.absent(),
+          Value<int?> bathrooms = const Value.absent(),
+          Value<int?> kitchens = const Value.absent(),
+          Value<String?> description = const Value.absent(),
+          Value<String?> descriptionAr = const Value.absent(),
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          String? syncStatus}) =>
+      UnitDescription(
+        id: id ?? this.id,
+        unitId: unitId ?? this.unitId,
+        rooms: rooms.present ? rooms.value : this.rooms,
+        bathrooms: bathrooms.present ? bathrooms.value : this.bathrooms,
+        kitchens: kitchens.present ? kitchens.value : this.kitchens,
+        description: description.present ? description.value : this.description,
+        descriptionAr:
+            descriptionAr.present ? descriptionAr.value : this.descriptionAr,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        syncStatus: syncStatus ?? this.syncStatus,
+      );
+  UnitDescription copyWithCompanion(UnitDescriptionsCompanion data) {
+    return UnitDescription(
+      id: data.id.present ? data.id.value : this.id,
+      unitId: data.unitId.present ? data.unitId.value : this.unitId,
+      rooms: data.rooms.present ? data.rooms.value : this.rooms,
+      bathrooms: data.bathrooms.present ? data.bathrooms.value : this.bathrooms,
+      kitchens: data.kitchens.present ? data.kitchens.value : this.kitchens,
+      description:
+          data.description.present ? data.description.value : this.description,
+      descriptionAr: data.descriptionAr.present
+          ? data.descriptionAr.value
+          : this.descriptionAr,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      syncStatus:
+          data.syncStatus.present ? data.syncStatus.value : this.syncStatus,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UnitDescription(')
+          ..write('id: $id, ')
+          ..write('unitId: $unitId, ')
+          ..write('rooms: $rooms, ')
+          ..write('bathrooms: $bathrooms, ')
+          ..write('kitchens: $kitchens, ')
+          ..write('description: $description, ')
+          ..write('descriptionAr: $descriptionAr, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, unitId, rooms, bathrooms, kitchens,
+      description, descriptionAr, createdAt, updatedAt, syncStatus);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UnitDescription &&
+          other.id == this.id &&
+          other.unitId == this.unitId &&
+          other.rooms == this.rooms &&
+          other.bathrooms == this.bathrooms &&
+          other.kitchens == this.kitchens &&
+          other.description == this.description &&
+          other.descriptionAr == this.descriptionAr &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.syncStatus == this.syncStatus);
+}
+
+class UnitDescriptionsCompanion extends UpdateCompanion<UnitDescription> {
+  final Value<String> id;
+  final Value<String> unitId;
+  final Value<int?> rooms;
+  final Value<int?> bathrooms;
+  final Value<int?> kitchens;
+  final Value<String?> description;
+  final Value<String?> descriptionAr;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> syncStatus;
+  final Value<int> rowid;
+  const UnitDescriptionsCompanion({
+    this.id = const Value.absent(),
+    this.unitId = const Value.absent(),
+    this.rooms = const Value.absent(),
+    this.bathrooms = const Value.absent(),
+    this.kitchens = const Value.absent(),
+    this.description = const Value.absent(),
+    this.descriptionAr = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  UnitDescriptionsCompanion.insert({
+    required String id,
+    required String unitId,
+    this.rooms = const Value.absent(),
+    this.bathrooms = const Value.absent(),
+    this.kitchens = const Value.absent(),
+    this.description = const Value.absent(),
+    this.descriptionAr = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.syncStatus = const Value.absent(),
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        unitId = Value(unitId),
+        createdAt = Value(createdAt),
+        updatedAt = Value(updatedAt);
+  static Insertable<UnitDescription> custom({
+    Expression<String>? id,
+    Expression<String>? unitId,
+    Expression<int>? rooms,
+    Expression<int>? bathrooms,
+    Expression<int>? kitchens,
+    Expression<String>? description,
+    Expression<String>? descriptionAr,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? syncStatus,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (unitId != null) 'unit_id': unitId,
+      if (rooms != null) 'rooms': rooms,
+      if (bathrooms != null) 'bathrooms': bathrooms,
+      if (kitchens != null) 'kitchens': kitchens,
+      if (description != null) 'description': description,
+      if (descriptionAr != null) 'description_ar': descriptionAr,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  UnitDescriptionsCompanion copyWith(
+      {Value<String>? id,
+      Value<String>? unitId,
+      Value<int?>? rooms,
+      Value<int?>? bathrooms,
+      Value<int?>? kitchens,
+      Value<String?>? description,
+      Value<String?>? descriptionAr,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt,
+      Value<String>? syncStatus,
+      Value<int>? rowid}) {
+    return UnitDescriptionsCompanion(
+      id: id ?? this.id,
+      unitId: unitId ?? this.unitId,
+      rooms: rooms ?? this.rooms,
+      bathrooms: bathrooms ?? this.bathrooms,
+      kitchens: kitchens ?? this.kitchens,
+      description: description ?? this.description,
+      descriptionAr: descriptionAr ?? this.descriptionAr,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (unitId.present) {
+      map['unit_id'] = Variable<String>(unitId.value);
+    }
+    if (rooms.present) {
+      map['rooms'] = Variable<int>(rooms.value);
+    }
+    if (bathrooms.present) {
+      map['bathrooms'] = Variable<int>(bathrooms.value);
+    }
+    if (kitchens.present) {
+      map['kitchens'] = Variable<int>(kitchens.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (descriptionAr.present) {
+      map['description_ar'] = Variable<String>(descriptionAr.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UnitDescriptionsCompanion(')
+          ..write('id: $id, ')
+          ..write('unitId: $unitId, ')
+          ..write('rooms: $rooms, ')
+          ..write('bathrooms: $bathrooms, ')
+          ..write('kitchens: $kitchens, ')
+          ..write('description: $description, ')
+          ..write('descriptionAr: $descriptionAr, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -5594,6 +6594,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $PropertyRequestsTable propertyRequests =
       $PropertyRequestsTable(this);
   late final $NotificationsTable notifications = $NotificationsTable(this);
+  late final $BuildingUnitsTable buildingUnits = $BuildingUnitsTable(this);
+  late final $UnitDescriptionsTable unitDescriptions =
+      $UnitDescriptionsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -5607,7 +6610,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         purchaseRequests,
         settings,
         propertyRequests,
-        notifications
+        notifications,
+        buildingUnits,
+        unitDescriptions
       ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules(
@@ -5617,6 +6622,20 @@ abstract class _$AppDatabase extends GeneratedDatabase {
                 limitUpdateKind: UpdateKind.delete),
             result: [
               TableUpdate('property_images', kind: UpdateKind.delete),
+            ],
+          ),
+          WritePropagation(
+            on: TableUpdateQuery.onTableName('properties',
+                limitUpdateKind: UpdateKind.delete),
+            result: [
+              TableUpdate('building_units', kind: UpdateKind.delete),
+            ],
+          ),
+          WritePropagation(
+            on: TableUpdateQuery.onTableName('building_units',
+                limitUpdateKind: UpdateKind.delete),
+            result: [
+              TableUpdate('unit_descriptions', kind: UpdateKind.delete),
             ],
           ),
         ],
@@ -6438,6 +7457,21 @@ final class $$PropertiesTableReferences
     return ProcessedTableManager(
         manager.$state.copyWith(prefetchedData: cache));
   }
+
+  static MultiTypedResultKey<$BuildingUnitsTable, List<BuildingUnit>>
+      _buildingUnitsRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.buildingUnits,
+              aliasName: $_aliasNameGenerator(
+                  db.properties.id, db.buildingUnits.propertyId));
+
+  $$BuildingUnitsTableProcessedTableManager get buildingUnitsRefs {
+    final manager = $$BuildingUnitsTableTableManager($_db, $_db.buildingUnits)
+        .filter((f) => f.propertyId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_buildingUnitsRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
 }
 
 class $$PropertiesTableFilterComposer
@@ -6588,6 +7622,27 @@ class $$PropertiesTableFilterComposer
             $$PurchaseRequestsTableFilterComposer(
               $db: $db,
               $table: $db.purchaseRequests,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+
+  Expression<bool> buildingUnitsRefs(
+      Expression<bool> Function($$BuildingUnitsTableFilterComposer f) f) {
+    final $$BuildingUnitsTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.buildingUnits,
+        getReferencedColumn: (t) => t.propertyId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$BuildingUnitsTableFilterComposer(
+              $db: $db,
+              $table: $db.buildingUnits,
               $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
               joinBuilder: joinBuilder,
               $removeJoinBuilderFromRootComposer:
@@ -6847,6 +7902,27 @@ class $$PropertiesTableAnnotationComposer
             ));
     return f(composer);
   }
+
+  Expression<T> buildingUnitsRefs<T extends Object>(
+      Expression<T> Function($$BuildingUnitsTableAnnotationComposer a) f) {
+    final $$BuildingUnitsTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.buildingUnits,
+        getReferencedColumn: (t) => t.propertyId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$BuildingUnitsTableAnnotationComposer(
+              $db: $db,
+              $table: $db.buildingUnits,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
 }
 
 class $$PropertiesTableTableManager extends RootTableManager<
@@ -6864,7 +7940,8 @@ class $$PropertiesTableTableManager extends RootTableManager<
         {bool ownerId,
         bool propertyImagesRefs,
         bool contractsRefs,
-        bool purchaseRequestsRefs})> {
+        bool purchaseRequestsRefs,
+        bool buildingUnitsRefs})> {
   $$PropertiesTableTableManager(_$AppDatabase db, $PropertiesTable table)
       : super(TableManagerState(
           db: db,
@@ -6985,13 +8062,15 @@ class $$PropertiesTableTableManager extends RootTableManager<
               {ownerId = false,
               propertyImagesRefs = false,
               contractsRefs = false,
-              purchaseRequestsRefs = false}) {
+              purchaseRequestsRefs = false,
+              buildingUnitsRefs = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [
                 if (propertyImagesRefs) db.propertyImages,
                 if (contractsRefs) db.contracts,
-                if (purchaseRequestsRefs) db.purchaseRequests
+                if (purchaseRequestsRefs) db.purchaseRequests,
+                if (buildingUnitsRefs) db.buildingUnits
               ],
               addJoins: <
                   T extends TableManagerState<
@@ -7059,6 +8138,19 @@ class $$PropertiesTableTableManager extends RootTableManager<
                         referencedItemsForCurrentItem:
                             (item, referencedItems) => referencedItems
                                 .where((e) => e.propertyId == item.id),
+                        typedResults: items),
+                  if (buildingUnitsRefs)
+                    await $_getPrefetchedData<Property, $PropertiesTable,
+                            BuildingUnit>(
+                        currentTable: table,
+                        referencedTable: $$PropertiesTableReferences
+                            ._buildingUnitsRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$PropertiesTableReferences(db, table, p0)
+                                .buildingUnitsRefs,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) => referencedItems
+                                .where((e) => e.propertyId == item.id),
                         typedResults: items)
                 ];
               },
@@ -7082,7 +8174,8 @@ typedef $$PropertiesTableProcessedTableManager = ProcessedTableManager<
         {bool ownerId,
         bool propertyImagesRefs,
         bool contractsRefs,
-        bool purchaseRequestsRefs})>;
+        bool purchaseRequestsRefs,
+        bool buildingUnitsRefs})>;
 typedef $$PropertyImagesTableCreateCompanionBuilder = PropertyImagesCompanion
     Function({
   required String id,
@@ -9881,6 +10974,771 @@ typedef $$NotificationsTableProcessedTableManager = ProcessedTableManager<
     (Notification, $$NotificationsTableReferences),
     Notification,
     PrefetchHooks Function({bool userId})>;
+typedef $$BuildingUnitsTableCreateCompanionBuilder = BuildingUnitsCompanion
+    Function({
+  required String id,
+  required String propertyId,
+  required String unitType,
+  required String unitNumber,
+  Value<String?> floorNumber,
+  Value<String> status,
+  required DateTime createdAt,
+  required DateTime updatedAt,
+  Value<String> syncStatus,
+  Value<int> rowid,
+});
+typedef $$BuildingUnitsTableUpdateCompanionBuilder = BuildingUnitsCompanion
+    Function({
+  Value<String> id,
+  Value<String> propertyId,
+  Value<String> unitType,
+  Value<String> unitNumber,
+  Value<String?> floorNumber,
+  Value<String> status,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+  Value<String> syncStatus,
+  Value<int> rowid,
+});
+
+final class $$BuildingUnitsTableReferences
+    extends BaseReferences<_$AppDatabase, $BuildingUnitsTable, BuildingUnit> {
+  $$BuildingUnitsTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static $PropertiesTable _propertyIdTable(_$AppDatabase db) =>
+      db.properties.createAlias(
+          $_aliasNameGenerator(db.buildingUnits.propertyId, db.properties.id));
+
+  $$PropertiesTableProcessedTableManager get propertyId {
+    final $_column = $_itemColumn<String>('property_id')!;
+
+    final manager = $$PropertiesTableTableManager($_db, $_db.properties)
+        .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_propertyIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static MultiTypedResultKey<$UnitDescriptionsTable, List<UnitDescription>>
+      _unitDescriptionsRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.unitDescriptions,
+              aliasName: $_aliasNameGenerator(
+                  db.buildingUnits.id, db.unitDescriptions.unitId));
+
+  $$UnitDescriptionsTableProcessedTableManager get unitDescriptionsRefs {
+    final manager =
+        $$UnitDescriptionsTableTableManager($_db, $_db.unitDescriptions)
+            .filter((f) => f.unitId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache =
+        $_typedResult.readTableOrNull(_unitDescriptionsRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+}
+
+class $$BuildingUnitsTableFilterComposer
+    extends Composer<_$AppDatabase, $BuildingUnitsTable> {
+  $$BuildingUnitsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get unitType => $composableBuilder(
+      column: $table.unitType, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get unitNumber => $composableBuilder(
+      column: $table.unitNumber, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get floorNumber => $composableBuilder(
+      column: $table.floorNumber, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get status => $composableBuilder(
+      column: $table.status, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+      column: $table.syncStatus, builder: (column) => ColumnFilters(column));
+
+  $$PropertiesTableFilterComposer get propertyId {
+    final $$PropertiesTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.propertyId,
+        referencedTable: $db.properties,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$PropertiesTableFilterComposer(
+              $db: $db,
+              $table: $db.properties,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  Expression<bool> unitDescriptionsRefs(
+      Expression<bool> Function($$UnitDescriptionsTableFilterComposer f) f) {
+    final $$UnitDescriptionsTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.unitDescriptions,
+        getReferencedColumn: (t) => t.unitId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UnitDescriptionsTableFilterComposer(
+              $db: $db,
+              $table: $db.unitDescriptions,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+}
+
+class $$BuildingUnitsTableOrderingComposer
+    extends Composer<_$AppDatabase, $BuildingUnitsTable> {
+  $$BuildingUnitsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get unitType => $composableBuilder(
+      column: $table.unitType, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get unitNumber => $composableBuilder(
+      column: $table.unitNumber, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get floorNumber => $composableBuilder(
+      column: $table.floorNumber, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get status => $composableBuilder(
+      column: $table.status, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+      column: $table.syncStatus, builder: (column) => ColumnOrderings(column));
+
+  $$PropertiesTableOrderingComposer get propertyId {
+    final $$PropertiesTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.propertyId,
+        referencedTable: $db.properties,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$PropertiesTableOrderingComposer(
+              $db: $db,
+              $table: $db.properties,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$BuildingUnitsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $BuildingUnitsTable> {
+  $$BuildingUnitsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get unitType =>
+      $composableBuilder(column: $table.unitType, builder: (column) => column);
+
+  GeneratedColumn<String> get unitNumber => $composableBuilder(
+      column: $table.unitNumber, builder: (column) => column);
+
+  GeneratedColumn<String> get floorNumber => $composableBuilder(
+      column: $table.floorNumber, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+      column: $table.syncStatus, builder: (column) => column);
+
+  $$PropertiesTableAnnotationComposer get propertyId {
+    final $$PropertiesTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.propertyId,
+        referencedTable: $db.properties,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$PropertiesTableAnnotationComposer(
+              $db: $db,
+              $table: $db.properties,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  Expression<T> unitDescriptionsRefs<T extends Object>(
+      Expression<T> Function($$UnitDescriptionsTableAnnotationComposer a) f) {
+    final $$UnitDescriptionsTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.unitDescriptions,
+        getReferencedColumn: (t) => t.unitId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UnitDescriptionsTableAnnotationComposer(
+              $db: $db,
+              $table: $db.unitDescriptions,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+}
+
+class $$BuildingUnitsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $BuildingUnitsTable,
+    BuildingUnit,
+    $$BuildingUnitsTableFilterComposer,
+    $$BuildingUnitsTableOrderingComposer,
+    $$BuildingUnitsTableAnnotationComposer,
+    $$BuildingUnitsTableCreateCompanionBuilder,
+    $$BuildingUnitsTableUpdateCompanionBuilder,
+    (BuildingUnit, $$BuildingUnitsTableReferences),
+    BuildingUnit,
+    PrefetchHooks Function({bool propertyId, bool unitDescriptionsRefs})> {
+  $$BuildingUnitsTableTableManager(_$AppDatabase db, $BuildingUnitsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$BuildingUnitsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$BuildingUnitsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$BuildingUnitsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String> propertyId = const Value.absent(),
+            Value<String> unitType = const Value.absent(),
+            Value<String> unitNumber = const Value.absent(),
+            Value<String?> floorNumber = const Value.absent(),
+            Value<String> status = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<DateTime> updatedAt = const Value.absent(),
+            Value<String> syncStatus = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              BuildingUnitsCompanion(
+            id: id,
+            propertyId: propertyId,
+            unitType: unitType,
+            unitNumber: unitNumber,
+            floorNumber: floorNumber,
+            status: status,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            syncStatus: syncStatus,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            required String propertyId,
+            required String unitType,
+            required String unitNumber,
+            Value<String?> floorNumber = const Value.absent(),
+            Value<String> status = const Value.absent(),
+            required DateTime createdAt,
+            required DateTime updatedAt,
+            Value<String> syncStatus = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              BuildingUnitsCompanion.insert(
+            id: id,
+            propertyId: propertyId,
+            unitType: unitType,
+            unitNumber: unitNumber,
+            floorNumber: floorNumber,
+            status: status,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            syncStatus: syncStatus,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$BuildingUnitsTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: (
+              {propertyId = false, unitDescriptionsRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (unitDescriptionsRefs) db.unitDescriptions
+              ],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (propertyId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.propertyId,
+                    referencedTable:
+                        $$BuildingUnitsTableReferences._propertyIdTable(db),
+                    referencedColumn:
+                        $$BuildingUnitsTableReferences._propertyIdTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (unitDescriptionsRefs)
+                    await $_getPrefetchedData<BuildingUnit, $BuildingUnitsTable,
+                            UnitDescription>(
+                        currentTable: table,
+                        referencedTable: $$BuildingUnitsTableReferences
+                            ._unitDescriptionsRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$BuildingUnitsTableReferences(db, table, p0)
+                                .unitDescriptionsRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.unitId == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$BuildingUnitsTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $BuildingUnitsTable,
+    BuildingUnit,
+    $$BuildingUnitsTableFilterComposer,
+    $$BuildingUnitsTableOrderingComposer,
+    $$BuildingUnitsTableAnnotationComposer,
+    $$BuildingUnitsTableCreateCompanionBuilder,
+    $$BuildingUnitsTableUpdateCompanionBuilder,
+    (BuildingUnit, $$BuildingUnitsTableReferences),
+    BuildingUnit,
+    PrefetchHooks Function({bool propertyId, bool unitDescriptionsRefs})>;
+typedef $$UnitDescriptionsTableCreateCompanionBuilder
+    = UnitDescriptionsCompanion Function({
+  required String id,
+  required String unitId,
+  Value<int?> rooms,
+  Value<int?> bathrooms,
+  Value<int?> kitchens,
+  Value<String?> description,
+  Value<String?> descriptionAr,
+  required DateTime createdAt,
+  required DateTime updatedAt,
+  Value<String> syncStatus,
+  Value<int> rowid,
+});
+typedef $$UnitDescriptionsTableUpdateCompanionBuilder
+    = UnitDescriptionsCompanion Function({
+  Value<String> id,
+  Value<String> unitId,
+  Value<int?> rooms,
+  Value<int?> bathrooms,
+  Value<int?> kitchens,
+  Value<String?> description,
+  Value<String?> descriptionAr,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+  Value<String> syncStatus,
+  Value<int> rowid,
+});
+
+final class $$UnitDescriptionsTableReferences extends BaseReferences<
+    _$AppDatabase, $UnitDescriptionsTable, UnitDescription> {
+  $$UnitDescriptionsTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static $BuildingUnitsTable _unitIdTable(_$AppDatabase db) =>
+      db.buildingUnits.createAlias($_aliasNameGenerator(
+          db.unitDescriptions.unitId, db.buildingUnits.id));
+
+  $$BuildingUnitsTableProcessedTableManager get unitId {
+    final $_column = $_itemColumn<String>('unit_id')!;
+
+    final manager = $$BuildingUnitsTableTableManager($_db, $_db.buildingUnits)
+        .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_unitIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$UnitDescriptionsTableFilterComposer
+    extends Composer<_$AppDatabase, $UnitDescriptionsTable> {
+  $$UnitDescriptionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get rooms => $composableBuilder(
+      column: $table.rooms, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get bathrooms => $composableBuilder(
+      column: $table.bathrooms, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get kitchens => $composableBuilder(
+      column: $table.kitchens, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get descriptionAr => $composableBuilder(
+      column: $table.descriptionAr, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+      column: $table.syncStatus, builder: (column) => ColumnFilters(column));
+
+  $$BuildingUnitsTableFilterComposer get unitId {
+    final $$BuildingUnitsTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.unitId,
+        referencedTable: $db.buildingUnits,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$BuildingUnitsTableFilterComposer(
+              $db: $db,
+              $table: $db.buildingUnits,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$UnitDescriptionsTableOrderingComposer
+    extends Composer<_$AppDatabase, $UnitDescriptionsTable> {
+  $$UnitDescriptionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get rooms => $composableBuilder(
+      column: $table.rooms, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get bathrooms => $composableBuilder(
+      column: $table.bathrooms, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get kitchens => $composableBuilder(
+      column: $table.kitchens, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get descriptionAr => $composableBuilder(
+      column: $table.descriptionAr,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+      column: $table.syncStatus, builder: (column) => ColumnOrderings(column));
+
+  $$BuildingUnitsTableOrderingComposer get unitId {
+    final $$BuildingUnitsTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.unitId,
+        referencedTable: $db.buildingUnits,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$BuildingUnitsTableOrderingComposer(
+              $db: $db,
+              $table: $db.buildingUnits,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$UnitDescriptionsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $UnitDescriptionsTable> {
+  $$UnitDescriptionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get rooms =>
+      $composableBuilder(column: $table.rooms, builder: (column) => column);
+
+  GeneratedColumn<int> get bathrooms =>
+      $composableBuilder(column: $table.bathrooms, builder: (column) => column);
+
+  GeneratedColumn<int> get kitchens =>
+      $composableBuilder(column: $table.kitchens, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => column);
+
+  GeneratedColumn<String> get descriptionAr => $composableBuilder(
+      column: $table.descriptionAr, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+      column: $table.syncStatus, builder: (column) => column);
+
+  $$BuildingUnitsTableAnnotationComposer get unitId {
+    final $$BuildingUnitsTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.unitId,
+        referencedTable: $db.buildingUnits,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$BuildingUnitsTableAnnotationComposer(
+              $db: $db,
+              $table: $db.buildingUnits,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$UnitDescriptionsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $UnitDescriptionsTable,
+    UnitDescription,
+    $$UnitDescriptionsTableFilterComposer,
+    $$UnitDescriptionsTableOrderingComposer,
+    $$UnitDescriptionsTableAnnotationComposer,
+    $$UnitDescriptionsTableCreateCompanionBuilder,
+    $$UnitDescriptionsTableUpdateCompanionBuilder,
+    (UnitDescription, $$UnitDescriptionsTableReferences),
+    UnitDescription,
+    PrefetchHooks Function({bool unitId})> {
+  $$UnitDescriptionsTableTableManager(
+      _$AppDatabase db, $UnitDescriptionsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$UnitDescriptionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$UnitDescriptionsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$UnitDescriptionsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String> unitId = const Value.absent(),
+            Value<int?> rooms = const Value.absent(),
+            Value<int?> bathrooms = const Value.absent(),
+            Value<int?> kitchens = const Value.absent(),
+            Value<String?> description = const Value.absent(),
+            Value<String?> descriptionAr = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<DateTime> updatedAt = const Value.absent(),
+            Value<String> syncStatus = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              UnitDescriptionsCompanion(
+            id: id,
+            unitId: unitId,
+            rooms: rooms,
+            bathrooms: bathrooms,
+            kitchens: kitchens,
+            description: description,
+            descriptionAr: descriptionAr,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            syncStatus: syncStatus,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            required String unitId,
+            Value<int?> rooms = const Value.absent(),
+            Value<int?> bathrooms = const Value.absent(),
+            Value<int?> kitchens = const Value.absent(),
+            Value<String?> description = const Value.absent(),
+            Value<String?> descriptionAr = const Value.absent(),
+            required DateTime createdAt,
+            required DateTime updatedAt,
+            Value<String> syncStatus = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              UnitDescriptionsCompanion.insert(
+            id: id,
+            unitId: unitId,
+            rooms: rooms,
+            bathrooms: bathrooms,
+            kitchens: kitchens,
+            description: description,
+            descriptionAr: descriptionAr,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            syncStatus: syncStatus,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$UnitDescriptionsTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({unitId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (unitId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.unitId,
+                    referencedTable:
+                        $$UnitDescriptionsTableReferences._unitIdTable(db),
+                    referencedColumn:
+                        $$UnitDescriptionsTableReferences._unitIdTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$UnitDescriptionsTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $UnitDescriptionsTable,
+    UnitDescription,
+    $$UnitDescriptionsTableFilterComposer,
+    $$UnitDescriptionsTableOrderingComposer,
+    $$UnitDescriptionsTableAnnotationComposer,
+    $$UnitDescriptionsTableCreateCompanionBuilder,
+    $$UnitDescriptionsTableUpdateCompanionBuilder,
+    (UnitDescription, $$UnitDescriptionsTableReferences),
+    UnitDescription,
+    PrefetchHooks Function({bool unitId})>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -9903,4 +11761,8 @@ class $AppDatabaseManager {
       $$PropertyRequestsTableTableManager(_db, _db.propertyRequests);
   $$NotificationsTableTableManager get notifications =>
       $$NotificationsTableTableManager(_db, _db.notifications);
+  $$BuildingUnitsTableTableManager get buildingUnits =>
+      $$BuildingUnitsTableTableManager(_db, _db.buildingUnits);
+  $$UnitDescriptionsTableTableManager get unitDescriptions =>
+      $$UnitDescriptionsTableTableManager(_db, _db.unitDescriptions);
 }

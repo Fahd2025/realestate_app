@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:realestate_app/l10n/app_localizations.dart';
 
 /// Generic expansion tile card for mobile view
 class ResponsiveExpansionCard<T> extends StatelessWidget {
@@ -25,6 +26,7 @@ class ResponsiveExpansionCard<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: ExpansionTile(
@@ -50,13 +52,13 @@ class ResponsiveExpansionCard<T> extends StatelessWidget {
                       TextButton.icon(
                         onPressed: () => onEdit!(data),
                         icon: const Icon(Icons.edit),
-                        label: const Text('Edit'),
+                        label: Text(l10n.edit),
                       ),
                     if (onDelete != null)
                       TextButton.icon(
                         onPressed: () => onDelete!(data),
                         icon: const Icon(Icons.delete),
-                        label: const Text('Delete'),
+                        label: Text(l10n.delete),
                         style: TextButton.styleFrom(
                           foregroundColor: Theme.of(context).colorScheme.error,
                         ),

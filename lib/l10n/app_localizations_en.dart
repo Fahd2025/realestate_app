@@ -913,4 +913,57 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get buyerSignature => 'Buyer Signature';
+
+  @override
+  String get building => 'Building';
+
+  @override
+  String get units => 'Units';
+
+  @override
+  String get manageUnits => 'Manage Units';
+
+  @override
+  String get unitType => 'Unit Type';
+
+  @override
+  String get unitNumber => 'Unit Number';
+
+  @override
+  String get floorNumber => 'Floor Number';
+
+  @override
+  String get kitchens => 'Kitchens';
+
+  @override
+  String get noUnitsFound => 'No units found';
+
+  @override
+  String get addUnit => 'Add Unit';
+
+  @override
+  String get editUnit => 'Edit Unit';
+
+  @override
+  String get deleteUnit => 'Delete Unit';
+
+  @override
+  String get deleteUnitConfirmation =>
+      'Are you sure you want to delete this unit?';
+
+  @override
+  String get discardChanges => 'Discard Changes?';
+
+  @override
+  String get discardChangesConfirmation =>
+      'You have unsaved changes. Are you sure you want to discard them?';
+
+  @override
+  String get discard => 'Discard';
+
+  @override
+  String get floor => 'Floor';
+
+  @override
+  String get shop => 'Shop';
 }

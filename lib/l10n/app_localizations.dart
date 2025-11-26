@@ -1891,6 +1891,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Buyer Signature'**
   String get buyerSignature;
+
+  /// No description provided for @building.
+  ///
+  /// In en, this message translates to:
+  /// **'Building'**
+  String get building;
+
+  /// No description provided for @units.
+  ///
+  /// In en, this message translates to:
+  /// **'Units'**
+  String get units;
+
+  /// No description provided for @manageUnits.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Units'**
+  String get manageUnits;
+
+  /// No description provided for @unitType.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit Type'**
+  String get unitType;
+
+  /// No description provided for @unitNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit Number'**
+  String get unitNumber;
+
+  /// No description provided for @floorNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Floor Number'**
+  String get floorNumber;
+
+  /// No description provided for @kitchens.
+  ///
+  /// In en, this message translates to:
+  /// **'Kitchens'**
+  String get kitchens;
+
+  /// No description provided for @noUnitsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No units found'**
+  String get noUnitsFound;
+
+  /// No description provided for @addUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Unit'**
+  String get addUnit;
+
+  /// No description provided for @editUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Unit'**
+  String get editUnit;
+
+  /// No description provided for @deleteUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Unit'**
+  String get deleteUnit;
+
+  /// No description provided for @deleteUnitConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this unit?'**
+  String get deleteUnitConfirmation;
+
+  /// No description provided for @discardChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard Changes?'**
+  String get discardChanges;
+
+  /// No description provided for @discardChangesConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'You have unsaved changes. Are you sure you want to discard them?'**
+  String get discardChangesConfirmation;
+
+  /// No description provided for @discard.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get discard;
+
+  /// No description provided for @floor.
+  ///
+  /// In en, this message translates to:
+  /// **'Floor'**
+  String get floor;
+
+  /// No description provided for @shop.
+  ///
+  /// In en, this message translates to:
+  /// **'Shop'**
+  String get shop;
 }
 
 class _AppLocalizationsDelegate

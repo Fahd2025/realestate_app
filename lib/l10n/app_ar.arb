@@ -319,5 +319,21 @@
   "signature": "التوقيع",
   "ownerSignature": "توقيع المالك",
   "tenantSignature": "توقيع المستأجر",
-  "buyerSignature": "توقيع المشتري"
+  "buyerSignature": "توقيع المشتري",
+  "building": "مبنى",
+  "units": "الوحدات",
+  "manageUnits": "إدارة الوحدات",
+  "unitType": "نوع الوحدة",
+  "unitNumber": "رقم الوحدة",
+  "floorNumber": "رقم الطابق",
+  "noUnitsFound": "لا توجد وحدات",
+  "addUnit": "إضافة وحدة",
+  "editUnit": "تعديل الوحدة",
+  "deleteUnit": "حذف الوحدة",
+  "deleteUnitConfirmation": "هل أنت متأكد من حذف هذه الوحدة؟",
+  "discardChanges": "تجاهل التغييرات؟",
+  "discardChangesConfirmation": "لديك تغييرات غير محفوظة. هل أنت متأكد أنك تريد تجاهلها؟",
+  "discard": "تجاهل",
+  "floor": "طابق",
+  "shop": "محل"
 }
