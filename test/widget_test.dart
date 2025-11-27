@@ -12,6 +12,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:realestate_app/main.dart';
 import 'package:realestate_app/core/database/database.dart';
 
+import 'package:drift/native.dart';
+import 'package:realestate_app/core/repositories/basic_data_repository.dart';
+
 void main() {
   testWidgets('App smoke test', (WidgetTester tester) async {
     // Initialize test dependencies
@@ -22,12 +25,14 @@ void main() {
     final sharedPreferences = await SharedPreferences.getInstance();
 
     // Create database instance
-    final database = AppDatabase();
+    final database = AppDatabase(NativeDatabase.memory());
+    final basicDataRepository = BasicDataRepository(database);
 
     // Build our app and trigger a frame.
     await tester.pumpWidget(MyApp(
       database: database,
       sharedPreferences: sharedPreferences,
+      basicDataRepository: basicDataRepository,
     ));
 
     // Verify that the app builds without errors

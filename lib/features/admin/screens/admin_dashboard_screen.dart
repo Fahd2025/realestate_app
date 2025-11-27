@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:realestate_app/l10n/app_localizations.dart';
 import '../../../features/auth/bloc/auth_bloc.dart';
 import '../../../core/widgets/main_layout.dart';
+import 'basic_data_management_screen.dart';
 
 class AdminDashboardScreen extends StatelessWidget {
   const AdminDashboardScreen({super.key});
@@ -148,6 +149,19 @@ class AdminDashboardScreen extends StatelessWidget {
                   label: l10n.payments,
                   onTap: () {
                     // TODO: Navigate to payments
+                  },
+                ),
+                _buildActionButton(
+                  context,
+                  icon: Icons.settings,
+                  label: 'Basic Data',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const BasicDataManagementScreen(),
+                      ),
+                    );
                   },
                 ),
               ],

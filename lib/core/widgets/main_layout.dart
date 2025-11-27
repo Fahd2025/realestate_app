@@ -294,6 +294,10 @@ class _MainLayoutState extends State<MainLayout> {
               label: l10n.leaseContracts,
               icon: Icons.key,
               route: AppRoutes.contractsLease),
+          _NavItem(
+              label: l10n.basicData,
+              icon: Icons.settings_input_component,
+              route: AppRoutes.adminBasicData),
         ];
         break;
       case UserRole.owner:

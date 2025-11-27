@@ -966,4 +966,94 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shop => 'Shop';
+
+  @override
+  String get basicData => 'Basic Data';
+
+  @override
+  String get basicDataManagement => 'Basic Data Management';
+
+  @override
+  String get nationalities => 'Nationalities';
+
+  @override
+  String get roomTypes => 'Room Types';
+
+  @override
+  String get unitDescriptions => 'Unit Descriptions';
+
+  @override
+  String get propertyTypes => 'Property Types';
+
+  @override
+  String get regions => 'Regions';
+
+  @override
+  String get provinces => 'Provinces';
+
+  @override
+  String get cities => 'Cities';
+
+  @override
+  String get services => 'Services';
+
+  @override
+  String get currencies => 'Currencies';
+
+  @override
+  String get addNew => 'Add New';
+
+  @override
+  String get nameEnglish => 'Name (English)';
+
+  @override
+  String get nameArabic => 'Name (Arabic)';
+
+  @override
+  String get region => 'Region';
+
+  @override
+  String get province => 'Province';
+
+  @override
+  String get filterByRegion => 'Filter by Region';
+
+  @override
+  String get filterByProvince => 'Filter by Province';
+
+  @override
+  String get allRegions => 'All Regions';
+
+  @override
+  String get allProvinces => 'All Provinces';
+
+  @override
+  String get pleaseSelectRegion => 'Please select a Region';
+
+  @override
+  String get pleaseSelectProvince => 'Please select a Province';
+
+  @override
+  String get details => 'Details';
+
+  @override
+  String get name => 'Name';
+
+  @override
+  String get code => 'Code';
+
+  @override
+  String get symbol => 'Symbol';
+
+  @override
+  String get exchangeRate => 'Exchange Rate';
+
+  @override
+  String get codeExample => 'Code (e.g. USD)';
+
+  @override
+  String get noItemsFound => 'No items found';
+
+  @override
+  String get searchPlaceholder => 'Search...';
 }

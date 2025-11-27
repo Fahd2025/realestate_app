@@ -9,6 +9,7 @@ import '../core/models/enums.dart';
 import '../features/admin/screens/user_management_screen.dart';
 import '../features/admin/screens/property_management_screen.dart';
 import '../features/admin/screens/admin_buyer_orders_screen.dart';
+import '../features/admin/screens/basic_data_management_screen.dart';
 import 'dashboard_router.dart';
 import '../features/contracts/data/repositories/contracts_repository.dart';
 import '../features/contracts/bloc/contracts_bloc.dart';
@@ -145,6 +146,23 @@ class AppRouter {
               if (state is AuthAuthenticated) {
                 final database = context.read<AuthBloc>().database;
                 return AdminBuyerRequestsScreen(database: database);
+              } else if (state is AuthUnauthenticated) {
+                return const LoginScreen();
+              }
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            },
+          ),
+          settings: settings,
+        );
+
+      case AppRoutes.adminBasicData:
+        return MaterialPageRoute(
+          builder: (context) => BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is AuthAuthenticated) {
+                return const BasicDataManagementScreen();
               } else if (state is AuthUnauthenticated) {
                 return const LoginScreen();
               }

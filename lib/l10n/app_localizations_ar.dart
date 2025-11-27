@@ -965,4 +965,94 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get shop => 'محل';
+
+  @override
+  String get basicData => 'البيانات الأساسية';
+
+  @override
+  String get basicDataManagement => 'إدارة البيانات الأساسية';
+
+  @override
+  String get nationalities => 'الجنسيات';
+
+  @override
+  String get roomTypes => 'أنواع الغرف';
+
+  @override
+  String get unitDescriptions => 'أوصاف الوحدات';
+
+  @override
+  String get propertyTypes => 'أنواع العقارات';
+
+  @override
+  String get regions => 'المناطق';
+
+  @override
+  String get provinces => 'المحافظات';
+
+  @override
+  String get cities => 'المدن';
+
+  @override
+  String get services => 'الخدمات';
+
+  @override
+  String get currencies => 'العملات';
+
+  @override
+  String get addNew => 'إضافة جديد';
+
+  @override
+  String get nameEnglish => 'الاسم (إنجليزي)';
+
+  @override
+  String get nameArabic => 'الاسم (عربي)';
+
+  @override
+  String get region => 'المنطقة';
+
+  @override
+  String get province => 'المحافظة';
+
+  @override
+  String get filterByRegion => 'تصفية حسب المنطقة';
+
+  @override
+  String get filterByProvince => 'تصفية حسب المحافظة';
+
+  @override
+  String get allRegions => 'جميع المناطق';
+
+  @override
+  String get allProvinces => 'جميع المحافظات';
+
+  @override
+  String get pleaseSelectRegion => 'الرجاء اختيار المنطقة';
+
+  @override
+  String get pleaseSelectProvince => 'الرجاء اختيار المحافظة';
+
+  @override
+  String get details => 'التفاصيل';
+
+  @override
+  String get name => 'الاسم';
+
+  @override
+  String get code => 'الرمز';
+
+  @override
+  String get symbol => 'الرمز';
+
+  @override
+  String get exchangeRate => 'سعر الصرف';
+
+  @override
+  String get codeExample => 'الرمز (مثال: USD)';
+
+  @override
+  String get noItemsFound => 'لم يتم العثور على عناصر';
+
+  @override
+  String get searchPlaceholder => 'بحث...';
 }

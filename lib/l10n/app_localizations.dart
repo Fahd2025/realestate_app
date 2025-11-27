@@ -1993,6 +1993,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Shop'**
   String get shop;
+
+  /// No description provided for @basicData.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic Data'**
+  String get basicData;
+
+  /// No description provided for @basicDataManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic Data Management'**
+  String get basicDataManagement;
+
+  /// No description provided for @nationalities.
+  ///
+  /// In en, this message translates to:
+  /// **'Nationalities'**
+  String get nationalities;
+
+  /// No description provided for @roomTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'Room Types'**
+  String get roomTypes;
+
+  /// No description provided for @unitDescriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit Descriptions'**
+  String get unitDescriptions;
+
+  /// No description provided for @propertyTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'Property Types'**
+  String get propertyTypes;
+
+  /// No description provided for @regions.
+  ///
+  /// In en, this message translates to:
+  /// **'Regions'**
+  String get regions;
+
+  /// No description provided for @provinces.
+  ///
+  /// In en, this message translates to:
+  /// **'Provinces'**
+  String get provinces;
+
+  /// No description provided for @cities.
+  ///
+  /// In en, this message translates to:
+  /// **'Cities'**
+  String get cities;
+
+  /// No description provided for @services.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get services;
+
+  /// No description provided for @currencies.
+  ///
+  /// In en, this message translates to:
+  /// **'Currencies'**
+  String get currencies;
+
+  /// No description provided for @addNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New'**
+  String get addNew;
+
+  /// No description provided for @nameEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'Name (English)'**
+  String get nameEnglish;
+
+  /// No description provided for @nameArabic.
+  ///
+  /// In en, this message translates to:
+  /// **'Name (Arabic)'**
+  String get nameArabic;
+
+  /// No description provided for @region.
+  ///
+  /// In en, this message translates to:
+  /// **'Region'**
+  String get region;
+
+  /// No description provided for @province.
+  ///
+  /// In en, this message translates to:
+  /// **'Province'**
+  String get province;
+
+  /// No description provided for @filterByRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by Region'**
+  String get filterByRegion;
+
+  /// No description provided for @filterByProvince.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by Province'**
+  String get filterByProvince;
+
+  /// No description provided for @allRegions.
+  ///
+  /// In en, this message translates to:
+  /// **'All Regions'**
+  String get allRegions;
+
+  /// No description provided for @allProvinces.
+  ///
+  /// In en, this message translates to:
+  /// **'All Provinces'**
+  String get allProvinces;
+
+  /// No description provided for @pleaseSelectRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a Region'**
+  String get pleaseSelectRegion;
+
+  /// No description provided for @pleaseSelectProvince.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a Province'**
+  String get pleaseSelectProvince;
+
+  /// No description provided for @details.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get details;
+
+  /// No description provided for @name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get name;
+
+  /// No description provided for @code.
+  ///
+  /// In en, this message translates to:
+  /// **'Code'**
+  String get code;
+
+  /// No description provided for @symbol.
+  ///
+  /// In en, this message translates to:
+  /// **'Symbol'**
+  String get symbol;
+
+  /// No description provided for @exchangeRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Exchange Rate'**
+  String get exchangeRate;
+
+  /// No description provided for @codeExample.
+  ///
+  /// In en, this message translates to:
+  /// **'Code (e.g. USD)'**
+  String get codeExample;
+
+  /// No description provided for @noItemsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No items found'**
+  String get noItemsFound;
+
+  /// No description provided for @searchPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Search...'**
+  String get searchPlaceholder;
 }
 
 class _AppLocalizationsDelegate

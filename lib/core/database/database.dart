@@ -3,6 +3,7 @@ import 'package:uuid/uuid.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
 import 'tables.dart';
+import 'tables/basic_data.dart';
 import 'connection/connection.dart' as impl;
 
 part 'database.g.dart';
@@ -19,12 +20,21 @@ part 'database.g.dart';
   Notifications,
   BuildingUnits,
   UnitDescriptions,
+  Nationalities,
+  RoomTypes,
+  UnitDescriptionTypes,
+  PropertyTypes,
+  Regions,
+  Provinces,
+  Cities,
+  Services,
+  Currencies,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? e]) : super(e ?? impl.connect());
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 
   @override
   MigrationStrategy get migration {
@@ -57,6 +67,18 @@ class AppDatabase extends _$AppDatabase {
           // Add new tables for version 6
           await m.createTable(buildingUnits);
           await m.createTable(unitDescriptions);
+        }
+        if (from < 7) {
+          // Add new tables for version 7
+          await m.createTable(nationalities);
+          await m.createTable(roomTypes);
+          await m.createTable(unitDescriptionTypes);
+          await m.createTable(propertyTypes);
+          await m.createTable(regions);
+          await m.createTable(provinces);
+          await m.createTable(cities);
+          await m.createTable(services);
+          await m.createTable(currencies);
         }
       },
     );

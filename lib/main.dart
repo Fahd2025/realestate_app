@@ -7,6 +7,8 @@ import 'core/theme/app_theme.dart';
 import 'core/theme/theme_cubit.dart';
 import 'core/language/language_cubit.dart';
 import 'features/auth/bloc/auth_bloc.dart';
+import 'features/admin/bloc/basic_data_cubit.dart';
+import 'core/repositories/basic_data_repository.dart';
 import 'router/app_router.dart';
 
 import 'package:flutter_web_plugins/url_strategy.dart';
@@ -19,21 +21,25 @@ void main() async {
 
   final sharedPreferences = await SharedPreferences.getInstance();
   final database = AppDatabase();
+  final basicDataRepository = BasicDataRepository(database);
 
   runApp(MyApp(
     database: database,
     sharedPreferences: sharedPreferences,
+    basicDataRepository: basicDataRepository,
   ));
 }
 
 class MyApp extends StatelessWidget {
   final AppDatabase database;
   final SharedPreferences sharedPreferences;
+  final BasicDataRepository basicDataRepository;
 
   const MyApp({
     super.key,
     required this.database,
     required this.sharedPreferences,
+    required this.basicDataRepository,
   });
 
   @override
@@ -51,6 +57,9 @@ class MyApp extends StatelessWidget {
             database: database,
             sharedPreferences: sharedPreferences,
           )..add(CheckAuthStatus()),
+        ),
+        BlocProvider(
+          create: (context) => BasicDataCubit(basicDataRepository),
         ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
