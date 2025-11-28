@@ -1056,4 +1056,43 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get searchPlaceholder => 'Search...';
+
+  @override
+  String get companySettings => 'Company Settings';
+
+  @override
+  String get companyNameEn => 'Company Name (English)';
+
+  @override
+  String get companyNameAr => 'Company Name (Arabic)';
+
+  @override
+  String get companyAddressEn => 'Address (English)';
+
+  @override
+  String get companyAddressAr => 'Address (Arabic)';
+
+  @override
+  String get vatNumber => 'VAT Number';
+
+  @override
+  String get crn => 'CRN';
+
+  @override
+  String get website => 'Website';
+
+  @override
+  String get uploadLogo => 'Upload Logo';
+
+  @override
+  String get logo => 'Logo';
+
+  @override
+  String get companyInfoSaved => 'Company information saved successfully';
+
+  @override
+  String get change => 'Change';
+
+  @override
+  String get remove => 'Remove';
 }

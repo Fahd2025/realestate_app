@@ -10036,6 +10036,627 @@ class CurrenciesCompanion extends UpdateCompanion<Currency> {
   }
 }
 
+class $CompanyInfoTable extends CompanyInfo
+    with TableInfo<$CompanyInfoTable, CompanyInfoData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $CompanyInfoTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _nameEnMeta = const VerificationMeta('nameEn');
+  @override
+  late final GeneratedColumn<String> nameEn = GeneratedColumn<String>(
+      'name_en', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _nameArMeta = const VerificationMeta('nameAr');
+  @override
+  late final GeneratedColumn<String> nameAr = GeneratedColumn<String>(
+      'name_ar', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _addressEnMeta =
+      const VerificationMeta('addressEn');
+  @override
+  late final GeneratedColumn<String> addressEn = GeneratedColumn<String>(
+      'address_en', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _addressArMeta =
+      const VerificationMeta('addressAr');
+  @override
+  late final GeneratedColumn<String> addressAr = GeneratedColumn<String>(
+      'address_ar', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _phoneMeta = const VerificationMeta('phone');
+  @override
+  late final GeneratedColumn<String> phone = GeneratedColumn<String>(
+      'phone', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _emailMeta = const VerificationMeta('email');
+  @override
+  late final GeneratedColumn<String> email = GeneratedColumn<String>(
+      'email', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _vatNumberMeta =
+      const VerificationMeta('vatNumber');
+  @override
+  late final GeneratedColumn<String> vatNumber = GeneratedColumn<String>(
+      'vat_number', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _crnMeta = const VerificationMeta('crn');
+  @override
+  late final GeneratedColumn<String> crn = GeneratedColumn<String>(
+      'crn', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _websiteMeta =
+      const VerificationMeta('website');
+  @override
+  late final GeneratedColumn<String> website = GeneratedColumn<String>(
+      'website', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _logoBase64Meta =
+      const VerificationMeta('logoBase64');
+  @override
+  late final GeneratedColumn<String> logoBase64 = GeneratedColumn<String>(
+      'logo_base64', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        nameEn,
+        nameAr,
+        addressEn,
+        addressAr,
+        phone,
+        email,
+        vatNumber,
+        crn,
+        website,
+        logoBase64,
+        createdAt,
+        updatedAt
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'company_info';
+  @override
+  VerificationContext validateIntegrity(Insertable<CompanyInfoData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('name_en')) {
+      context.handle(_nameEnMeta,
+          nameEn.isAcceptableOrUnknown(data['name_en']!, _nameEnMeta));
+    }
+    if (data.containsKey('name_ar')) {
+      context.handle(_nameArMeta,
+          nameAr.isAcceptableOrUnknown(data['name_ar']!, _nameArMeta));
+    }
+    if (data.containsKey('address_en')) {
+      context.handle(_addressEnMeta,
+          addressEn.isAcceptableOrUnknown(data['address_en']!, _addressEnMeta));
+    }
+    if (data.containsKey('address_ar')) {
+      context.handle(_addressArMeta,
+          addressAr.isAcceptableOrUnknown(data['address_ar']!, _addressArMeta));
+    }
+    if (data.containsKey('phone')) {
+      context.handle(
+          _phoneMeta, phone.isAcceptableOrUnknown(data['phone']!, _phoneMeta));
+    }
+    if (data.containsKey('email')) {
+      context.handle(
+          _emailMeta, email.isAcceptableOrUnknown(data['email']!, _emailMeta));
+    }
+    if (data.containsKey('vat_number')) {
+      context.handle(_vatNumberMeta,
+          vatNumber.isAcceptableOrUnknown(data['vat_number']!, _vatNumberMeta));
+    }
+    if (data.containsKey('crn')) {
+      context.handle(
+          _crnMeta, crn.isAcceptableOrUnknown(data['crn']!, _crnMeta));
+    }
+    if (data.containsKey('website')) {
+      context.handle(_websiteMeta,
+          website.isAcceptableOrUnknown(data['website']!, _websiteMeta));
+    }
+    if (data.containsKey('logo_base64')) {
+      context.handle(
+          _logoBase64Meta,
+          logoBase64.isAcceptableOrUnknown(
+              data['logo_base64']!, _logoBase64Meta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  CompanyInfoData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CompanyInfoData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      nameEn: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name_en']),
+      nameAr: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name_ar']),
+      addressEn: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}address_en']),
+      addressAr: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}address_ar']),
+      phone: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}phone']),
+      email: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}email']),
+      vatNumber: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}vat_number']),
+      crn: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}crn']),
+      website: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}website']),
+      logoBase64: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}logo_base64']),
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
+    );
+  }
+
+  @override
+  $CompanyInfoTable createAlias(String alias) {
+    return $CompanyInfoTable(attachedDatabase, alias);
+  }
+}
+
+class CompanyInfoData extends DataClass implements Insertable<CompanyInfoData> {
+  final String id;
+  final String? nameEn;
+  final String? nameAr;
+  final String? addressEn;
+  final String? addressAr;
+  final String? phone;
+  final String? email;
+  final String? vatNumber;
+  final String? crn;
+  final String? website;
+  final String? logoBase64;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  const CompanyInfoData(
+      {required this.id,
+      this.nameEn,
+      this.nameAr,
+      this.addressEn,
+      this.addressAr,
+      this.phone,
+      this.email,
+      this.vatNumber,
+      this.crn,
+      this.website,
+      this.logoBase64,
+      required this.createdAt,
+      required this.updatedAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    if (!nullToAbsent || nameEn != null) {
+      map['name_en'] = Variable<String>(nameEn);
+    }
+    if (!nullToAbsent || nameAr != null) {
+      map['name_ar'] = Variable<String>(nameAr);
+    }
+    if (!nullToAbsent || addressEn != null) {
+      map['address_en'] = Variable<String>(addressEn);
+    }
+    if (!nullToAbsent || addressAr != null) {
+      map['address_ar'] = Variable<String>(addressAr);
+    }
+    if (!nullToAbsent || phone != null) {
+      map['phone'] = Variable<String>(phone);
+    }
+    if (!nullToAbsent || email != null) {
+      map['email'] = Variable<String>(email);
+    }
+    if (!nullToAbsent || vatNumber != null) {
+      map['vat_number'] = Variable<String>(vatNumber);
+    }
+    if (!nullToAbsent || crn != null) {
+      map['crn'] = Variable<String>(crn);
+    }
+    if (!nullToAbsent || website != null) {
+      map['website'] = Variable<String>(website);
+    }
+    if (!nullToAbsent || logoBase64 != null) {
+      map['logo_base64'] = Variable<String>(logoBase64);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  CompanyInfoCompanion toCompanion(bool nullToAbsent) {
+    return CompanyInfoCompanion(
+      id: Value(id),
+      nameEn:
+          nameEn == null && nullToAbsent ? const Value.absent() : Value(nameEn),
+      nameAr:
+          nameAr == null && nullToAbsent ? const Value.absent() : Value(nameAr),
+      addressEn: addressEn == null && nullToAbsent
+          ? const Value.absent()
+          : Value(addressEn),
+      addressAr: addressAr == null && nullToAbsent
+          ? const Value.absent()
+          : Value(addressAr),
+      phone:
+          phone == null && nullToAbsent ? const Value.absent() : Value(phone),
+      email:
+          email == null && nullToAbsent ? const Value.absent() : Value(email),
+      vatNumber: vatNumber == null && nullToAbsent
+          ? const Value.absent()
+          : Value(vatNumber),
+      crn: crn == null && nullToAbsent ? const Value.absent() : Value(crn),
+      website: website == null && nullToAbsent
+          ? const Value.absent()
+          : Value(website),
+      logoBase64: logoBase64 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(logoBase64),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory CompanyInfoData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return CompanyInfoData(
+      id: serializer.fromJson<String>(json['id']),
+      nameEn: serializer.fromJson<String?>(json['nameEn']),
+      nameAr: serializer.fromJson<String?>(json['nameAr']),
+      addressEn: serializer.fromJson<String?>(json['addressEn']),
+      addressAr: serializer.fromJson<String?>(json['addressAr']),
+      phone: serializer.fromJson<String?>(json['phone']),
+      email: serializer.fromJson<String?>(json['email']),
+      vatNumber: serializer.fromJson<String?>(json['vatNumber']),
+      crn: serializer.fromJson<String?>(json['crn']),
+      website: serializer.fromJson<String?>(json['website']),
+      logoBase64: serializer.fromJson<String?>(json['logoBase64']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'nameEn': serializer.toJson<String?>(nameEn),
+      'nameAr': serializer.toJson<String?>(nameAr),
+      'addressEn': serializer.toJson<String?>(addressEn),
+      'addressAr': serializer.toJson<String?>(addressAr),
+      'phone': serializer.toJson<String?>(phone),
+      'email': serializer.toJson<String?>(email),
+      'vatNumber': serializer.toJson<String?>(vatNumber),
+      'crn': serializer.toJson<String?>(crn),
+      'website': serializer.toJson<String?>(website),
+      'logoBase64': serializer.toJson<String?>(logoBase64),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  CompanyInfoData copyWith(
+          {String? id,
+          Value<String?> nameEn = const Value.absent(),
+          Value<String?> nameAr = const Value.absent(),
+          Value<String?> addressEn = const Value.absent(),
+          Value<String?> addressAr = const Value.absent(),
+          Value<String?> phone = const Value.absent(),
+          Value<String?> email = const Value.absent(),
+          Value<String?> vatNumber = const Value.absent(),
+          Value<String?> crn = const Value.absent(),
+          Value<String?> website = const Value.absent(),
+          Value<String?> logoBase64 = const Value.absent(),
+          DateTime? createdAt,
+          DateTime? updatedAt}) =>
+      CompanyInfoData(
+        id: id ?? this.id,
+        nameEn: nameEn.present ? nameEn.value : this.nameEn,
+        nameAr: nameAr.present ? nameAr.value : this.nameAr,
+        addressEn: addressEn.present ? addressEn.value : this.addressEn,
+        addressAr: addressAr.present ? addressAr.value : this.addressAr,
+        phone: phone.present ? phone.value : this.phone,
+        email: email.present ? email.value : this.email,
+        vatNumber: vatNumber.present ? vatNumber.value : this.vatNumber,
+        crn: crn.present ? crn.value : this.crn,
+        website: website.present ? website.value : this.website,
+        logoBase64: logoBase64.present ? logoBase64.value : this.logoBase64,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
+  CompanyInfoData copyWithCompanion(CompanyInfoCompanion data) {
+    return CompanyInfoData(
+      id: data.id.present ? data.id.value : this.id,
+      nameEn: data.nameEn.present ? data.nameEn.value : this.nameEn,
+      nameAr: data.nameAr.present ? data.nameAr.value : this.nameAr,
+      addressEn: data.addressEn.present ? data.addressEn.value : this.addressEn,
+      addressAr: data.addressAr.present ? data.addressAr.value : this.addressAr,
+      phone: data.phone.present ? data.phone.value : this.phone,
+      email: data.email.present ? data.email.value : this.email,
+      vatNumber: data.vatNumber.present ? data.vatNumber.value : this.vatNumber,
+      crn: data.crn.present ? data.crn.value : this.crn,
+      website: data.website.present ? data.website.value : this.website,
+      logoBase64:
+          data.logoBase64.present ? data.logoBase64.value : this.logoBase64,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CompanyInfoData(')
+          ..write('id: $id, ')
+          ..write('nameEn: $nameEn, ')
+          ..write('nameAr: $nameAr, ')
+          ..write('addressEn: $addressEn, ')
+          ..write('addressAr: $addressAr, ')
+          ..write('phone: $phone, ')
+          ..write('email: $email, ')
+          ..write('vatNumber: $vatNumber, ')
+          ..write('crn: $crn, ')
+          ..write('website: $website, ')
+          ..write('logoBase64: $logoBase64, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, nameEn, nameAr, addressEn, addressAr,
+      phone, email, vatNumber, crn, website, logoBase64, createdAt, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is CompanyInfoData &&
+          other.id == this.id &&
+          other.nameEn == this.nameEn &&
+          other.nameAr == this.nameAr &&
+          other.addressEn == this.addressEn &&
+          other.addressAr == this.addressAr &&
+          other.phone == this.phone &&
+          other.email == this.email &&
+          other.vatNumber == this.vatNumber &&
+          other.crn == this.crn &&
+          other.website == this.website &&
+          other.logoBase64 == this.logoBase64 &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class CompanyInfoCompanion extends UpdateCompanion<CompanyInfoData> {
+  final Value<String> id;
+  final Value<String?> nameEn;
+  final Value<String?> nameAr;
+  final Value<String?> addressEn;
+  final Value<String?> addressAr;
+  final Value<String?> phone;
+  final Value<String?> email;
+  final Value<String?> vatNumber;
+  final Value<String?> crn;
+  final Value<String?> website;
+  final Value<String?> logoBase64;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<int> rowid;
+  const CompanyInfoCompanion({
+    this.id = const Value.absent(),
+    this.nameEn = const Value.absent(),
+    this.nameAr = const Value.absent(),
+    this.addressEn = const Value.absent(),
+    this.addressAr = const Value.absent(),
+    this.phone = const Value.absent(),
+    this.email = const Value.absent(),
+    this.vatNumber = const Value.absent(),
+    this.crn = const Value.absent(),
+    this.website = const Value.absent(),
+    this.logoBase64 = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  CompanyInfoCompanion.insert({
+    required String id,
+    this.nameEn = const Value.absent(),
+    this.nameAr = const Value.absent(),
+    this.addressEn = const Value.absent(),
+    this.addressAr = const Value.absent(),
+    this.phone = const Value.absent(),
+    this.email = const Value.absent(),
+    this.vatNumber = const Value.absent(),
+    this.crn = const Value.absent(),
+    this.website = const Value.absent(),
+    this.logoBase64 = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        createdAt = Value(createdAt),
+        updatedAt = Value(updatedAt);
+  static Insertable<CompanyInfoData> custom({
+    Expression<String>? id,
+    Expression<String>? nameEn,
+    Expression<String>? nameAr,
+    Expression<String>? addressEn,
+    Expression<String>? addressAr,
+    Expression<String>? phone,
+    Expression<String>? email,
+    Expression<String>? vatNumber,
+    Expression<String>? crn,
+    Expression<String>? website,
+    Expression<String>? logoBase64,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (nameEn != null) 'name_en': nameEn,
+      if (nameAr != null) 'name_ar': nameAr,
+      if (addressEn != null) 'address_en': addressEn,
+      if (addressAr != null) 'address_ar': addressAr,
+      if (phone != null) 'phone': phone,
+      if (email != null) 'email': email,
+      if (vatNumber != null) 'vat_number': vatNumber,
+      if (crn != null) 'crn': crn,
+      if (website != null) 'website': website,
+      if (logoBase64 != null) 'logo_base64': logoBase64,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  CompanyInfoCompanion copyWith(
+      {Value<String>? id,
+      Value<String?>? nameEn,
+      Value<String?>? nameAr,
+      Value<String?>? addressEn,
+      Value<String?>? addressAr,
+      Value<String?>? phone,
+      Value<String?>? email,
+      Value<String?>? vatNumber,
+      Value<String?>? crn,
+      Value<String?>? website,
+      Value<String?>? logoBase64,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt,
+      Value<int>? rowid}) {
+    return CompanyInfoCompanion(
+      id: id ?? this.id,
+      nameEn: nameEn ?? this.nameEn,
+      nameAr: nameAr ?? this.nameAr,
+      addressEn: addressEn ?? this.addressEn,
+      addressAr: addressAr ?? this.addressAr,
+      phone: phone ?? this.phone,
+      email: email ?? this.email,
+      vatNumber: vatNumber ?? this.vatNumber,
+      crn: crn ?? this.crn,
+      website: website ?? this.website,
+      logoBase64: logoBase64 ?? this.logoBase64,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (nameEn.present) {
+      map['name_en'] = Variable<String>(nameEn.value);
+    }
+    if (nameAr.present) {
+      map['name_ar'] = Variable<String>(nameAr.value);
+    }
+    if (addressEn.present) {
+      map['address_en'] = Variable<String>(addressEn.value);
+    }
+    if (addressAr.present) {
+      map['address_ar'] = Variable<String>(addressAr.value);
+    }
+    if (phone.present) {
+      map['phone'] = Variable<String>(phone.value);
+    }
+    if (email.present) {
+      map['email'] = Variable<String>(email.value);
+    }
+    if (vatNumber.present) {
+      map['vat_number'] = Variable<String>(vatNumber.value);
+    }
+    if (crn.present) {
+      map['crn'] = Variable<String>(crn.value);
+    }
+    if (website.present) {
+      map['website'] = Variable<String>(website.value);
+    }
+    if (logoBase64.present) {
+      map['logo_base64'] = Variable<String>(logoBase64.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CompanyInfoCompanion(')
+          ..write('id: $id, ')
+          ..write('nameEn: $nameEn, ')
+          ..write('nameAr: $nameAr, ')
+          ..write('addressEn: $addressEn, ')
+          ..write('addressAr: $addressAr, ')
+          ..write('phone: $phone, ')
+          ..write('email: $email, ')
+          ..write('vatNumber: $vatNumber, ')
+          ..write('crn: $crn, ')
+          ..write('website: $website, ')
+          ..write('logoBase64: $logoBase64, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -10063,6 +10684,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $CitiesTable cities = $CitiesTable(this);
   late final $ServicesTable services = $ServicesTable(this);
   late final $CurrenciesTable currencies = $CurrenciesTable(this);
+  late final $CompanyInfoTable companyInfo = $CompanyInfoTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -10087,7 +10709,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         provinces,
         cities,
         services,
-        currencies
+        currencies,
+        companyInfo
       ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules(
@@ -17367,6 +17990,299 @@ typedef $$CurrenciesTableProcessedTableManager = ProcessedTableManager<
     (Currency, BaseReferences<_$AppDatabase, $CurrenciesTable, Currency>),
     Currency,
     PrefetchHooks Function()>;
+typedef $$CompanyInfoTableCreateCompanionBuilder = CompanyInfoCompanion
+    Function({
+  required String id,
+  Value<String?> nameEn,
+  Value<String?> nameAr,
+  Value<String?> addressEn,
+  Value<String?> addressAr,
+  Value<String?> phone,
+  Value<String?> email,
+  Value<String?> vatNumber,
+  Value<String?> crn,
+  Value<String?> website,
+  Value<String?> logoBase64,
+  required DateTime createdAt,
+  required DateTime updatedAt,
+  Value<int> rowid,
+});
+typedef $$CompanyInfoTableUpdateCompanionBuilder = CompanyInfoCompanion
+    Function({
+  Value<String> id,
+  Value<String?> nameEn,
+  Value<String?> nameAr,
+  Value<String?> addressEn,
+  Value<String?> addressAr,
+  Value<String?> phone,
+  Value<String?> email,
+  Value<String?> vatNumber,
+  Value<String?> crn,
+  Value<String?> website,
+  Value<String?> logoBase64,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+  Value<int> rowid,
+});
+
+class $$CompanyInfoTableFilterComposer
+    extends Composer<_$AppDatabase, $CompanyInfoTable> {
+  $$CompanyInfoTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get nameEn => $composableBuilder(
+      column: $table.nameEn, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get nameAr => $composableBuilder(
+      column: $table.nameAr, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get addressEn => $composableBuilder(
+      column: $table.addressEn, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get addressAr => $composableBuilder(
+      column: $table.addressAr, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get phone => $composableBuilder(
+      column: $table.phone, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get email => $composableBuilder(
+      column: $table.email, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get vatNumber => $composableBuilder(
+      column: $table.vatNumber, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get crn => $composableBuilder(
+      column: $table.crn, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get website => $composableBuilder(
+      column: $table.website, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get logoBase64 => $composableBuilder(
+      column: $table.logoBase64, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+}
+
+class $$CompanyInfoTableOrderingComposer
+    extends Composer<_$AppDatabase, $CompanyInfoTable> {
+  $$CompanyInfoTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get nameEn => $composableBuilder(
+      column: $table.nameEn, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get nameAr => $composableBuilder(
+      column: $table.nameAr, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get addressEn => $composableBuilder(
+      column: $table.addressEn, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get addressAr => $composableBuilder(
+      column: $table.addressAr, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get phone => $composableBuilder(
+      column: $table.phone, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get email => $composableBuilder(
+      column: $table.email, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get vatNumber => $composableBuilder(
+      column: $table.vatNumber, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get crn => $composableBuilder(
+      column: $table.crn, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get website => $composableBuilder(
+      column: $table.website, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get logoBase64 => $composableBuilder(
+      column: $table.logoBase64, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+}
+
+class $$CompanyInfoTableAnnotationComposer
+    extends Composer<_$AppDatabase, $CompanyInfoTable> {
+  $$CompanyInfoTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get nameEn =>
+      $composableBuilder(column: $table.nameEn, builder: (column) => column);
+
+  GeneratedColumn<String> get nameAr =>
+      $composableBuilder(column: $table.nameAr, builder: (column) => column);
+
+  GeneratedColumn<String> get addressEn =>
+      $composableBuilder(column: $table.addressEn, builder: (column) => column);
+
+  GeneratedColumn<String> get addressAr =>
+      $composableBuilder(column: $table.addressAr, builder: (column) => column);
+
+  GeneratedColumn<String> get phone =>
+      $composableBuilder(column: $table.phone, builder: (column) => column);
+
+  GeneratedColumn<String> get email =>
+      $composableBuilder(column: $table.email, builder: (column) => column);
+
+  GeneratedColumn<String> get vatNumber =>
+      $composableBuilder(column: $table.vatNumber, builder: (column) => column);
+
+  GeneratedColumn<String> get crn =>
+      $composableBuilder(column: $table.crn, builder: (column) => column);
+
+  GeneratedColumn<String> get website =>
+      $composableBuilder(column: $table.website, builder: (column) => column);
+
+  GeneratedColumn<String> get logoBase64 => $composableBuilder(
+      column: $table.logoBase64, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$CompanyInfoTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $CompanyInfoTable,
+    CompanyInfoData,
+    $$CompanyInfoTableFilterComposer,
+    $$CompanyInfoTableOrderingComposer,
+    $$CompanyInfoTableAnnotationComposer,
+    $$CompanyInfoTableCreateCompanionBuilder,
+    $$CompanyInfoTableUpdateCompanionBuilder,
+    (
+      CompanyInfoData,
+      BaseReferences<_$AppDatabase, $CompanyInfoTable, CompanyInfoData>
+    ),
+    CompanyInfoData,
+    PrefetchHooks Function()> {
+  $$CompanyInfoTableTableManager(_$AppDatabase db, $CompanyInfoTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$CompanyInfoTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$CompanyInfoTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$CompanyInfoTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String?> nameEn = const Value.absent(),
+            Value<String?> nameAr = const Value.absent(),
+            Value<String?> addressEn = const Value.absent(),
+            Value<String?> addressAr = const Value.absent(),
+            Value<String?> phone = const Value.absent(),
+            Value<String?> email = const Value.absent(),
+            Value<String?> vatNumber = const Value.absent(),
+            Value<String?> crn = const Value.absent(),
+            Value<String?> website = const Value.absent(),
+            Value<String?> logoBase64 = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<DateTime> updatedAt = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              CompanyInfoCompanion(
+            id: id,
+            nameEn: nameEn,
+            nameAr: nameAr,
+            addressEn: addressEn,
+            addressAr: addressAr,
+            phone: phone,
+            email: email,
+            vatNumber: vatNumber,
+            crn: crn,
+            website: website,
+            logoBase64: logoBase64,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            Value<String?> nameEn = const Value.absent(),
+            Value<String?> nameAr = const Value.absent(),
+            Value<String?> addressEn = const Value.absent(),
+            Value<String?> addressAr = const Value.absent(),
+            Value<String?> phone = const Value.absent(),
+            Value<String?> email = const Value.absent(),
+            Value<String?> vatNumber = const Value.absent(),
+            Value<String?> crn = const Value.absent(),
+            Value<String?> website = const Value.absent(),
+            Value<String?> logoBase64 = const Value.absent(),
+            required DateTime createdAt,
+            required DateTime updatedAt,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              CompanyInfoCompanion.insert(
+            id: id,
+            nameEn: nameEn,
+            nameAr: nameAr,
+            addressEn: addressEn,
+            addressAr: addressAr,
+            phone: phone,
+            email: email,
+            vatNumber: vatNumber,
+            crn: crn,
+            website: website,
+            logoBase64: logoBase64,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$CompanyInfoTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $CompanyInfoTable,
+    CompanyInfoData,
+    $$CompanyInfoTableFilterComposer,
+    $$CompanyInfoTableOrderingComposer,
+    $$CompanyInfoTableAnnotationComposer,
+    $$CompanyInfoTableCreateCompanionBuilder,
+    $$CompanyInfoTableUpdateCompanionBuilder,
+    (
+      CompanyInfoData,
+      BaseReferences<_$AppDatabase, $CompanyInfoTable, CompanyInfoData>
+    ),
+    CompanyInfoData,
+    PrefetchHooks Function()>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -17411,4 +18327,6 @@ class $AppDatabaseManager {
       $$ServicesTableTableManager(_db, _db.services);
   $$CurrenciesTableTableManager get currencies =>
       $$CurrenciesTableTableManager(_db, _db.currencies);
+  $$CompanyInfoTableTableManager get companyInfo =>
+      $$CompanyInfoTableTableManager(_db, _db.companyInfo);
 }

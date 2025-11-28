@@ -1027,10 +1027,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get allProvinces => 'جميع المحافظات';
 
   @override
-  String get pleaseSelectRegion => 'الرجاء اختيار المنطقة';
+  String get pleaseSelectRegion => 'Please select a Region';
 
   @override
-  String get pleaseSelectProvince => 'الرجاء اختيار المحافظة';
+  String get pleaseSelectProvince => 'Please select a Province';
 
   @override
   String get details => 'التفاصيل';
@@ -1055,4 +1055,43 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get searchPlaceholder => 'بحث...';
+
+  @override
+  String get companySettings => 'إعدادات الشركة';
+
+  @override
+  String get companyNameEn => 'اسم الشركة (إنجليزي)';
+
+  @override
+  String get companyNameAr => 'اسم الشركة (عربي)';
+
+  @override
+  String get companyAddressEn => 'العنوان (إنجليزي)';
+
+  @override
+  String get companyAddressAr => 'العنوان (عربي)';
+
+  @override
+  String get vatNumber => 'الرقم الضريبي';
+
+  @override
+  String get crn => 'رقم السجل التجاري';
+
+  @override
+  String get website => 'الموقع الإلكتروني';
+
+  @override
+  String get uploadLogo => 'رفع الشعار';
+
+  @override
+  String get logo => 'الشعار';
+
+  @override
+  String get companyInfoSaved => 'تم حفظ معلومات الشركة بنجاح';
+
+  @override
+  String get change => 'تغيير';
+
+  @override
+  String get remove => 'إزالة';
 }

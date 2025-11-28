@@ -360,7 +360,7 @@ class _BasicDataListScreenState extends State<BasicDataListScreen> {
         children: [
           Expanded(
             child: DropdownButtonFormField<String?>(
-              value: _selectedRegionFilter,
+              initialValue: _selectedRegionFilter,
               decoration: InputDecoration(
                 labelText: l10n.filterByRegion,
                 border: OutlineInputBorder(
@@ -379,7 +379,7 @@ class _BasicDataListScreenState extends State<BasicDataListScreen> {
                     value: r.id,
                     child: Text(name),
                   );
-                }).toList(),
+                }),
               ],
               onChanged: (value) {
                 setState(() {
@@ -392,7 +392,7 @@ class _BasicDataListScreenState extends State<BasicDataListScreen> {
           const SizedBox(width: 12),
           Expanded(
             child: DropdownButtonFormField<String?>(
-              value: _selectedProvinceFilter,
+              initialValue: _selectedProvinceFilter,
               decoration: InputDecoration(
                 labelText: l10n.filterByProvince,
                 border: OutlineInputBorder(
@@ -415,7 +415,7 @@ class _BasicDataListScreenState extends State<BasicDataListScreen> {
                     value: p.id,
                     child: Text(name),
                   );
-                }).toList(),
+                }),
               ],
               onChanged: (value) {
                 setState(() {
@@ -431,7 +431,7 @@ class _BasicDataListScreenState extends State<BasicDataListScreen> {
       final isArabic = locale.languageCode == 'ar';
 
       return DropdownButtonFormField<String?>(
-        value: _selectedRegionFilter,
+        initialValue: _selectedRegionFilter,
         decoration: InputDecoration(
           labelText: l10n.filterByRegion,
           border: OutlineInputBorder(
@@ -450,7 +450,7 @@ class _BasicDataListScreenState extends State<BasicDataListScreen> {
               value: r.id,
               child: Text(name),
             );
-          }).toList(),
+          }),
         ],
         onChanged: (value) {
           setState(() {
@@ -695,7 +695,7 @@ class _BasicDataListScreenState extends State<BasicDataListScreen> {
                 if (widget.type == BasicDataType.province ||
                     widget.type == BasicDataType.city) ...[
                   DropdownButtonFormField<String>(
-                    value: selectedRegionId,
+                    initialValue: selectedRegionId,
                     decoration: InputDecoration(
                       labelText: '${l10n.region} *',
                       border: OutlineInputBorder(
@@ -727,7 +727,7 @@ class _BasicDataListScreenState extends State<BasicDataListScreen> {
                 // Province Dropdown (for City only)
                 if (widget.type == BasicDataType.city) ...[
                   DropdownButtonFormField<String>(
-                    value: selectedProvinceId,
+                    initialValue: selectedProvinceId,
                     decoration: InputDecoration(
                       labelText: '${l10n.province} *',
                       border: OutlineInputBorder(

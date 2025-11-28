@@ -4,6 +4,7 @@ import 'package:crypto/crypto.dart';
 import 'dart:convert';
 import 'tables.dart';
 import 'tables/basic_data.dart';
+import 'tables/company_info.dart';
 import 'connection/connection.dart' as impl;
 
 part 'database.g.dart';
@@ -29,12 +30,13 @@ part 'database.g.dart';
   Cities,
   Services,
   Currencies,
+  CompanyInfo,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? e]) : super(e ?? impl.connect());
 
   @override
-  int get schemaVersion => 7;
+  int get schemaVersion => 8;
 
   @override
   MigrationStrategy get migration {
@@ -79,6 +81,10 @@ class AppDatabase extends _$AppDatabase {
           await m.createTable(cities);
           await m.createTable(services);
           await m.createTable(currencies);
+        }
+        if (from < 8) {
+          // Add new table for version 8
+          await m.createTable(companyInfo);
         }
       },
     );

@@ -15,6 +15,9 @@ import 'package:flutter_web_plugins/url_strategy.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'features/company_info/cubit/company_info_cubit.dart';
+import 'features/company_info/repositories/company_info_repository.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   usePathUrlStrategy();
@@ -22,11 +25,13 @@ void main() async {
   final sharedPreferences = await SharedPreferences.getInstance();
   final database = AppDatabase();
   final basicDataRepository = BasicDataRepository(database);
+  final companyInfoRepository = CompanyInfoRepository(database);
 
   runApp(MyApp(
     database: database,
     sharedPreferences: sharedPreferences,
     basicDataRepository: basicDataRepository,
+    companyInfoRepository: companyInfoRepository,
   ));
 }
 
@@ -34,12 +39,14 @@ class MyApp extends StatelessWidget {
   final AppDatabase database;
   final SharedPreferences sharedPreferences;
   final BasicDataRepository basicDataRepository;
+  final CompanyInfoRepository companyInfoRepository;
 
   const MyApp({
     super.key,
     required this.database,
     required this.sharedPreferences,
     required this.basicDataRepository,
+    required this.companyInfoRepository,
   });
 
   @override
@@ -60,6 +67,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => BasicDataCubit(basicDataRepository),
+        ),
+        BlocProvider(
+          create: (context) => CompanyInfoCubit(companyInfoRepository),
         ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(

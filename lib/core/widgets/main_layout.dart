@@ -4,6 +4,8 @@ import '../models/enums.dart';
 import '../../features/auth/bloc/auth_bloc.dart';
 import '../constants/routes.dart';
 import 'package:realestate_app/l10n/app_localizations.dart';
+import '../../features/company_info/cubit/company_info_cubit.dart';
+import 'company_drawer_header.dart';
 
 class MainLayout extends StatefulWidget {
   final Widget body;
@@ -26,6 +28,15 @@ class MainLayout extends StatefulWidget {
 class _MainLayoutState extends State<MainLayout> {
   // Static variable to persist sidebar state across navigation
   static bool _isDrawerOpen = true;
+
+  @override
+  void initState() {
+    super.initState();
+    // Load company info when layout initializes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<CompanyInfoCubit>().loadCompanyInfo();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,31 +125,7 @@ class _MainLayoutState extends State<MainLayout> {
 
     return Column(
       children: [
-        UserAccountsDrawerHeader(
-          accountName:
-              Text(context.read<AuthBloc>().currentUser?.fullName ?? ''),
-          accountEmail: Text(context.read<AuthBloc>().currentUser?.email ?? ''),
-          currentAccountPicture: CircleAvatar(
-            backgroundColor: Theme.of(context).colorScheme.onPrimary,
-            child: Text(
-              (context.read<AuthBloc>().currentUser?.fullName ?? 'U')[0]
-                  .toUpperCase(),
-              style: TextStyle(
-                fontSize: 24,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-          ),
-          otherAccountsPictures: [
-            IconButton(
-              icon: const Icon(Icons.person, color: Colors.white),
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, AppRoutes.profile);
-              },
-              tooltip: l10n.profile,
-            ),
-          ],
-        ),
+        const CompanyDrawerHeader(),
         Expanded(
           child: ListView(
             padding: EdgeInsets.zero,

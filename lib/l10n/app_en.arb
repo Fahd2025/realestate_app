@@ -366,5 +366,19 @@
   "exchangeRate": "Exchange Rate",
   "codeExample": "Code (e.g. USD)",
   "noItemsFound": "No items found",
-  "searchPlaceholder": "Search..."
+  "searchPlaceholder": "Search...",
+  "companySettings": "Company Settings",
+  "companyNameEn": "Company Name (English)",
+  "companyNameAr": "Company Name (Arabic)",
+  "companyAddressEn": "Address (English)",
+  "companyAddressAr": "Address (Arabic)",
+  "vatNumber": "VAT Number",
+  "crn": "CRN",
+  "website": "Website",
+  "uploadLogo": "Upload Logo",
+  "logo": "Logo",
+  "companyInfoSaved": "Company information saved successfully",
+  "change": "Change",
+  "remove": "Remove",
+  "email": "Email"
 }

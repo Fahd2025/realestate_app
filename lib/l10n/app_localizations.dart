@@ -2173,6 +2173,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search...'**
   String get searchPlaceholder;
+
+  /// No description provided for @companySettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Company Settings'**
+  String get companySettings;
+
+  /// No description provided for @companyNameEn.
+  ///
+  /// In en, this message translates to:
+  /// **'Company Name (English)'**
+  String get companyNameEn;
+
+  /// No description provided for @companyNameAr.
+  ///
+  /// In en, this message translates to:
+  /// **'Company Name (Arabic)'**
+  String get companyNameAr;
+
+  /// No description provided for @companyAddressEn.
+  ///
+  /// In en, this message translates to:
+  /// **'Address (English)'**
+  String get companyAddressEn;
+
+  /// No description provided for @companyAddressAr.
+  ///
+  /// In en, this message translates to:
+  /// **'Address (Arabic)'**
+  String get companyAddressAr;
+
+  /// No description provided for @vatNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'VAT Number'**
+  String get vatNumber;
+
+  /// No description provided for @crn.
+  ///
+  /// In en, this message translates to:
+  /// **'CRN'**
+  String get crn;
+
+  /// No description provided for @website.
+  ///
+  /// In en, this message translates to:
+  /// **'Website'**
+  String get website;
+
+  /// No description provided for @uploadLogo.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload Logo'**
+  String get uploadLogo;
+
+  /// No description provided for @logo.
+  ///
+  /// In en, this message translates to:
+  /// **'Logo'**
+  String get logo;
+
+  /// No description provided for @companyInfoSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Company information saved successfully'**
+  String get companyInfoSaved;
+
+  /// No description provided for @change.
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get change;
+
+  /// No description provided for @remove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get remove;
 }
 
 class _AppLocalizationsDelegate

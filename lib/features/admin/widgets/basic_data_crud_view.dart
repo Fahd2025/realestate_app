@@ -129,6 +129,9 @@ class _BasicDataCrudViewState<T> extends State<BasicDataCrudView<T>> {
             columnSpacing: 56,
             horizontalMargin: 24,
             columns: [
+              const DataColumn(
+                label: Text('#', style: TextStyle(fontWeight: FontWeight.bold)),
+              ),
               DataColumn(
                 label: Text(AppLocalizations.of(context)!.name,
                     style: const TextStyle(fontWeight: FontWeight.bold)),
@@ -146,9 +149,12 @@ class _BasicDataCrudViewState<T> extends State<BasicDataCrudView<T>> {
                     style: const TextStyle(fontWeight: FontWeight.bold)),
               ),
             ],
-            rows: _filteredItems.map((item) {
+            rows: _filteredItems.asMap().entries.map((entry) {
+              final index = entry.key;
+              final item = entry.value;
               return DataRow(
                 cells: [
+                  DataCell(Text('${index + 1}')),
                   DataCell(Text(widget.getName(item))),
                   if (widget.getAdditionalCells != null)
                     ...widget.getAdditionalCells!(item),
@@ -207,9 +213,12 @@ class _BasicDataCrudViewState<T> extends State<BasicDataCrudView<T>> {
                   leading: CircleAvatar(
                     backgroundColor:
                         Theme.of(context).colorScheme.primaryContainer,
-                    child: Icon(
-                      Icons.label,
-                      color: Theme.of(context).colorScheme.primary,
+                    child: Text(
+                      '${index + 1}',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   title: Text(
@@ -258,9 +267,12 @@ class _BasicDataCrudViewState<T> extends State<BasicDataCrudView<T>> {
                   leading: CircleAvatar(
                     backgroundColor:
                         Theme.of(context).colorScheme.primaryContainer,
-                    child: Icon(
-                      Icons.label,
-                      color: Theme.of(context).colorScheme.primary,
+                    child: Text(
+                      '${index + 1}',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   title: Text(

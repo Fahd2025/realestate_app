@@ -11,6 +11,8 @@ class ResponsiveExpansionCard<T> extends StatelessWidget {
   final void Function(T)? onEdit;
   final void Function(T)? onDelete;
   final void Function(T)? onTap;
+  final int? index;
+  final bool showRowNumber;
 
   const ResponsiveExpansionCard({
     super.key,
@@ -22,6 +24,8 @@ class ResponsiveExpansionCard<T> extends StatelessWidget {
     this.onEdit,
     this.onDelete,
     this.onTap,
+    this.index,
+    this.showRowNumber = false,
   });
 
   @override
@@ -30,7 +34,28 @@ class ResponsiveExpansionCard<T> extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: ExpansionTile(
-        leading: getLeading?.call(data),
+        leading: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (showRowNumber && index != null) ...[
+              CircleAvatar(
+                radius: 14,
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                child: Text(
+                  '${index! + 1}',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context).colorScheme.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+            ],
+            if (getLeading != null)
+              getLeading!(data) ?? const SizedBox.shrink(),
+          ],
+        ),
         title: Text(
           getTitle(data),
           style: const TextStyle(fontWeight: FontWeight.bold),
@@ -126,6 +151,7 @@ class ResponsiveCardList<T> extends StatelessWidget {
   final void Function(T)? onEdit;
   final void Function(T)? onDelete;
   final void Function(T)? onTap;
+  final bool showRowNumbers;
 
   const ResponsiveCardList({
     super.key,
@@ -137,6 +163,7 @@ class ResponsiveCardList<T> extends StatelessWidget {
     this.onEdit,
     this.onDelete,
     this.onTap,
+    this.showRowNumbers = true,
   });
 
   @override
@@ -175,6 +202,8 @@ class ResponsiveCardList<T> extends StatelessWidget {
           onEdit: onEdit,
           onDelete: onDelete,
           onTap: onTap,
+          index: index,
+          showRowNumber: showRowNumbers,
         );
       },
     );

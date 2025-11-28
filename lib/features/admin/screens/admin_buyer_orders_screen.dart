@@ -343,6 +343,9 @@ class _AdminBuyerRequestsScreenState extends State<AdminBuyerRequestsScreen> {
         scrollDirection: Axis.horizontal,
         child: DataTable(
           columns: [
+            const DataColumn(
+                label:
+                    Text('#', style: TextStyle(fontWeight: FontWeight.bold))),
             DataColumn(label: Text(l10n.buyer)),
             DataColumn(label: Text(l10n.category)),
             DataColumn(label: Text(l10n.type)),
@@ -353,10 +356,13 @@ class _AdminBuyerRequestsScreenState extends State<AdminBuyerRequestsScreen> {
             DataColumn(label: Text(l10n.status)),
             DataColumn(label: Text(l10n.actions)),
           ],
-          rows: _filteredRequests.map((request) {
+          rows: _filteredRequests.asMap().entries.map((entry) {
+            final index = entry.key;
+            final request = entry.value;
             final buyer = _buyers[request.buyerId];
             return DataRow(
               cells: [
+                DataCell(Text('${index + 1}')),
                 DataCell(Text(buyer?.fullName ?? 'Unknown')),
                 DataCell(Text(_getCategoryLabel(request.propertyCategory))),
                 DataCell(Text(request.propertyType ?? '-')),
@@ -416,9 +422,28 @@ class _AdminBuyerRequestsScreenState extends State<AdminBuyerRequestsScreen> {
         return Card(
           margin: const EdgeInsets.only(bottom: 12),
           child: ExpansionTile(
-            leading: CircleAvatar(
-              backgroundColor: _getStatusColor(request.status),
-              child: const Icon(Icons.shopping_cart),
+            leading: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircleAvatar(
+                  radius: 14,
+                  backgroundColor:
+                      Theme.of(context).colorScheme.primaryContainer,
+                  child: Text(
+                    '${index + 1}',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                CircleAvatar(
+                  backgroundColor: _getStatusColor(request.status),
+                  child: const Icon(Icons.shopping_cart),
+                ),
+              ],
             ),
             title: Text(buyer?.fullName ?? 'Unknown Buyer'),
             subtitle: Text(

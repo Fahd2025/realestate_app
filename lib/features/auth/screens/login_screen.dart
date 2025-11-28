@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:realestate_app/l10n/app_localizations.dart';
@@ -5,6 +6,7 @@ import '../bloc/auth_bloc.dart';
 import '../../../core/constants/routes.dart';
 import '../../../core/language/language_cubit.dart';
 import '../../../core/theme/theme_cubit.dart';
+import '../../company_info/cubit/company_info_cubit.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -18,6 +20,15 @@ class _LoginScreenState extends State<LoginScreen> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
+
+  @override
+  void initState() {
+    super.initState();
+    // Load company info for branding
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<CompanyInfoCubit>().loadCompanyInfo();
+    });
+  }
 
   @override
   void dispose() {
@@ -86,31 +97,88 @@ class _LoginScreenState extends State<LoginScreen> {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              // Logo/Icon
-                              Icon(
-                                Icons.home_work,
-                                size: 80,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                              const SizedBox(height: 16),
-                              // Title
-                              Text(
-                                l10n.appTitle,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineMedium
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.bold,
+                              // Logo - Circular with company logo or app icon
+                              BlocBuilder<CompanyInfoCubit, CompanyInfoState>(
+                                builder: (context, companyState) {
+                                  if (companyState is CompanyInfoLoaded &&
+                                      companyState.info != null &&
+                                      companyState.info!.logoBase64 != null &&
+                                      companyState
+                                          .info!.logoBase64!.isNotEmpty) {
+                                    return CircleAvatar(
+                                      radius: 50,
+                                      backgroundColor: Theme.of(context)
+                                          .colorScheme
+                                          .primaryContainer,
+                                      backgroundImage: MemoryImage(base64Decode(
+                                          companyState.info!.logoBase64!)),
+                                    );
+                                  }
+                                  // Default app icon
+                                  return CircleAvatar(
+                                    radius: 50,
+                                    backgroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .primaryContainer,
+                                    child: Icon(
+                                      Icons.home_work,
+                                      size: 60,
                                       color:
                                           Theme.of(context).colorScheme.primary,
                                     ),
-                                textAlign: TextAlign.center,
+                                  );
+                                },
                               ),
-                              const SizedBox(height: 8),
-                              Text(
-                                l10n.login,
-                                style: Theme.of(context).textTheme.titleMedium,
-                                textAlign: TextAlign.center,
+                              const SizedBox(height: 16),
+                              // Title - Use company name if available
+                              BlocBuilder<CompanyInfoCubit, CompanyInfoState>(
+                                builder: (context, companyState) {
+                                  final locale =
+                                      Localizations.localeOf(context);
+                                  final isArabic = locale.languageCode == 'ar';
+
+                                  String appTitle = l10n.appTitle;
+                                  String loginTitle = l10n.login;
+
+                                  if (companyState is CompanyInfoLoaded &&
+                                      companyState.info != null) {
+                                    final companyName = isArabic
+                                        ? companyState.info!.nameAr
+                                        : companyState.info!.nameEn;
+
+                                    if (companyName != null &&
+                                        companyName.isNotEmpty) {
+                                      loginTitle = appTitle;
+                                      appTitle = companyName;
+                                    }
+                                  }
+
+                                  return Column(
+                                    children: [
+                                      Text(
+                                        appTitle,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineMedium
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.bold,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                            ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        loginTitle,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  );
+                                },
                               ),
                               const SizedBox(height: 16),
                               // Username field

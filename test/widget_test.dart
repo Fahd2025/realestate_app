@@ -14,6 +14,7 @@ import 'package:realestate_app/core/database/database.dart';
 
 import 'package:drift/native.dart';
 import 'package:realestate_app/core/repositories/basic_data_repository.dart';
+import 'package:realestate_app/features/company_info/repositories/company_info_repository.dart';
 
 void main() {
   testWidgets('App smoke test', (WidgetTester tester) async {
@@ -33,6 +34,7 @@ void main() {
       database: database,
       sharedPreferences: sharedPreferences,
       basicDataRepository: basicDataRepository,
+      companyInfoRepository: CompanyInfoRepository(database),
     ));
 
     // Verify that the app builds without errors

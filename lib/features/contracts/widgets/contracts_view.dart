@@ -133,6 +133,9 @@ class _ContractsViewState extends State<ContractsView> {
       child: SingleChildScrollView(
         child: DataTable(
           columns: [
+            const DataColumn(
+                label:
+                    Text('#', style: TextStyle(fontWeight: FontWeight.bold))),
             DataColumn(label: Text(l10n.contractId)),
             DataColumn(label: Text(l10n.property)),
             DataColumn(label: Text(l10n.owner)),
@@ -144,13 +147,16 @@ class _ContractsViewState extends State<ContractsView> {
             DataColumn(label: Text(l10n.status)),
             DataColumn(label: Text(l10n.actions)),
           ],
-          rows: contractsWithDetails.map((item) {
+          rows: contractsWithDetails.asMap().entries.map((entry) {
+            final index = entry.key;
+            final item = entry.value;
             final contract = item.contract;
             final property = item.property;
             final owner = item.owner;
             final tenantBuyer = item.tenantBuyer;
 
             return DataRow(cells: [
+              DataCell(Text('${index + 1}')),
               DataCell(Text(_getShortString(contract.id, 8))),
               DataCell(Text(property.title)),
               DataCell(Text(owner?.fullName ?? 'N/A')),
@@ -202,6 +208,18 @@ class _ContractsViewState extends State<ContractsView> {
 
         return Card(
           child: ExpansionTile(
+            leading: CircleAvatar(
+              radius: 14,
+              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+              child: Text(
+                '${index + 1}',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
             title: Text('${l10n.contract} ${_getShortString(contract.id, 8)}'),
             subtitle: Text(property.title),
             children: [

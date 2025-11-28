@@ -7,6 +7,8 @@ import '../../../core/constants/api_endpoints.dart';
 import '../../../core/widgets/main_layout.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../company_info/screens/company_info_screen.dart';
+
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
@@ -134,6 +136,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   }
                 },
               ),
+            ),
+          ),
+          const SizedBox(height: 24),
+
+          // Company Settings
+          Text(
+            l10n.companySettings,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 8),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.business),
+              title: Text(l10n.companySettings),
+              subtitle: const Text('Manage company details and logo'),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const CompanyInfoScreen()),
+                );
+              },
             ),
           ),
           const SizedBox(height: 24),
