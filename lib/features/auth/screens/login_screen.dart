@@ -54,332 +54,482 @@ class _LoginScreenState extends State<LoginScreen> {
     final isLoading = context.watch<AuthBloc>().state is AuthLoading;
 
     return Scaffold(
-      body: Stack(
-        children: [
-          // Main login content
-          BlocConsumer<AuthBloc, AuthState>(
-            listener: (context, state) {
-              if (state is AuthAuthenticated) {
-                Navigator.of(context).pushReplacementNamed(AppRoutes.dashboard);
-              } else if (state is AuthUnauthenticated &&
-                  state.message != null) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message!),
-                    backgroundColor: Theme.of(context).colorScheme.error,
-                  ),
-                );
-              } else if (state is AuthError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message),
-                    backgroundColor: Theme.of(context).colorScheme.error,
-                  ),
-                );
-              }
-            },
-            builder: (context, state) {
-              return Center(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(24),
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 400),
-                    child: Card(
-                      elevation: 8,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFF1E88E5),
+              Color(0xFF42A5F5),
+              Color(0xFF64B5F6),
+            ],
+          ),
+        ),
+        child: BlocConsumer<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state is AuthAuthenticated) {
+              Navigator.of(context).pushReplacementNamed(AppRoutes.dashboard);
+            } else if (state is AuthUnauthenticated && state.message != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message!),
+                  backgroundColor: Theme.of(context).colorScheme.error,
+                ),
+              );
+            } else if (state is AuthError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                  backgroundColor: Theme.of(context).colorScheme.error,
+                ),
+              );
+            }
+          },
+          builder: (context, state) {
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                return Scrollbar(
+                  child: SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(32),
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              // Logo - Circular with company logo or app icon
-                              BlocBuilder<CompanyInfoCubit, CompanyInfoState>(
-                                builder: (context, companyState) {
-                                  if (companyState is CompanyInfoLoaded &&
-                                      companyState.info != null &&
-                                      companyState.info!.logoBase64 != null &&
-                                      companyState
-                                          .info!.logoBase64!.isNotEmpty) {
-                                    return CircleAvatar(
-                                      radius: 50,
-                                      backgroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .primaryContainer,
-                                      backgroundImage: MemoryImage(base64Decode(
-                                          companyState.info!.logoBase64!)),
-                                    );
-                                  }
-                                  // Default app icon
-                                  return CircleAvatar(
-                                    radius: 50,
-                                    backgroundColor: Theme.of(context)
-                                        .colorScheme
-                                        .primaryContainer,
-                                    child: Icon(
-                                      Icons.home_work,
-                                      size: 60,
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                    ),
-                                  );
-                                },
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(24),
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 480),
+                            child: Card(
+                              elevation: 24,
+                              shadowColor: Colors.black.withOpacity(0.3),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(32),
                               ),
-                              const SizedBox(height: 16),
-                              // Title - Use company name if available
-                              BlocBuilder<CompanyInfoCubit, CompanyInfoState>(
-                                builder: (context, companyState) {
-                                  final locale =
-                                      Localizations.localeOf(context);
-                                  final isArabic = locale.languageCode == 'ar';
+                              child: Stack(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(48),
+                                    child: Form(
+                                      key: _formKey,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          // Logo - Circular with company logo or app icon
+                                          BlocBuilder<CompanyInfoCubit,
+                                              CompanyInfoState>(
+                                            builder: (context, companyState) {
+                                              if (companyState
+                                                      is CompanyInfoLoaded &&
+                                                  companyState.info != null &&
+                                                  companyState
+                                                          .info!.logoBase64 !=
+                                                      null &&
+                                                  companyState.info!.logoBase64!
+                                                      .isNotEmpty) {
+                                                return CircleAvatar(
+                                                  radius: 60,
+                                                  backgroundColor:
+                                                      Color(0xFFE3F2FD),
+                                                  backgroundImage: MemoryImage(
+                                                      base64Decode(companyState
+                                                          .info!.logoBase64!)),
+                                                );
+                                              }
+                                              // Default app icon
+                                              return CircleAvatar(
+                                                radius: 60,
+                                                backgroundColor:
+                                                    Color(0xFFE3F2FD),
+                                                child: Icon(
+                                                  Icons.home_work,
+                                                  size: 50,
+                                                  color: Color(0xFF1E88E5),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                          const SizedBox(height: 24),
+                                          // Title - Use company name if available
+                                          BlocBuilder<CompanyInfoCubit,
+                                              CompanyInfoState>(
+                                            builder: (context, companyState) {
+                                              final locale =
+                                                  Localizations.localeOf(
+                                                      context);
+                                              final isArabic =
+                                                  locale.languageCode == 'ar';
 
-                                  String appTitle = l10n.appTitle;
-                                  String loginTitle = l10n.login;
+                                              String appTitle = l10n.appTitle;
+                                              String loginTitle = l10n.login;
 
-                                  if (companyState is CompanyInfoLoaded &&
-                                      companyState.info != null) {
-                                    final companyName = isArabic
-                                        ? companyState.info!.nameAr
-                                        : companyState.info!.nameEn;
+                                              if (companyState
+                                                      is CompanyInfoLoaded &&
+                                                  companyState.info != null) {
+                                                final companyName = isArabic
+                                                    ? companyState.info!.nameAr
+                                                    : companyState.info!.nameEn;
 
-                                    if (companyName != null &&
-                                        companyName.isNotEmpty) {
-                                      loginTitle = appTitle;
-                                      appTitle = companyName;
-                                    }
-                                  }
+                                                if (companyName != null &&
+                                                    companyName.isNotEmpty) {
+                                                  loginTitle = appTitle;
+                                                  appTitle = companyName;
+                                                }
+                                              }
 
-                                  return Column(
-                                    children: [
-                                      Text(
-                                        appTitle,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headlineMedium
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.bold,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
+                                              return Column(
+                                                children: [
+                                                  Text(
+                                                    appTitle,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headlineMedium
+                                                        ?.copyWith(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                  const SizedBox(height: 8),
+                                                  Text(
+                                                    loginTitle,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .titleMedium
+                                                        ?.copyWith(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodyMedium
+                                                                  ?.color
+                                                                  ?.withOpacity(
+                                                                      0.7),
+                                                        ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          ),
+                                          const SizedBox(height: 32),
+                                          // Demo credentials info box
+                                          Container(
+                                            padding: const EdgeInsets.all(16),
+                                            decoration: BoxDecoration(
+                                              color: Color(0xFFE3F2FD),
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
                                             ),
-                                        textAlign: TextAlign.center,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Icon(Icons.info_outline,
+                                                        color:
+                                                            Color(0xFF1E88E5),
+                                                        size: 24),
+                                                    const SizedBox(width: 12),
+                                                    Text(
+                                                      l10n.defaultCredentials,
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.black87,
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 12),
+                                                _buildCredentialRow(l10n.admin,
+                                                    'admin', '123', l10n),
+                                                const SizedBox(height: 6),
+                                                _buildCredentialRow(l10n.owner,
+                                                    'owner1', '123', l10n),
+                                                const SizedBox(height: 6),
+                                                _buildCredentialRow(l10n.tenant,
+                                                    'tenant1', '123', l10n),
+                                                const SizedBox(height: 6),
+                                                _buildCredentialRow(l10n.buyer,
+                                                    'buyer1', '123', l10n),
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(height: 24),
+                                          // Username field
+                                          TextFormField(
+                                            controller: _usernameController,
+                                            autofocus: true,
+                                            decoration: InputDecoration(
+                                              labelText: l10n.username,
+                                              prefixIcon:
+                                                  Icon(Icons.person_outline),
+                                              filled: true,
+                                              fillColor: Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.dark
+                                                  ? Colors.grey[800]
+                                                  : Colors.grey[50],
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                borderSide: BorderSide.none,
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                borderSide: BorderSide(
+                                                  color: Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.dark
+                                                      ? Colors.grey[700]!
+                                                      : Colors.grey[200]!,
+                                                ),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                borderSide: BorderSide(
+                                                    color: Color(0xFF1E88E5),
+                                                    width: 2),
+                                              ),
+                                            ),
+                                            enabled: !isLoading,
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Please enter your username';
+                                              }
+                                              return null;
+                                            },
+                                            onFieldSubmitted: (_) =>
+                                                _handleLogin(),
+                                          ),
+                                          const SizedBox(height: 16),
+                                          // Password field
+                                          TextFormField(
+                                            controller: _passwordController,
+                                            obscureText: _obscurePassword,
+                                            decoration: InputDecoration(
+                                              labelText: l10n.password,
+                                              prefixIcon:
+                                                  Icon(Icons.lock_outline),
+                                              filled: true,
+                                              fillColor: Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.dark
+                                                  ? Colors.grey[800]
+                                                  : Colors.grey[50],
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                borderSide: BorderSide.none,
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                borderSide: BorderSide(
+                                                  color: Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.dark
+                                                      ? Colors.grey[700]!
+                                                      : Colors.grey[200]!,
+                                                ),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                borderSide: BorderSide(
+                                                    color: Color(0xFF1E88E5),
+                                                    width: 2),
+                                              ),
+                                              suffixIcon: IconButton(
+                                                icon: Icon(
+                                                  _obscurePassword
+                                                      ? Icons
+                                                          .visibility_outlined
+                                                      : Icons
+                                                          .visibility_off_outlined,
+                                                ),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    _obscurePassword =
+                                                        !_obscurePassword;
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                            enabled: !isLoading,
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Please enter your password';
+                                              }
+                                              return null;
+                                            },
+                                            onFieldSubmitted: (_) =>
+                                                _handleLogin(),
+                                          ),
+                                          const SizedBox(height: 32),
+                                          // Login button
+                                          SizedBox(
+                                            width: double.infinity,
+                                            height: 56,
+                                            child: ElevatedButton(
+                                              onPressed: isLoading
+                                                  ? null
+                                                  : _handleLogin,
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    Color(0xFF1E88E5),
+                                                foregroundColor: Colors.white,
+                                                elevation: 0,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                ),
+                                              ),
+                                              child: isLoading
+                                                  ? SizedBox(
+                                                      height: 24,
+                                                      width: 24,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        strokeWidth: 2,
+                                                        valueColor:
+                                                            AlwaysStoppedAnimation<
+                                                                    Color>(
+                                                                Colors.white),
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      l10n.login.toUpperCase(),
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        letterSpacing: 1,
+                                                      ),
+                                                    ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        loginTitle,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                              const SizedBox(height: 16),
-                              // Username field
-                              TextFormField(
-                                controller: _usernameController,
-                                autofocus: true,
-                                decoration: InputDecoration(
-                                  labelText: l10n.username,
-                                  prefixIcon: const Icon(Icons.person),
-                                ),
-                                enabled: !isLoading,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter your username';
-                                  }
-                                  return null;
-                                },
-                                onFieldSubmitted: (_) => _handleLogin(),
-                              ),
-                              const SizedBox(height: 16),
-                              // Password field
-                              TextFormField(
-                                controller: _passwordController,
-                                obscureText: _obscurePassword,
-                                decoration: InputDecoration(
-                                  labelText: l10n.password,
-                                  prefixIcon: const Icon(Icons.lock),
-                                  suffixIcon: IconButton(
-                                    icon: Icon(
-                                      _obscurePassword
-                                          ? Icons.visibility
-                                          : Icons.visibility_off,
                                     ),
-                                    onPressed: () {
-                                      setState(() {
-                                        _obscurePassword = !_obscurePassword;
-                                      });
-                                    },
                                   ),
-                                ),
-                                enabled: !isLoading,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter your password';
-                                  }
-                                  return null;
-                                },
-                                onFieldSubmitted: (_) => _handleLogin(),
-                              ),
-                              const SizedBox(height: 16),
-                              // Login button
-                              ElevatedButton(
-                                onPressed: isLoading ? null : _handleLogin,
-                                style: ElevatedButton.styleFrom(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 16),
-                                ),
-                                child: isLoading
-                                    ? const SizedBox(
-                                        height: 20,
-                                        width: 20,
-                                        child: CircularProgressIndicator(
-                                            strokeWidth: 2),
-                                      )
-                                    : Text(l10n.login,
-                                        style: const TextStyle(fontSize: 16)),
-                              ),
-                              const SizedBox(height: 16),
-                              // Demo credentials hint
-                              Container(
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .primaryContainer,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Demo Credentials:',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelLarge
-                                          ?.copyWith(
-                                              fontWeight: FontWeight.bold),
+                                  // Theme and Language switchers in top-right corner
+                                  Positioned(
+                                    top: 16,
+                                    right: 16,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        // Theme switcher
+                                        BlocBuilder<ThemeCubit, ThemeState>(
+                                          builder: (context, themeState) {
+                                            return IconButton(
+                                              icon: Icon(
+                                                themeState.isDarkMode
+                                                    ? Icons.light_mode_outlined
+                                                    : Icons.dark_mode_outlined,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurface
+                                                    .withOpacity(0.7),
+                                              ),
+                                              onPressed: () => context
+                                                  .read<ThemeCubit>()
+                                                  .toggleTheme(),
+                                              tooltip: themeState.isDarkMode
+                                                  ? l10n.lightMode
+                                                  : l10n.darkMode,
+                                            );
+                                          },
+                                        ),
+                                        const SizedBox(width: 8),
+                                        // Language switcher
+                                        BlocBuilder<LanguageCubit,
+                                            LanguageState>(
+                                          builder: (context, languageState) {
+                                            final isArabic = languageState
+                                                    .locale.languageCode ==
+                                                'ar';
+                                            return IconButton(
+                                              icon: Icon(Icons.language,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onSurface
+                                                      .withOpacity(0.7)),
+                                              onPressed: () {
+                                                context
+                                                    .read<LanguageCubit>()
+                                                    .changeLanguage(
+                                                        isArabic ? 'en' : 'ar');
+                                              },
+                                              tooltip: isArabic
+                                                  ? 'English'
+                                                  : 'العربية',
+                                            );
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(height: 8),
-                                    const Text('Admin: admin / 123'),
-                                    const Text('Owner: owner1 / 123'),
-                                    const Text('Tenant: tenant1 / 123'),
-                                    const Text('Buyer: buyer1 / 123'),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              );
-            },
-          ),
-          // Language and Theme switchers in top-right corner
-          Positioned(
-            top: 16,
-            right: 16,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Language switcher
-                BlocBuilder<LanguageCubit, LanguageState>(
-                  builder: (context, languageState) {
-                    final isArabic = languageState.locale.languageCode == 'ar';
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.1),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          _buildLanguageButton(
-                              context, 'العربية', 'ar', isArabic),
-                          _buildLanguageButton(
-                              context, 'English', 'en', !isArabic),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(width: 8),
-                // Theme switcher
-                BlocBuilder<ThemeCubit, ThemeState>(
-                  builder: (context, themeState) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.1),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: IconButton(
-                        icon: Icon(themeState.isDarkMode
-                            ? Icons.light_mode
-                            : Icons.dark_mode),
-                        onPressed: () =>
-                            context.read<ThemeCubit>().toggleTheme(),
-                        tooltip: themeState.isDarkMode
-                            ? l10n.lightMode
-                            : l10n.darkMode,
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
 
-  Widget _buildLanguageButton(BuildContext context, String label,
-      String languageCode, bool isSelected) {
-    return Material(
-      color: isSelected
-          ? Theme.of(context).colorScheme.primaryContainer
-          : Colors.transparent,
-      borderRadius: BorderRadius.circular(8),
-      child: InkWell(
-        onTap: () => context.read<LanguageCubit>().changeLanguage(languageCode),
-        borderRadius: BorderRadius.circular(8),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+  Widget _buildCredentialRow(
+      String role, String username, String password, AppLocalizations l10n) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 60,
           child: Text(
-            label,
-            style: TextStyle(
-              color: isSelected
-                  ? Theme.of(context).colorScheme.onPrimaryContainer
-                  : Theme.of(context).colorScheme.onSurface,
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            role,
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+              fontSize: 13,
             ),
           ),
         ),
-      ),
+        Expanded(
+          child: Text(
+            '$username / $password',
+            style: const TextStyle(
+              color: Colors.black54,
+              fontSize: 13,
+              fontFamily: 'monospace',
+            ),
+          ),
+        ),
+        IconButton(
+          icon: const Icon(Icons.copy, size: 16, color: Colors.black45),
+          padding: EdgeInsets.zero,
+          constraints: const BoxConstraints(),
+          tooltip: l10n.copy,
+          onPressed: () {
+            _usernameController.text = username;
+            _passwordController.text = password;
+          },
+        ),
+      ],
     );
   }
 }

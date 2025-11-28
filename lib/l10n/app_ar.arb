@@ -572,5 +572,7 @@
   "noItemsFound": "لم يتم العثور على عناصر",
   "searchPlaceholder": "بحث...",
   "change": "تغيير",
-  "remove": "إزالة"
+  "remove": "إزالة",
+  "defaultCredentials": "بيانات الدخول الافتراضية",
+  "copy": "نسخ"
 }

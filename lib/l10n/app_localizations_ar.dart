@@ -1094,4 +1094,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get remove => 'إزالة';
+
+  @override
+  String get defaultCredentials => 'بيانات الدخول الافتراضية';
+
+  @override
+  String get copy => 'نسخ';
 }

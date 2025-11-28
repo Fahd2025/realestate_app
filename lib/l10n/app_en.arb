@@ -380,5 +380,7 @@
   "companyInfoSaved": "Company information saved successfully",
   "change": "Change",
   "remove": "Remove",
-  "email": "Email"
+  "email": "Email",
+  "defaultCredentials": "Default Credentials",
+  "copy": "Copy"
 }

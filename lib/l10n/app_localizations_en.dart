@@ -1095,4 +1095,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get remove => 'Remove';
+
+  @override
+  String get defaultCredentials => 'Default Credentials';
+
+  @override
+  String get copy => 'Copy';
 }

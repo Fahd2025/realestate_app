@@ -2251,6 +2251,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove'**
   String get remove;
+
+  /// No description provided for @defaultCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Default Credentials'**
+  String get defaultCredentials;
+
+  /// No description provided for @copy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get copy;
 }
 
 class _AppLocalizationsDelegate

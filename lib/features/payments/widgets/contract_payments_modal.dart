@@ -6,6 +6,7 @@ import 'package:realestate_app/features/payments/bloc/payments_event.dart';
 import 'package:realestate_app/features/payments/bloc/payments_state.dart';
 import 'package:realestate_app/features/payments/services/payment_processor.dart';
 import 'package:realestate_app/features/payments/services/payment_receipt_generator.dart';
+import 'package:realestate_app/l10n/app_localizations.dart';
 import 'package:uuid/uuid.dart';
 import 'package:drift/drift.dart' as drift;
 
@@ -42,7 +43,7 @@ class _ContractPaymentsModalState extends State<ContractPaymentsModal> {
     );
   }
 
-  void _processPayment(Payment payment) async {
+  void _processPayment(Payment payment, AppLocalizations l10n) async {
     if (context.mounted) {
       // Show loading indicator
       final snackBar = SnackBar(
@@ -50,7 +51,7 @@ class _ContractPaymentsModalState extends State<ContractPaymentsModal> {
           children: [
             const CircularProgressIndicator(strokeWidth: 2),
             const SizedBox(width: 12),
-            Text('Processing payment...'),
+            Text(l10n.processingPayment),
           ],
         ),
         duration: const Duration(seconds: 10),
@@ -81,8 +82,8 @@ class _ContractPaymentsModalState extends State<ContractPaymentsModal> {
 
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Payment processed successfully!'),
+          SnackBar(
+            content: Text(l10n.paymentProcessedSuccessfully),
             backgroundColor: Colors.green,
           ),
         );
@@ -91,7 +92,7 @@ class _ContractPaymentsModalState extends State<ContractPaymentsModal> {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Payment failed: ${result.message}'),
+            content: Text('${l10n.paymentFailed}: ${result.message}'),
             backgroundColor: Colors.red,
           ),
         );
@@ -103,8 +104,35 @@ class _ContractPaymentsModalState extends State<ContractPaymentsModal> {
     await PaymentReceiptGenerator.generateAndDownloadReceipt(payment);
   }
 
+  String _getLocalizedPaymentType(String type, AppLocalizations l10n) {
+    switch (type) {
+      case 'lease':
+        return l10n.lease;
+      case 'deposit':
+        return l10n.deposit;
+      case 'installment':
+        return l10n.installment;
+      default:
+        return type;
+    }
+  }
+
+  String _getLocalizedStatus(String status, AppLocalizations l10n) {
+    switch (status) {
+      case 'pending':
+        return l10n.pending;
+      case 'completed':
+        return l10n.completed;
+      case 'overdue':
+        return l10n.overdue;
+      default:
+        return status;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(16),
       height: MediaQuery.of(context).size.height * 0.8,
@@ -114,7 +142,7 @@ class _ContractPaymentsModalState extends State<ContractPaymentsModal> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Payments / Installments',
+                l10n.paymentsInstallments,
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               IconButton(
@@ -130,10 +158,10 @@ class _ContractPaymentsModalState extends State<ContractPaymentsModal> {
                 if (state is PaymentsLoading) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is PaymentsError) {
-                  return Center(child: Text('Error: ${state.message}'));
+                  return Center(child: Text('${l10n.error}: ${state.message}'));
                 } else if (state is PaymentsLoaded) {
                   if (state.payments.isEmpty) {
-                    return const Center(child: Text('No payments recorded.'));
+                    return Center(child: Text(l10n.noPaymentsRecorded));
                   }
                   return ListView.builder(
                     itemCount: state.payments.length,
@@ -156,13 +184,13 @@ class _ContractPaymentsModalState extends State<ContractPaymentsModal> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          '${payment.amount} - ${payment.paymentType}',
+                                          '${payment.amount} - ${_getLocalizedPaymentType(payment.paymentType, l10n)}',
                                           style: Theme.of(context)
                                               .textTheme
                                               .titleMedium,
                                         ),
                                         Text(
-                                          'Due: ${payment.dueDate?.toString().split(' ')[0] ?? 'N/A'} | Status: ${payment.status}',
+                                          '${l10n.dueDate}: ${payment.dueDate?.toString().split(' ')[0] ?? 'N/A'} | ${l10n.status}: ${_getLocalizedStatus(payment.status, l10n)}',
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall,
@@ -184,9 +212,10 @@ class _ContractPaymentsModalState extends State<ContractPaymentsModal> {
                                 children: [
                                   if (payment.status == 'pending')
                                     ElevatedButton.icon(
-                                      onPressed: () => _processPayment(payment),
+                                      onPressed: () =>
+                                          _processPayment(payment, l10n),
                                       icon: const Icon(Icons.payment),
-                                      label: const Text('Pay Now'),
+                                      label: Text(l10n.payNow),
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Theme.of(context)
                                             .colorScheme
@@ -200,7 +229,7 @@ class _ContractPaymentsModalState extends State<ContractPaymentsModal> {
                                       onPressed: () =>
                                           _downloadReceipt(payment),
                                       icon: const Icon(Icons.download),
-                                      label: const Text('Receipt'),
+                                      label: Text(l10n.receipt),
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Theme.of(context)
                                             .colorScheme
@@ -252,8 +281,9 @@ class _AddPaymentDialogState extends State<_AddPaymentDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return AlertDialog(
-      title: const Text('Add Payment'),
+      title: Text(l10n.addPayment),
       content: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -262,25 +292,25 @@ class _AddPaymentDialogState extends State<_AddPaymentDialog> {
             children: [
               TextFormField(
                 controller: _amountController,
-                decoration: const InputDecoration(labelText: 'Amount'),
+                decoration: InputDecoration(labelText: l10n.amount),
                 keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty ? 'Required' : null,
+                validator: (value) => value!.isEmpty ? l10n.required : null,
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
                 initialValue: _paymentType,
-                items: const [
-                  DropdownMenuItem(value: 'lease', child: Text('Lease')),
-                  DropdownMenuItem(value: 'deposit', child: Text('Deposit')),
+                items: [
+                  DropdownMenuItem(value: 'lease', child: Text(l10n.lease)),
+                  DropdownMenuItem(value: 'deposit', child: Text(l10n.deposit)),
                   DropdownMenuItem(
-                      value: 'installment', child: Text('Installment')),
+                      value: 'installment', child: Text(l10n.installment)),
                 ],
                 onChanged: (value) => setState(() => _paymentType = value!),
-                decoration: const InputDecoration(labelText: 'Type'),
+                decoration: InputDecoration(labelText: l10n.type),
               ),
               const SizedBox(height: 16),
               ListTile(
-                title: const Text('Due Date'),
+                title: Text(l10n.dueDate),
                 subtitle: Text(_dueDate.toString().split(' ')[0]),
                 trailing: const Icon(Icons.calendar_today),
                 onTap: () async {
@@ -298,19 +328,19 @@ class _AddPaymentDialogState extends State<_AddPaymentDialog> {
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
                 initialValue: _status,
-                items: const [
-                  DropdownMenuItem(value: 'pending', child: Text('Pending')),
+                items: [
+                  DropdownMenuItem(value: 'pending', child: Text(l10n.pending)),
                   DropdownMenuItem(
-                      value: 'completed', child: Text('Completed')),
-                  DropdownMenuItem(value: 'overdue', child: Text('Overdue')),
+                      value: 'completed', child: Text(l10n.completed)),
+                  DropdownMenuItem(value: 'overdue', child: Text(l10n.overdue)),
                 ],
                 onChanged: (value) => setState(() => _status = value!),
-                decoration: const InputDecoration(labelText: 'Status'),
+                decoration: InputDecoration(labelText: l10n.status),
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _notesController,
-                decoration: const InputDecoration(labelText: 'Notes'),
+                decoration: InputDecoration(labelText: l10n.notes),
               ),
             ],
           ),
@@ -319,7 +349,7 @@ class _AddPaymentDialogState extends State<_AddPaymentDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
+          child: Text(l10n.cancel),
         ),
         ElevatedButton(
           onPressed: () {
@@ -343,7 +373,7 @@ class _AddPaymentDialogState extends State<_AddPaymentDialog> {
               Navigator.pop(context);
             }
           },
-          child: const Text('Add'),
+          child: Text(l10n.add),
         ),
       ],
     );
