@@ -6,6 +6,10 @@ import 'package:drift/drift.dart' as drift;
 import 'unit_form_modal.dart';
 import 'temp_unit_models.dart';
 import 'temp_unit_form_dialog.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'dart:convert';
 
 /// Property form modal bottom sheet for creating and editing properties
 class PropertyFormModal extends StatefulWidget {
@@ -47,6 +51,13 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
   final List<TempUnit> _tempUnits = []; // For new properties
   bool _useTemporaryUnits = false; // Flag to determine which list to use
 
+  // Image handling
+  final ImagePicker _picker = ImagePicker();
+  List<PropertyImage> _existingImages = [];
+  List<XFile> _newImages = [];
+  List<String> _imagesToDelete = [];
+  bool _isLoadingImages = false;
+
   @override
   void initState() {
     super.initState();
@@ -55,6 +66,14 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
     if (property != null) {
       _unitsStream = _watchUnits(property.id);
       _useTemporaryUnits = false;
+      _isLoadingImages = true;
+      _loadImages().then((_) {
+        if (mounted) {
+          setState(() {
+            _isLoadingImages = false;
+          });
+        }
+      });
     } else {
       _unitsStream = Stream.value([]);
       _useTemporaryUnits = true; // Use temp list for new properties
@@ -84,6 +103,60 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
       _selectedListingType = property.listingType;
       _selectedStatus = property.status;
     }
+  }
+
+  Future<void> _loadImages() async {
+    if (widget.property != null) {
+      final images = await (widget.database
+              .select(widget.database.propertyImages)
+            ..where((tbl) => tbl.propertyId.equals(widget.property!.id))
+            ..orderBy(
+                [(tbl) => drift.OrderingTerm(expression: tbl.displayOrder)]))
+          .get();
+      setState(() {
+        _existingImages = images;
+      });
+    }
+  }
+
+  Future<void> _pickImages() async {
+    try {
+      final List<XFile> images = await _picker.pickMultiImage();
+      if (images.isNotEmpty) {
+        final totalImages =
+            _existingImages.length + _newImages.length + images.length;
+        if (totalImages > 8) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Maximum 8 images allowed')),
+            );
+          }
+          return;
+        }
+        setState(() {
+          _newImages.addAll(images);
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error picking images: $e')),
+        );
+      }
+    }
+  }
+
+  void _removeExistingImage(PropertyImage image) {
+    setState(() {
+      _imagesToDelete.add(image.id);
+      _existingImages.remove(image);
+    });
+  }
+
+  void _removeNewImage(int index) {
+    setState(() {
+      _newImages.removeAt(index);
+    });
   }
 
   @override
@@ -309,6 +382,13 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
   }
 
   Future<void> _saveProperty() async {
+    if (!_formKey.currentState!.validate()) {
+      setState(() => _isLoading = false);
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
     try {
       final now = DateTime.now();
       final price = double.parse(_priceController.text);
@@ -320,9 +400,11 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
           ? null
           : int.parse(_bathroomsController.text);
 
+      String propertyId;
+
       if (widget.property == null) {
         // Create new property
-        final propertyId = const Uuid().v4();
+        propertyId = const Uuid().v4();
         await widget.database.into(widget.database.properties).insert(
               PropertiesCompanion.insert(
                 id: propertyId,
@@ -393,6 +475,7 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
         }
       } else {
         // Update existing property
+        propertyId = widget.property!.id;
         await (widget.database.update(widget.database.properties)
               ..where((tbl) => tbl.id.equals(widget.property!.id)))
             .write(
@@ -422,6 +505,39 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
             updatedAt: drift.Value(now),
           ),
         );
+      }
+
+      // Handle image deletions
+      if (_imagesToDelete.isNotEmpty) {
+        await (widget.database.delete(widget.database.propertyImages)
+              ..where((tbl) => tbl.id.isIn(_imagesToDelete)))
+            .go();
+      }
+
+      // Handle new images
+      if (_newImages.isNotEmpty) {
+        for (int i = 0; i < _newImages.length; i++) {
+          final image = _newImages[i];
+          String imageUrl;
+
+          if (kIsWeb) {
+            final bytes = await image.readAsBytes();
+            final extension = image.name.split('.').last;
+            imageUrl = 'data:image/$extension;base64,${base64Encode(bytes)}';
+          } else {
+            imageUrl = image.path;
+          }
+
+          await widget.database.into(widget.database.propertyImages).insert(
+                PropertyImagesCompanion.insert(
+                  id: const Uuid().v4(),
+                  propertyId: propertyId,
+                  imageUrl: imageUrl,
+                  displayOrder: drift.Value(_existingImages.length + i),
+                  createdAt: now,
+                ),
+              );
+        }
       }
 
       if (mounted) {
@@ -475,6 +591,97 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
     } else {
       Navigator.of(context).pop();
     }
+  }
+
+  Widget _buildImageTile(String imageUrl, VoidCallback onRemove) {
+    return Stack(
+      children: [
+        Container(
+          width: 100,
+          height: 100,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.grey.shade300),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: imageUrl.startsWith('data:image')
+                ? Image.memory(
+                    base64Decode(imageUrl.split(',').last),
+                    fit: BoxFit.cover,
+                  )
+                : (kIsWeb
+                    ? Image.network(imageUrl, fit: BoxFit.cover)
+                    : Image.file(File(imageUrl), fit: BoxFit.cover)),
+          ),
+        ),
+        Positioned(
+          top: 4,
+          right: 4,
+          child: GestureDetector(
+            onTap: onRemove,
+            child: Container(
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                color: Colors.red,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.close, color: Colors.white, size: 16),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildNewImageTile(XFile image, VoidCallback onRemove) {
+    return FutureBuilder<Uint8List>(
+      future: image.readAsBytes(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Container(
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.grey.shade300),
+            ),
+            child: const Center(child: CircularProgressIndicator()),
+          );
+        }
+        return Stack(
+          children: [
+            Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.memory(snapshot.data!, fit: BoxFit.cover),
+              ),
+            ),
+            Positioned(
+              top: 4,
+              right: 4,
+              child: GestureDetector(
+                onTap: onRemove,
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.close, color: Colors.white, size: 16),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -536,6 +743,77 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
                     controller: scrollController,
                     padding: const EdgeInsets.all(24),
                     children: [
+                      // Property Images Section
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Property Images',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          TextButton.icon(
+                            onPressed:
+                                (_existingImages.length + _newImages.length < 8)
+                                    ? _pickImages
+                                    : null,
+                            icon: const Icon(Icons.add_photo_alternate),
+                            label: Text(
+                                'Add Images (${_existingImages.length + _newImages.length}/8)'),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      if (_isLoadingImages)
+                        Container(
+                          height: 100,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade300),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
+                      else if (_existingImages.isEmpty && _newImages.isEmpty)
+                        Container(
+                          height: 100,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade300),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Center(
+                            child: Text('No images added'),
+                          ),
+                        )
+                      else
+                        SizedBox(
+                          height: 110,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              ..._existingImages.map((img) => Padding(
+                                    padding: const EdgeInsets.only(right: 8),
+                                    child: _buildImageTile(
+                                      img.imageUrl,
+                                      () => _removeExistingImage(img),
+                                    ),
+                                  )),
+                              ..._newImages
+                                  .asMap()
+                                  .entries
+                                  .map((entry) => Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 8),
+                                        child: _buildNewImageTile(
+                                          entry.value,
+                                          () => _removeNewImage(entry.key),
+                                        ),
+                                      )),
+                            ],
+                          ),
+                        ),
+                      const SizedBox(height: 24),
+
                       // Title (English)
                       TextFormField(
                         controller: _titleController,
@@ -586,7 +864,7 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
 
                       // Property Category
                       DropdownButtonFormField<String>(
-                        initialValue: _selectedCategory,
+                        value: _selectedCategory,
                         decoration: InputDecoration(
                           labelText: l10n.category,
                           prefixIcon: const Icon(Icons.category),
@@ -617,7 +895,7 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
 
                       // Property Type
                       DropdownButtonFormField<String>(
-                        initialValue: _selectedPropertyType,
+                        value: _selectedPropertyType,
                         decoration: InputDecoration(
                           labelText: l10n.type,
                           prefixIcon: const Icon(Icons.home_work),
@@ -633,7 +911,7 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
 
                       // Listing Type
                       DropdownButtonFormField<String>(
-                        initialValue: _selectedListingType,
+                        value: _selectedListingType,
                         decoration: InputDecoration(
                           labelText: l10n.listingType,
                           prefixIcon: const Icon(Icons.sell),
@@ -768,7 +1046,7 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
 
                       // Status
                       DropdownButtonFormField<String>(
-                        initialValue: _selectedStatus,
+                        value: _selectedStatus,
                         decoration: InputDecoration(
                           labelText: l10n.status,
                           prefixIcon: const Icon(Icons.info),

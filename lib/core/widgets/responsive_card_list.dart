@@ -163,7 +163,7 @@ class ResponsiveCardList<T> extends StatelessWidget {
     this.onEdit,
     this.onDelete,
     this.onTap,
-    this.showRowNumbers = true,
+    this.showRowNumbers = false,
   });
 
   @override

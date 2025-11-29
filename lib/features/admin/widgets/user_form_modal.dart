@@ -4,7 +4,10 @@ import '../../../core/database/database.dart';
 import 'package:uuid/uuid.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
+import 'dart:io';
 import 'package:drift/drift.dart' as drift;
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart';
 
 /// User form modal bottom sheet for creating and editing users
 class UserFormModal extends StatefulWidget {
@@ -35,6 +38,8 @@ class _UserFormModalState extends State<UserFormModal> {
   String _selectedRole = 'tenant';
   bool _isActive = true;
   bool _isLoading = false;
+  String? _logoUrl;
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
@@ -53,6 +58,7 @@ class _UserFormModalState extends State<UserFormModal> {
     if (user != null) {
       _selectedRole = user.role;
       _isActive = user.isActive;
+      _logoUrl = user.logoUrl;
     }
   }
 
@@ -67,6 +73,29 @@ class _UserFormModalState extends State<UserFormModal> {
     _nationalIdController.dispose();
     _addressController.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickImage() async {
+    try {
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        if (kIsWeb) {
+          final bytes = await image.readAsBytes();
+          final extension = image.name.split('.').last;
+          final base64Image =
+              'data:image/$extension;base64,${base64Encode(bytes)}';
+          setState(() => _logoUrl = base64Image);
+        } else {
+          setState(() => _logoUrl = image.path);
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error picking image: $e')),
+        );
+      }
+    }
   }
 
   Future<void> _saveUser() async {
@@ -101,6 +130,7 @@ class _UserFormModalState extends State<UserFormModal> {
                         ? null
                         : _nationalIdController.text.trim()),
                 role: _selectedRole,
+                logoUrl: drift.Value(_logoUrl),
                 address: drift.Value(_addressController.text.trim().isEmpty
                     ? null
                     : _addressController.text.trim()),
@@ -125,6 +155,7 @@ class _UserFormModalState extends State<UserFormModal> {
               ? null
               : _nationalIdController.text.trim()),
           role: drift.Value(_selectedRole),
+          logoUrl: drift.Value(_logoUrl),
           address: drift.Value(_addressController.text.trim().isEmpty
               ? null
               : _addressController.text.trim()),
@@ -224,6 +255,45 @@ class _UserFormModalState extends State<UserFormModal> {
                     controller: scrollController,
                     padding: const EdgeInsets.all(24),
                     children: [
+                      // Logo Upload
+                      Center(
+                        child: Stack(
+                          children: [
+                            CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .surfaceContainerHighest,
+                              backgroundImage: _logoUrl != null
+                                  ? (_logoUrl!.startsWith('data:image')
+                                          ? MemoryImage(base64Decode(
+                                              _logoUrl!.split(',').last))
+                                          : FileImage(File(_logoUrl!)))
+                                      as ImageProvider
+                                  : null,
+                              child: _logoUrl == null
+                                  ? const Icon(Icons.person, size: 50)
+                                  : null,
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: CircleAvatar(
+                                radius: 18,
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.primary,
+                                child: IconButton(
+                                  icon: const Icon(Icons.camera_alt,
+                                      size: 18, color: Colors.white),
+                                  onPressed: _pickImage,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+
                       // Username
                       TextFormField(
                         controller: _usernameController,
@@ -239,6 +309,64 @@ class _UserFormModalState extends State<UserFormModal> {
                           return null;
                         },
                       ),
+                      const SizedBox(height: 16),
+
+                      // Password (only required for new users)
+                      TextFormField(
+                        controller: _passwordController,
+                        decoration: InputDecoration(
+                          labelText:
+                              isEdit ? l10n.newPasswordHint : l10n.password,
+                          prefixIcon: const Icon(Icons.lock),
+                        ),
+                        obscureText: true,
+                        validator: (value) {
+                          if (!isEdit &&
+                              (value == null || value.trim().isEmpty)) {
+                            return l10n.passwordRequired;
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Email
+                      TextFormField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                          labelText: l10n.email,
+                          prefixIcon: const Icon(Icons.email),
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return l10n.emailRequired;
+                          }
+                          if (!value.contains('@')) {
+                            return l10n.invalidEmail;
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Full Name
+                      TextFormField(
+                        controller: _fullNameController,
+                        decoration: InputDecoration(
+                          labelText: l10n.fullName,
+                          prefixIcon: const Icon(Icons.badge),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return l10n.fullNameRequired;
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Full Name Arabic
                       TextFormField(
                         controller: _fullNameArController,
                         decoration: InputDecoration(
@@ -339,20 +467,4 @@ class _UserFormModalState extends State<UserFormModal> {
       },
     );
   }
-
-  // static Future<bool?> show({
-  //   required BuildContext context,
-  //   required AppDatabase database,
-  //   User? user,
-  // }) {
-  //   return showModalBottomSheet<bool>(
-  //     context: context,
-  //     isScrollControlled: true,
-  //     backgroundColor: Colors.transparent,
-  //     builder: (context) => UserFormModal(
-  //       user: user,
-  //       database: database,
-  //     ),
-  //   );
-  // }
 }
