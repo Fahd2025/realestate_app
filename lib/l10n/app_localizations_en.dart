@@ -1101,4 +1101,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get copy => 'Copy';
+
+  @override
+  String get totalAmountMustBePositive => 'Total amount must be positive';
+
+  @override
+  String get endDateMustBeAfterStartDate => 'End date must be after start date';
+
+  @override
+  String get customFrequencyRequiresPositiveDays =>
+      'Custom frequency requires a positive number of days';
+
+  @override
+  String get invalidContractDuration =>
+      'Invalid contract duration for selected frequency';
+
+  @override
+  String get paymentReceipt => 'PAYMENT RECEIPT';
+
+  @override
+  String get paymentInformation => 'Payment Information';
+
+  @override
+  String get amountPaid => 'Amount Paid';
+
+  @override
+  String get contractInformation => 'Contract Information';
+
+  @override
+  String get payer => 'Payer';
+
+  @override
+  String get thankYouForPayment => 'Thank you for your payment';
+
+  @override
+  String get generatedOn => 'Generated on';
 }

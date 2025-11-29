@@ -100,8 +100,8 @@ class _ContractPaymentsModalState extends State<ContractPaymentsModal> {
     }
   }
 
-  void _downloadReceipt(Payment payment) async {
-    await PaymentReceiptGenerator.generateAndDownloadReceipt(payment);
+  void _downloadReceipt(Payment payment, AppLocalizations l10n) async {
+    await PaymentReceiptGenerator.generateAndDownloadReceipt(payment, l10n);
   }
 
   String _getLocalizedPaymentType(String type, AppLocalizations l10n) {
@@ -227,7 +227,7 @@ class _ContractPaymentsModalState extends State<ContractPaymentsModal> {
                                   if (payment.status == 'completed')
                                     ElevatedButton.icon(
                                       onPressed: () =>
-                                          _downloadReceipt(payment),
+                                          _downloadReceipt(payment, l10n),
                                       icon: const Icon(Icons.download),
                                       label: Text(l10n.receipt),
                                       style: ElevatedButton.styleFrom(

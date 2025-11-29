@@ -214,6 +214,7 @@ class _ContractFormModalState extends State<ContractFormModal> {
       customFrequencyDays: _paymentFrequency == PaymentFrequency.custom
           ? int.tryParse(_customFrequencyController.text)
           : null,
+      l10n: AppLocalizations.of(context)!,
     );
 
     if (validationError != null) {
@@ -479,7 +480,7 @@ class _ContractFormModalState extends State<ContractFormModal> {
               items: PaymentFrequency.values.map((freq) {
                 return DropdownMenuItem(
                   value: freq,
-                  child: Text(freq.displayName),
+                  child: Text(freq.getDisplayName(l10n)),
                 );
               }).toList(),
               onChanged: (value) {

@@ -1,3 +1,5 @@
+import 'package:realestate_app/l10n/app_localizations.dart';
+
 enum PaymentFrequency {
   monthly,
   quarterly,
@@ -5,18 +7,18 @@ enum PaymentFrequency {
   annual,
   custom;
 
-  String get displayName {
+  String getDisplayName(AppLocalizations l10n) {
     switch (this) {
       case PaymentFrequency.monthly:
-        return 'Monthly';
+        return l10n.monthly;
       case PaymentFrequency.quarterly:
-        return 'Quarterly';
+        return l10n.quarterly;
       case PaymentFrequency.semiAnnual:
-        return 'Semi-Annual';
+        return l10n.semiAnnual;
       case PaymentFrequency.annual:
-        return 'Annual';
+        return l10n.annual;
       case PaymentFrequency.custom:
-        return 'Custom';
+        return l10n.custom;
     }
   }
 

@@ -2263,6 +2263,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Copy'**
   String get copy;
+
+  /// No description provided for @totalAmountMustBePositive.
+  ///
+  /// In en, this message translates to:
+  /// **'Total amount must be positive'**
+  String get totalAmountMustBePositive;
+
+  /// No description provided for @endDateMustBeAfterStartDate.
+  ///
+  /// In en, this message translates to:
+  /// **'End date must be after start date'**
+  String get endDateMustBeAfterStartDate;
+
+  /// No description provided for @customFrequencyRequiresPositiveDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom frequency requires a positive number of days'**
+  String get customFrequencyRequiresPositiveDays;
+
+  /// No description provided for @invalidContractDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid contract duration for selected frequency'**
+  String get invalidContractDuration;
+
+  /// No description provided for @paymentReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'PAYMENT RECEIPT'**
+  String get paymentReceipt;
+
+  /// No description provided for @paymentInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Information'**
+  String get paymentInformation;
+
+  /// No description provided for @amountPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount Paid'**
+  String get amountPaid;
+
+  /// No description provided for @contractInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract Information'**
+  String get contractInformation;
+
+  /// No description provided for @payer.
+  ///
+  /// In en, this message translates to:
+  /// **'Payer'**
+  String get payer;
+
+  /// No description provided for @thankYouForPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for your payment'**
+  String get thankYouForPayment;
+
+  /// No description provided for @generatedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Generated on'**
+  String get generatedOn;
 }
 
 class _AppLocalizationsDelegate

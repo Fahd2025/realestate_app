@@ -1,5 +1,6 @@
 import 'package:realestate_app/features/payments/models/payment_frequency.dart';
 import 'package:realestate_app/features/payments/models/payment_schedule_item.dart';
+import 'package:realestate_app/l10n/app_localizations.dart';
 
 class InstallmentService {
   /// Calculate the number of installments based on frequency and contract duration
@@ -150,19 +151,20 @@ class InstallmentService {
     required PaymentFrequency frequency,
     required DateTime startDate,
     required DateTime endDate,
+    required AppLocalizations l10n,
     int? customFrequencyDays,
   }) {
     if (totalAmount <= 0) {
-      return 'Total amount must be positive';
+      return l10n.totalAmountMustBePositive;
     }
 
     if (endDate.isBefore(startDate) || endDate.isAtSameMomentAs(startDate)) {
-      return 'End date must be after start date';
+      return l10n.endDateMustBeAfterStartDate;
     }
 
     if (frequency == PaymentFrequency.custom) {
       if (customFrequencyDays == null || customFrequencyDays <= 0) {
-        return 'Custom frequency requires a positive number of days';
+        return l10n.customFrequencyRequiresPositiveDays;
       }
     }
 
@@ -174,7 +176,7 @@ class InstallmentService {
         customFrequencyDays: customFrequencyDays,
       );
       if (count <= 0) {
-        return 'Invalid contract duration for selected frequency';
+        return l10n.invalidContractDuration;
       }
     } catch (e) {
       return e.toString();

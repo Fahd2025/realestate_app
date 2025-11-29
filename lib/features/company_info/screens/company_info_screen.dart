@@ -66,8 +66,9 @@ class _CompanyInfoScreenState extends State<CompanyInfoScreen> {
   }
 
   void _updateControllers(CompanyInfoData info) {
-    if (_isLoaded)
+    if (_isLoaded) {
       return; // Prevent overwriting user edits if called multiple times
+    }
 
     _nameEnController.text = info.nameEn ?? '';
     _nameArController.text = info.nameAr ?? '';

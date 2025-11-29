@@ -933,7 +933,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get floorNumber => 'رقم الطابق';
 
   @override
-  String get kitchens => 'Kitchens';
+  String get kitchens => 'المطابخ';
 
   @override
   String get noUnitsFound => 'لا توجد وحدات';
@@ -1027,10 +1027,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get allProvinces => 'جميع المحافظات';
 
   @override
-  String get pleaseSelectRegion => 'Please select a Region';
+  String get pleaseSelectRegion => 'الرجاء اختيار المنطقة';
 
   @override
-  String get pleaseSelectProvince => 'Please select a Province';
+  String get pleaseSelectProvince => 'الرجاء اختيار المحافظة';
 
   @override
   String get details => 'التفاصيل';
@@ -1100,4 +1100,39 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get copy => 'نسخ';
+
+  @override
+  String get totalAmountMustBePositive => 'يجب أن يكون المبلغ الإجمالي موجباً';
+
+  @override
+  String get endDateMustBeAfterStartDate =>
+      'يجب أن يكون تاريخ الانتهاء بعد تاريخ البدء';
+
+  @override
+  String get customFrequencyRequiresPositiveDays =>
+      'يتطلب التكرار المخصص عدداً موجباً من الأيام';
+
+  @override
+  String get invalidContractDuration => 'مدة العقد غير صالحة للتكرار المحدد';
+
+  @override
+  String get paymentReceipt => 'إيصال دفع';
+
+  @override
+  String get paymentInformation => 'معلومات الدفع';
+
+  @override
+  String get amountPaid => 'المبلغ المدفوع';
+
+  @override
+  String get contractInformation => 'معلومات العقد';
+
+  @override
+  String get payer => 'الدافع';
+
+  @override
+  String get thankYouForPayment => 'شكراً لدفعكم';
+
+  @override
+  String get generatedOn => 'تم الإنشاء في';
 }

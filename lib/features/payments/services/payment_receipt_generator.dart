@@ -3,6 +3,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:realestate_app/core/database/database.dart';
+import 'package:realestate_app/l10n/app_localizations.dart';
 
 class PaymentReceiptGenerator {
   /// Generate a PDF receipt for a payment
@@ -10,6 +11,7 @@ class PaymentReceiptGenerator {
     required Payment payment,
     required Contract contract,
     required double remainingBalance,
+    required AppLocalizations l10n,
     String? propertyTitle,
     String? payerName,
   }) async {
@@ -22,138 +24,150 @@ class PaymentReceiptGenerator {
     // Use the same font for bold since we only have regular weight
     final fontBold = font;
 
+    final isArabic = l10n.localeName == 'ar';
+    final textDirection =
+        isArabic ? pw.TextDirection.rtl : pw.TextDirection.ltr;
+    final alignStart =
+        isArabic ? pw.CrossAxisAlignment.end : pw.CrossAxisAlignment.start;
+
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
+        textDirection: textDirection,
         theme: pw.ThemeData.withFont(base: font, bold: fontBold),
         build: (pw.Context context) {
-          return pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              // Header
-              pw.Container(
-                padding: const pw.EdgeInsets.all(20),
-                decoration: pw.BoxDecoration(
-                  color: PdfColors.blue700,
-                  borderRadius: pw.BorderRadius.circular(8),
-                ),
-                child: pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                  children: [
-                    pw.Text(
-                      'PAYMENT RECEIPT',
-                      style: pw.TextStyle(
-                        fontSize: 24,
-                        fontWeight: pw.FontWeight.bold,
-                        color: PdfColors.white,
-                      ),
-                    ),
-                    pw.Text(
-                      'Receipt #${payment.id.substring(0, 8).toUpperCase()}',
-                      style: const pw.TextStyle(
-                        fontSize: 12,
-                        color: PdfColors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              pw.SizedBox(height: 30),
-
-              // Payment Details
-              pw.Text(
-                'Payment Information',
-                style:
-                    pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold),
-              ),
-              pw.SizedBox(height: 10),
-              pw.Divider(thickness: 2),
-              pw.SizedBox(height: 10),
-
-              _buildInfoRow('Payment Date:',
-                  payment.paymentDate.toString().split(' ')[0]),
-              _buildInfoRow('Payment Type:', payment.paymentType.toUpperCase()),
-              _buildInfoRow('Payment Method:', payment.paymentMethod ?? 'N/A'),
-              _buildInfoRow('Status:', payment.status.toUpperCase()),
-
-              pw.SizedBox(height: 20),
-
-              // Amount Details
-              pw.Container(
-                padding: const pw.EdgeInsets.all(15),
-                decoration: pw.BoxDecoration(
-                  color: PdfColors.grey200,
-                  borderRadius: pw.BorderRadius.circular(8),
-                ),
-                child: pw.Column(
-                  children: [
-                    _buildAmountRow('Amount Paid:', payment.amount, true),
-                    pw.SizedBox(height: 5),
-                    pw.Divider(),
-                    pw.SizedBox(height: 5),
-                    _buildAmountRow(
-                        'Remaining Balance:', remainingBalance, false),
-                  ],
-                ),
-              ),
-
-              pw.SizedBox(height: 30),
-
-              // Contract Details
-              pw.Text(
-                'Contract Information',
-                style:
-                    pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold),
-              ),
-              pw.SizedBox(height: 10),
-              pw.Divider(thickness: 2),
-              pw.SizedBox(height: 10),
-
-              _buildInfoRow(
-                  'Contract ID:', contract.id.substring(0, 8).toUpperCase()),
-              _buildInfoRow(
-                  'Contract Type:', contract.contractType.toUpperCase()),
-              _buildInfoRow('Property:',
-                  propertyTitle ?? contract.propertyId.substring(0, 8)),
-              _buildInfoRow(
-                  'Payer:', payerName ?? payment.payerId.substring(0, 8)),
-
-              if (payment.notes != null && payment.notes!.isNotEmpty) ...[
-                pw.SizedBox(height: 20),
-                pw.Text(
-                  'Notes',
-                  style: pw.TextStyle(
-                      fontSize: 14, fontWeight: pw.FontWeight.bold),
-                ),
-                pw.SizedBox(height: 5),
-                pw.Text(payment.notes!,
-                    style: const pw.TextStyle(fontSize: 12)),
-              ],
-
-              pw.Spacer(),
-
-              // Footer
-              pw.Divider(),
-              pw.SizedBox(height: 10),
-              pw.Center(
-                child: pw.Text(
-                  'Thank you for your payment',
-                  style: pw.TextStyle(
-                    fontSize: 14,
-                    fontWeight: pw.FontWeight.bold,
+          return pw.Directionality(
+            textDirection: textDirection,
+            child: pw.Column(
+              crossAxisAlignment: alignStart,
+              children: [
+                // Header
+                pw.Container(
+                  padding: const pw.EdgeInsets.all(20),
+                  decoration: pw.BoxDecoration(
                     color: PdfColors.blue700,
+                    borderRadius: pw.BorderRadius.circular(8),
+                  ),
+                  child: pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: [
+                      pw.Text(
+                        l10n.paymentReceipt,
+                        style: pw.TextStyle(
+                          fontSize: 24,
+                          fontWeight: pw.FontWeight.bold,
+                          color: PdfColors.white,
+                        ),
+                      ),
+                      pw.Text(
+                        '#${payment.id.substring(0, 8).toUpperCase()}',
+                        style: const pw.TextStyle(
+                          fontSize: 12,
+                          color: PdfColors.white,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              pw.SizedBox(height: 5),
-              pw.Center(
-                child: pw.Text(
-                  'Generated on ${DateTime.now().toString().split(' ')[0]}',
-                  style: const pw.TextStyle(
-                      fontSize: 10, color: PdfColors.grey600),
+                pw.SizedBox(height: 30),
+
+                // Payment Details
+                pw.Text(
+                  l10n.paymentInformation,
+                  style: pw.TextStyle(
+                      fontSize: 18, fontWeight: pw.FontWeight.bold),
                 ),
-              ),
-            ],
+                pw.SizedBox(height: 10),
+                pw.Divider(thickness: 2),
+                pw.SizedBox(height: 10),
+
+                _buildInfoRow(l10n.paymentDate,
+                    payment.paymentDate.toString().split(' ')[0]),
+                _buildInfoRow(
+                    l10n.paymentType, payment.paymentType.toUpperCase()),
+                _buildInfoRow(
+                    l10n.paymentMethod, payment.paymentMethod ?? 'N/A'),
+                _buildInfoRow(l10n.status, payment.status.toUpperCase()),
+
+                pw.SizedBox(height: 20),
+
+                // Amount Details
+                pw.Container(
+                  padding: const pw.EdgeInsets.all(15),
+                  decoration: pw.BoxDecoration(
+                    color: PdfColors.grey200,
+                    borderRadius: pw.BorderRadius.circular(8),
+                  ),
+                  child: pw.Column(
+                    children: [
+                      _buildAmountRow(l10n.amountPaid, payment.amount, true),
+                      pw.SizedBox(height: 5),
+                      pw.Divider(),
+                      pw.SizedBox(height: 5),
+                      _buildAmountRow(
+                          l10n.remainingBalance, remainingBalance, false),
+                    ],
+                  ),
+                ),
+
+                pw.SizedBox(height: 30),
+
+                // Contract Details
+                pw.Text(
+                  l10n.contractInformation,
+                  style: pw.TextStyle(
+                      fontSize: 18, fontWeight: pw.FontWeight.bold),
+                ),
+                pw.SizedBox(height: 10),
+                pw.Divider(thickness: 2),
+                pw.SizedBox(height: 10),
+
+                _buildInfoRow(
+                    l10n.contractId, contract.id.substring(0, 8).toUpperCase()),
+                _buildInfoRow(
+                    l10n.contractType, contract.contractType.toUpperCase()),
+                _buildInfoRow(l10n.property,
+                    propertyTitle ?? contract.propertyId.substring(0, 8)),
+                _buildInfoRow(
+                    l10n.payer, payerName ?? payment.payerId.substring(0, 8)),
+
+                if (payment.notes != null && payment.notes!.isNotEmpty) ...[
+                  pw.SizedBox(height: 20),
+                  pw.Text(
+                    l10n.notes,
+                    style: pw.TextStyle(
+                        fontSize: 14, fontWeight: pw.FontWeight.bold),
+                  ),
+                  pw.SizedBox(height: 5),
+                  pw.Text(payment.notes!,
+                      style: const pw.TextStyle(fontSize: 12)),
+                ],
+
+                pw.Spacer(),
+
+                // Footer
+                pw.Divider(),
+                pw.SizedBox(height: 10),
+                pw.Center(
+                  child: pw.Text(
+                    l10n.thankYouForPayment,
+                    style: pw.TextStyle(
+                      fontSize: 14,
+                      fontWeight: pw.FontWeight.bold,
+                      color: PdfColors.blue700,
+                    ),
+                  ),
+                ),
+                pw.SizedBox(height: 5),
+                pw.Center(
+                  child: pw.Text(
+                    '${l10n.generatedOn} ${DateTime.now().toString().split(' ')[0]}',
+                    style: const pw.TextStyle(
+                        fontSize: 10, color: PdfColors.grey600),
+                  ),
+                ),
+              ],
+            ),
           );
         },
       ),
@@ -206,6 +220,7 @@ class PaymentReceiptGenerator {
     required Payment payment,
     required Contract contract,
     required double remainingBalance,
+    required AppLocalizations l10n,
     String? propertyTitle,
     String? payerName,
   }) async {
@@ -213,6 +228,7 @@ class PaymentReceiptGenerator {
       payment: payment,
       contract: contract,
       remainingBalance: remainingBalance,
+      l10n: l10n,
       propertyTitle: propertyTitle,
       payerName: payerName,
     );
@@ -228,6 +244,7 @@ class PaymentReceiptGenerator {
     required Payment payment,
     required Contract contract,
     required double remainingBalance,
+    required AppLocalizations l10n,
     String? propertyTitle,
     String? payerName,
   }) async {
@@ -235,6 +252,7 @@ class PaymentReceiptGenerator {
       payment: payment,
       contract: contract,
       remainingBalance: remainingBalance,
+      l10n: l10n,
       propertyTitle: propertyTitle,
       payerName: payerName,
     );
@@ -246,7 +264,8 @@ class PaymentReceiptGenerator {
   }
 
   /// Generate and download receipt (save to device)
-  static Future<void> generateAndDownloadReceipt(Payment payment) async {
+  static Future<void> generateAndDownloadReceipt(
+      Payment payment, AppLocalizations l10n) async {
     // In a real implementation, we would need to get related data
     // For now, we'll use default values since we don't have the context here
     try {
@@ -277,6 +296,7 @@ class PaymentReceiptGenerator {
           syncStatus: 'synced', // Default sync status
         ),
         remainingBalance: 0.0, // This would be calculated in a real app
+        l10n: l10n,
       );
 
       await Printing.sharePdf(

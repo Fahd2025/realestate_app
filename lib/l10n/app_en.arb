@@ -380,7 +380,17 @@
   "companyInfoSaved": "Company information saved successfully",
   "change": "Change",
   "remove": "Remove",
-  "email": "Email",
   "defaultCredentials": "Default Credentials",
-  "copy": "Copy"
+  "copy": "Copy",
+  "totalAmountMustBePositive": "Total amount must be positive",
+  "endDateMustBeAfterStartDate": "End date must be after start date",
+  "customFrequencyRequiresPositiveDays": "Custom frequency requires a positive number of days",
+  "invalidContractDuration": "Invalid contract duration for selected frequency",
+  "paymentReceipt": "PAYMENT RECEIPT",
+  "paymentInformation": "Payment Information",
+  "amountPaid": "Amount Paid",
+  "contractInformation": "Contract Information",
+  "payer": "Payer",
+  "thankYouForPayment": "Thank you for your payment",
+  "generatedOn": "Generated on"
 }
