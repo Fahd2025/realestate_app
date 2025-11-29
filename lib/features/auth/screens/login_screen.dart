@@ -102,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             constraints: const BoxConstraints(maxWidth: 480),
                             child: Card(
                               elevation: 24,
-                              shadowColor: Colors.black.withOpacity(0.3),
+                              shadowColor: Colors.black.withValues(alpha: 0.3),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(32),
                               ),
@@ -132,8 +132,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                                   backgroundColor:
                                                       Color(0xFFE3F2FD),
                                                   backgroundImage: MemoryImage(
-                                                      base64Decode(companyState
-                                                          .info!.logoBase64!)),
+                                                    base64Decode(companyState
+                                                        .info!.logoBase64!),
+                                                  ),
                                                 );
                                               }
                                               // Default app icon
@@ -202,8 +203,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                                                   .textTheme
                                                                   .bodyMedium
                                                                   ?.color
-                                                                  ?.withOpacity(
-                                                                      0.7),
+                                                                  ?.withValues(
+                                                                      alpha:
+                                                                          0.7),
                                                         ),
                                                     textAlign: TextAlign.center,
                                                   ),
@@ -437,7 +439,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .onSurface
-                                                    .withOpacity(0.7),
+                                                    .withValues(alpha: 0.7),
                                               ),
                                               onPressed: () => context
                                                   .read<ThemeCubit>()
@@ -461,7 +463,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                   color: Theme.of(context)
                                                       .colorScheme
                                                       .onSurface
-                                                      .withOpacity(0.7)),
+                                                      .withValues(alpha: 0.7)),
                                               onPressed: () {
                                                 context
                                                     .read<LanguageCubit>()

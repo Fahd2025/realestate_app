@@ -54,8 +54,8 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
   // Image handling
   final ImagePicker _picker = ImagePicker();
   List<PropertyImage> _existingImages = [];
-  List<XFile> _newImages = [];
-  List<String> _imagesToDelete = [];
+  final List<XFile> _newImages = [];
+  final List<String> _imagesToDelete = [];
   bool _isLoadingImages = false;
 
   @override
@@ -528,11 +528,15 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
             imageUrl = image.path;
           }
 
+          // Set the first image as primary if no existing images
+          final isPrimary = _existingImages.isEmpty && i == 0;
+
           await widget.database.into(widget.database.propertyImages).insert(
                 PropertyImagesCompanion.insert(
                   id: const Uuid().v4(),
                   propertyId: propertyId,
                   imageUrl: imageUrl,
+                  isPrimary: drift.Value(isPrimary),
                   displayOrder: drift.Value(_existingImages.length + i),
                   createdAt: now,
                 ),
@@ -864,7 +868,7 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
 
                       // Property Category
                       DropdownButtonFormField<String>(
-                        value: _selectedCategory,
+                        initialValue: _selectedCategory,
                         decoration: InputDecoration(
                           labelText: l10n.category,
                           prefixIcon: const Icon(Icons.category),
@@ -895,7 +899,7 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
 
                       // Property Type
                       DropdownButtonFormField<String>(
-                        value: _selectedPropertyType,
+                        initialValue: _selectedPropertyType,
                         decoration: InputDecoration(
                           labelText: l10n.type,
                           prefixIcon: const Icon(Icons.home_work),
@@ -911,7 +915,7 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
 
                       // Listing Type
                       DropdownButtonFormField<String>(
-                        value: _selectedListingType,
+                        initialValue: _selectedListingType,
                         decoration: InputDecoration(
                           labelText: l10n.listingType,
                           prefixIcon: const Icon(Icons.sell),
@@ -1046,7 +1050,7 @@ class _PropertyFormModalState extends State<PropertyFormModal> {
 
                       // Status
                       DropdownButtonFormField<String>(
-                        value: _selectedStatus,
+                        initialValue: _selectedStatus,
                         decoration: InputDecoration(
                           labelText: l10n.status,
                           prefixIcon: const Icon(Icons.info),

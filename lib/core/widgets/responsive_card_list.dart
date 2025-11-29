@@ -40,12 +40,12 @@ class ResponsiveExpansionCard<T> extends StatelessWidget {
             if (showRowNumber && index != null) ...[
               CircleAvatar(
                 radius: 14,
-                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                backgroundColor: Theme.of(context).colorScheme.primary,
                 child: Text(
                   '${index! + 1}',
                   style: TextStyle(
                     fontSize: 12,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -163,7 +163,7 @@ class ResponsiveCardList<T> extends StatelessWidget {
     this.onEdit,
     this.onDelete,
     this.onTap,
-    this.showRowNumbers = false,
+    this.showRowNumbers = true,
   });
 
   @override

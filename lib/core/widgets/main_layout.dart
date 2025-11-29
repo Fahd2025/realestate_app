@@ -27,7 +27,6 @@ class MainLayout extends StatefulWidget {
 
 class _MainLayoutState extends State<MainLayout> {
   // Static variable to persist sidebar state across navigation
-  static bool _isDrawerOpen = true;
 
   @override
   void initState() {
@@ -49,60 +48,7 @@ class _MainLayoutState extends State<MainLayout> {
       return const Scaffold();
     }
     final userRole = authBloc.getUserRole();
-    final isDesktop = MediaQuery.of(context).size.width >= 900;
 
-    if (isDesktop) {
-      return Scaffold(
-        body: Row(
-          children: [
-            // Sidebar (Drawer or Rail)
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              width: _isDrawerOpen ? 250 : 72,
-              child: Material(
-                elevation: 1,
-                color: Theme.of(context).colorScheme.surface,
-                child: _isDrawerOpen
-                    ? _buildDrawerContent(context, userRole)
-                    : _buildNavigationRail(context, userRole),
-              ),
-            ),
-            // Main Content Area
-            Expanded(
-              child: Column(
-                children: [
-                  // AppBar
-                  SizedBox(
-                    height: kToolbarHeight,
-                    child: AppBar(
-                      title: Text(widget.title),
-                      leading: IconButton(
-                        icon: const Icon(Icons.menu),
-                        onPressed: () {
-                          setState(() {
-                            _isDrawerOpen = !_isDrawerOpen;
-                          });
-                        },
-                      ),
-                      actions: widget.actions,
-                      elevation: 0,
-                      scrolledUnderElevation: 0,
-                      backgroundColor:
-                          Theme.of(context).appBarTheme.backgroundColor,
-                    ),
-                  ),
-                  // Body
-                  Expanded(child: widget.body),
-                ],
-              ),
-            ),
-          ],
-        ),
-        floatingActionButton: widget.floatingActionButton,
-      );
-    }
-
-    // Mobile Layout
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -145,50 +91,10 @@ class _MainLayoutState extends State<MainLayout> {
     );
   }
 
-  Widget _buildNavigationRail(BuildContext context, UserRole userRole) {
-    final l10n = AppLocalizations.of(context)!;
-    final selectedIndex = _getSelectedIndex(context, userRole);
-
-    return NavigationRail(
-      selectedIndex: selectedIndex,
-      onDestinationSelected: (index) {
-        _onDestinationSelected(context, index, userRole);
-      },
-      labelType: NavigationRailLabelType.none,
-      leading: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16.0),
-        child: CircleAvatar(
-          child: Text(
-            (context.read<AuthBloc>().currentUser?.fullName ?? 'U')[0]
-                .toUpperCase(),
-          ),
-        ),
-      ),
-      destinations: _getDestinations(context, userRole),
-      trailing: Expanded(
-        child: Align(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
-            child: IconButton(
-              icon: const Icon(Icons.logout),
-              onPressed: () {
-                context.read<AuthBloc>().add(LogoutRequested());
-                Navigator.pushReplacementNamed(context, AppRoutes.login);
-              },
-              tooltip: l10n.logout,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   List<Widget> _buildNavItems(BuildContext context, UserRole userRole,
       {required bool isDrawer}) {
     final currentRoute = ModalRoute.of(context)?.settings.name;
     final List<_NavItem> items = _getNavItemsData(context, userRole);
-    final isDesktop = MediaQuery.of(context).size.width >= 900;
 
     return items.map((item) {
       final isSelected = currentRoute == item.route;
@@ -197,8 +103,8 @@ class _MainLayoutState extends State<MainLayout> {
         title: Text(item.label),
         selected: isSelected,
         onTap: () {
-          // Only close the drawer if we are on mobile (where it's a modal drawer)
-          if (isDrawer && !isDesktop) {
+          // Always close the drawer since it's now always a modal drawer
+          if (isDrawer) {
             Navigator.pop(context);
           }
 
@@ -208,36 +114,6 @@ class _MainLayoutState extends State<MainLayout> {
         },
       );
     }).toList();
-  }
-
-  List<NavigationRailDestination> _getDestinations(
-      BuildContext context, UserRole userRole) {
-    final items = _getNavItemsData(context, userRole);
-    return items.map((item) {
-      return NavigationRailDestination(
-        icon: Icon(item.icon),
-        label: Text(item.label),
-      );
-    }).toList();
-  }
-
-  int? _getSelectedIndex(BuildContext context, UserRole userRole) {
-    final currentRoute = ModalRoute.of(context)?.settings.name;
-    final items = _getNavItemsData(context, userRole);
-
-    final index = items.indexWhere((item) => item.route == currentRoute);
-    return index != -1 ? index : 0; // Default to 0 if not found
-  }
-
-  void _onDestinationSelected(
-      BuildContext context, int index, UserRole userRole) {
-    final items = _getNavItemsData(context, userRole);
-    final item = items[index];
-    final currentRoute = ModalRoute.of(context)?.settings.name;
-
-    if (currentRoute != item.route) {
-      Navigator.pushReplacementNamed(context, item.route);
-    }
   }
 
   List<_NavItem> _getNavItemsData(BuildContext context, UserRole userRole) {

@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:realestate_app/l10n/app_localizations.dart';
 import '../../../core/database/database.dart';
 import '../../../core/widgets/main_layout.dart';
@@ -7,6 +10,9 @@ import '../../../core/widgets/responsive_card_list.dart';
 import '../../../core/widgets/confirmation_dialog.dart';
 import '../../../core/widgets/search_filter_bar.dart';
 import '../widgets/user_form_modal.dart';
+import '../../../core/widgets/image_slideshow_dialog.dart';
+import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 
 /// Comprehensive user management screen with CRUD operations
 class UserManagementScreen extends StatefulWidget {
@@ -269,6 +275,11 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
       data: _filteredUsers,
       columns: [
         DataTableColumnConfig(
+          label: l10n.logo,
+          getValue: (user) => '',
+          customCell: (user) => _buildUserLogo(user),
+        ),
+        DataTableColumnConfig(
           label: l10n.username,
           getValue: (user) => user.username,
         ),
@@ -323,13 +334,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
       data: _filteredUsers,
       getTitle: (user) => user.fullName,
       getSubtitle: (user) => user.email,
-      getLeading: (user) => CircleAvatar(
-        backgroundColor: _getRoleColor(user.role),
-        child: Text(
-          user.fullName[0].toUpperCase(),
-          style: const TextStyle(color: Colors.white),
-        ),
-      ),
+      getLeading: (user) => _buildUserLogo(user),
       fields: [
         CardField(
           label: l10n.username,
@@ -400,5 +405,45 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
       default:
         return Colors.grey.withValues(alpha: 0.2);
     }
+  }
+
+  Widget _buildUserLogo(User user) {
+    final logoUrl = user.logoUrl;
+
+    // Check if we can display the image
+    bool canDisplay = logoUrl != null && logoUrl.isNotEmpty;
+    if (canDisplay &&
+        kIsWeb &&
+        !logoUrl.startsWith('http') &&
+        !logoUrl.startsWith('data:image')) {
+      canDisplay = false;
+    }
+
+    if (!canDisplay) {
+      return CircleAvatar(
+        backgroundColor: _getRoleColor(user.role),
+        child: Text(
+          user.fullName.isNotEmpty ? user.fullName[0].toUpperCase() : '?',
+          style: const TextStyle(color: Colors.white),
+        ),
+      );
+    }
+
+    return GestureDetector(
+      onTap: () => ImageSlideshowDialog.show(context, [logoUrl]),
+      child: Hero(
+        tag: 'user_logo_${user.id}',
+        child: CircleAvatar(
+          backgroundColor: Colors.grey.shade200,
+          backgroundImage: logoUrl!.startsWith('http')
+              ? CachedNetworkImageProvider(logoUrl)
+              : logoUrl.startsWith('data:image')
+                  ? MemoryImage(base64Decode(logoUrl.split(',').last))
+                  : FileImage(File(logoUrl)) as ImageProvider,
+          onBackgroundImageError: (_, __) {},
+          child: null,
+        ),
+      ),
+    );
   }
 }
