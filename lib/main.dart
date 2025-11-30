@@ -51,66 +51,70 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => ThemeCubit(),
-        ),
-        BlocProvider(
-          create: (context) => LanguageCubit(),
-        ),
-        BlocProvider(
-          create: (context) => AuthBloc(
-            database: database,
-            sharedPreferences: sharedPreferences,
-          )..add(CheckAuthStatus()),
-        ),
-        BlocProvider(
-          create: (context) => BasicDataCubit(basicDataRepository),
-        ),
-        BlocProvider(
-          create: (context) => CompanyInfoCubit(companyInfoRepository),
-        ),
-      ],
-      child: BlocBuilder<ThemeCubit, ThemeState>(
-        builder: (context, themeState) {
-          return BlocBuilder<LanguageCubit, LanguageState>(
-            builder: (context, languageState) {
-              return MaterialApp(
-                title: 'Real Estate App',
-                debugShowCheckedModeBanner: false,
+    return RepositoryProvider.value(
+      value: database,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => ThemeCubit(),
+          ),
+          BlocProvider(
+            create: (context) => LanguageCubit(),
+          ),
+          BlocProvider(
+            create: (context) => AuthBloc(
+              database: database,
+              sharedPreferences: sharedPreferences,
+            )..add(CheckAuthStatus()),
+          ),
+          BlocProvider(
+            create: (context) => BasicDataCubit(basicDataRepository),
+          ),
+          BlocProvider(
+            create: (context) => CompanyInfoCubit(companyInfoRepository),
+          ),
+        ],
+        child: BlocBuilder<ThemeCubit, ThemeState>(
+          builder: (context, themeState) {
+            return BlocBuilder<LanguageCubit, LanguageState>(
+              builder: (context, languageState) {
+                return MaterialApp(
+                  title: 'Real Estate App',
+                  debugShowCheckedModeBanner: false,
 
-                // Theme
-                theme: AppTheme.lightTheme(themeState.colorScheme),
-                darkTheme: AppTheme.darkTheme(themeState.colorScheme),
-                themeMode:
-                    themeState.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+                  // Theme
+                  theme: AppTheme.lightTheme(themeState.colorScheme),
+                  darkTheme: AppTheme.darkTheme(themeState.colorScheme),
+                  themeMode:
+                      themeState.isDarkMode ? ThemeMode.dark : ThemeMode.light,
 
-                // Localization
-                locale: languageState.locale,
-                localizationsDelegates: const [
-                  AppLocalizations.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                supportedLocales: const [
-                  Locale('en'),
-                  Locale('ar'),
-                ],
+                  // Localization
+                  locale: languageState.locale,
+                  localizationsDelegates: const [
+                    AppLocalizations.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  supportedLocales: const [
+                    Locale('en'),
+                    Locale('ar'),
+                  ],
 
-                // Routing
-                onGenerateRoute: AppRouter.generateRoute,
-                onGenerateInitialRoutes: (String initialRoute) {
-                  // Handle deep linking on web
-                  return [
-                    AppRouter.generateRoute(RouteSettings(name: initialRoute)),
-                  ];
-                },
-              );
-            },
-          );
-        },
+                  // Routing
+                  onGenerateRoute: AppRouter.generateRoute,
+                  onGenerateInitialRoutes: (String initialRoute) {
+                    // Handle deep linking on web
+                    return [
+                      AppRouter.generateRoute(
+                          RouteSettings(name: initialRoute)),
+                    ];
+                  },
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }

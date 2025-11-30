@@ -8,6 +8,7 @@ import '../../../core/widgets/main_layout.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../company_info/screens/company_info_screen.dart';
+import '../../../core/database/database.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -52,6 +53,45 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() {
       _syncEnabled = value;
     });
+  }
+
+  Future<void> _clearData() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Clear All Data?'),
+        content: const Text(
+            'This will permanently delete all users, properties, contracts, and other business data. This action cannot be undone.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Clear Data'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && mounted) {
+      try {
+        await context.read<AppDatabase>().clearData();
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('All data cleared successfully')),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error clearing data: $e')),
+          );
+        }
+      }
+    }
   }
 
   @override
@@ -198,6 +238,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ],
               ),
+            ),
+          ),
+          const SizedBox(height: 24),
+
+          // Data Management section
+          Text(
+            'Data Management',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 8),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.delete_forever, color: Colors.red),
+              title: const Text('Clear All Data',
+                  style: TextStyle(color: Colors.red)),
+              subtitle: const Text('Delete all business data from the app'),
+              onTap: _clearData,
             ),
           ),
         ],

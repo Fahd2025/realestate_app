@@ -559,6 +559,173 @@ class AppDatabase extends _$AppDatabase {
               updatedAt: now,
             ));
       });
+
+      // Add even more sample data
+      final prop8Id = uuid.v4();
+      final prop9Id = uuid.v4();
+      final prop10Id = uuid.v4();
+
+      await batch((batch) {
+        // Property 8
+        batch.insert(
+            properties,
+            PropertiesCompanion.insert(
+              id: prop8Id,
+              ownerId: owner2Id,
+              title: 'Mountain Cabin',
+              description: const Value('Cozy cabin in the woods'),
+              propertyType: 'house',
+              propertyCategory: const Value('residential'),
+              listingType: 'rent',
+              price: 150.0, // Daily rent maybe? or cheap monthly
+              area: 60.0,
+              bedrooms: const Value(2),
+              bathrooms: const Value(1),
+              address: '505 Forest Rd',
+              city: 'Woodland',
+              country: 'USA',
+              createdAt: now,
+              updatedAt: now,
+            ));
+
+        // Property 9
+        batch.insert(
+            properties,
+            PropertiesCompanion.insert(
+              id: prop9Id,
+              ownerId: owner2Id,
+              title: 'Downtown Office Floor',
+              description: const Value('Entire floor for office space'),
+              propertyType: 'commercial_office',
+              propertyCategory: const Value('commercial'),
+              listingType: 'rent',
+              price: 8000.0,
+              area: 500.0,
+              address: '606 Business Blvd',
+              city: 'Metropolis',
+              country: 'USA',
+              createdAt: now,
+              updatedAt: now,
+            ));
+
+        // Property 10
+        batch.insert(
+            properties,
+            PropertiesCompanion.insert(
+              id: prop10Id,
+              ownerId: owner2Id,
+              title: 'Industrial Warehouse',
+              description: const Value('Large warehouse with loading dock'),
+              propertyType: 'warehouse',
+              propertyCategory: const Value('commercial'),
+              listingType: 'sale',
+              price: 1500000.0,
+              area: 2000.0,
+              address: '707 Industrial Park',
+              city: 'Metropolis',
+              country: 'USA',
+              createdAt: now,
+              updatedAt: now,
+            ));
+      });
+
+      // Contracts for new properties
+      final contract5Id = uuid.v4();
+      await batch((batch) {
+        batch.insert(
+            contracts,
+            ContractsCompanion.insert(
+              id: contract5Id,
+              propertyId: prop9Id,
+              ownerId: owner2Id,
+              tenantBuyerId: tenant2Id,
+              contractType: 'lease',
+              startDate: now,
+              endDate: Value(now.add(const Duration(days: 1095))), // 3 years
+              monthlyRent: const Value(8000.0),
+              depositAmount: const Value(16000.0),
+              terms: const Value('Corporate lease'),
+              createdAt: now,
+              updatedAt: now,
+            ));
+      });
+
+      // Payments for new contract
+      await batch((batch) {
+        batch.insert(
+            payments,
+            PaymentsCompanion.insert(
+              id: uuid.v4(),
+              contractId: contract5Id,
+              payerId: tenant2Id,
+              amount: 16000.0,
+              paymentDate: now,
+              paymentType: 'deposit',
+              status: const Value('completed'),
+              notes: const Value('Security deposit'),
+              createdAt: now,
+              updatedAt: now,
+            ));
+
+        batch.insert(
+            payments,
+            PaymentsCompanion.insert(
+              id: uuid.v4(),
+              contractId: contract5Id,
+              payerId: tenant2Id,
+              amount: 8000.0,
+              paymentDate: now,
+              paymentType: 'rent',
+              status: const Value('completed'),
+              notes: const Value('First month rent'),
+              createdAt: now,
+              updatedAt: now,
+            ));
+      });
+
+      // Purchase Requests
+      await into(purchaseRequests).insert(PurchaseRequestsCompanion.insert(
+        id: uuid.v4(),
+        propertyId: prop10Id,
+        buyerId: buyer2Id,
+        offeredPrice: 1400000.0,
+        message:
+            const Value('Interested in the warehouse. Is price negotiable?'),
+        createdAt: now,
+        updatedAt: now,
+      ));
+
+      // Property Requests
+      await into(propertyRequests).insert(PropertyRequestsCompanion.insert(
+        id: uuid.v4(),
+        buyerId: buyer2Id,
+        propertyCategory: 'residential',
+        propertyType: const Value('villa'),
+        minPrice: const Value(1000000.0),
+        maxPrice: const Value(2000000.0),
+        location: 'Beach City',
+        urgency: 'sooner',
+        createdAt: now,
+        updatedAt: now,
+      ));
     }
+  }
+
+  Future<void> clearData() async {
+    await transaction(() async {
+      // Delete in reverse order of dependencies if foreign keys are enforced
+      // But here we just delete everything.
+      await delete(payments).go();
+      await delete(contracts).go();
+      await delete(propertyImages).go();
+      await delete(purchaseRequests).go();
+      await delete(propertyRequests).go();
+      await delete(notifications).go();
+      await delete(buildingUnits).go();
+      await delete(unitDescriptions).go();
+      await delete(properties).go();
+      await delete(users).go();
+      // Keep settings and static data tables
+    });
   }
 }
