@@ -92,11 +92,228 @@ class AppDatabase extends _$AppDatabase {
 
   // Seed sample data if database is empty
   Future<void> _seedData() async {
+    const uuid = Uuid();
+    final now = DateTime.now();
+
+    // Seed Lookups
+    final nationalityCount =
+        await (select(nationalities).get()).then((list) => list.length);
+    if (nationalityCount == 0) {
+      await batch((batch) {
+        // Nationalities
+        batch.insert(
+            nationalities,
+            NationalitiesCompanion.insert(
+                id: uuid.v4(),
+                name: 'Saudi',
+                nameAr: const Value('سعودي'),
+                createdAt: now,
+                updatedAt: now));
+        batch.insert(
+            nationalities,
+            NationalitiesCompanion.insert(
+                id: uuid.v4(),
+                name: 'Egyptian',
+                nameAr: const Value('مصري'),
+                createdAt: now,
+                updatedAt: now));
+        batch.insert(
+            nationalities,
+            NationalitiesCompanion.insert(
+                id: uuid.v4(),
+                name: 'American',
+                nameAr: const Value('أمريكي'),
+                createdAt: now,
+                updatedAt: now));
+
+        // Room Types
+        batch.insert(
+            roomTypes,
+            RoomTypesCompanion.insert(
+                id: uuid.v4(),
+                name: 'Bedroom',
+                nameAr: const Value('غرفة نوم'),
+                createdAt: now,
+                updatedAt: now));
+        batch.insert(
+            roomTypes,
+            RoomTypesCompanion.insert(
+                id: uuid.v4(),
+                name: 'Living Room',
+                nameAr: const Value('غرفة معيشة'),
+                createdAt: now,
+                updatedAt: now));
+        batch.insert(
+            roomTypes,
+            RoomTypesCompanion.insert(
+                id: uuid.v4(),
+                name: 'Kitchen',
+                nameAr: const Value('مطبخ'),
+                createdAt: now,
+                updatedAt: now));
+        batch.insert(
+            roomTypes,
+            RoomTypesCompanion.insert(
+                id: uuid.v4(),
+                name: 'Majlis',
+                nameAr: const Value('مجلس'),
+                createdAt: now,
+                updatedAt: now));
+
+        // Unit Description Types
+        batch.insert(
+            unitDescriptionTypes,
+            UnitDescriptionTypesCompanion.insert(
+                id: uuid.v4(),
+                name: 'Standard',
+                nameAr: const Value('قياسي'),
+                createdAt: now,
+                updatedAt: now));
+        batch.insert(
+            unitDescriptionTypes,
+            UnitDescriptionTypesCompanion.insert(
+                id: uuid.v4(),
+                name: 'Deluxe',
+                nameAr: const Value('ديلوكس'),
+                createdAt: now,
+                updatedAt: now));
+
+        // Property Types
+        batch.insert(
+            propertyTypes,
+            PropertyTypesCompanion.insert(
+                id: uuid.v4(),
+                name: 'Apartment',
+                nameAr: const Value('شقة'),
+                createdAt: now,
+                updatedAt: now));
+        batch.insert(
+            propertyTypes,
+            PropertyTypesCompanion.insert(
+                id: uuid.v4(),
+                name: 'Villa',
+                nameAr: const Value('فيلا'),
+                createdAt: now,
+                updatedAt: now));
+        batch.insert(
+            propertyTypes,
+            PropertyTypesCompanion.insert(
+                id: uuid.v4(),
+                name: 'Land',
+                nameAr: const Value('أرض'),
+                createdAt: now,
+                updatedAt: now));
+        batch.insert(
+            propertyTypes,
+            PropertyTypesCompanion.insert(
+                id: uuid.v4(),
+                name: 'Building',
+                nameAr: const Value('عمارة'),
+                createdAt: now,
+                updatedAt: now));
+
+        // Services
+        batch.insert(
+            services,
+            ServicesCompanion.insert(
+                id: uuid.v4(),
+                name: 'Cleaning',
+                nameAr: const Value('نظافة'),
+                price: const Value(100.0),
+                createdAt: now,
+                updatedAt: now));
+        batch.insert(
+            services,
+            ServicesCompanion.insert(
+                id: uuid.v4(),
+                name: 'Maintenance',
+                nameAr: const Value('صيانة'),
+                price: const Value(150.0),
+                createdAt: now,
+                updatedAt: now));
+        batch.insert(
+            services,
+            ServicesCompanion.insert(
+                id: uuid.v4(),
+                name: 'Security',
+                nameAr: const Value('حراسة'),
+                price: const Value(2000.0),
+                createdAt: now,
+                updatedAt: now));
+
+        // Currencies
+        batch.insert(
+            currencies,
+            CurrenciesCompanion.insert(
+                id: uuid.v4(),
+                code: 'SAR',
+                name: 'Saudi Riyal',
+                nameAr: const Value('ريال سعودي'),
+                symbol: const Value('ر.س'),
+                exchangeRate: const Value(1.0),
+                createdAt: now,
+                updatedAt: now));
+        batch.insert(
+            currencies,
+            CurrenciesCompanion.insert(
+                id: uuid.v4(),
+                code: 'USD',
+                name: 'US Dollar',
+                nameAr: const Value('دولار أمريكي'),
+                symbol: const Value('\$'),
+                exchangeRate: const Value(3.75),
+                createdAt: now,
+                updatedAt: now));
+      });
+
+      // Regions Hierarchy
+      final regionId = uuid.v4();
+      await into(regions).insert(RegionsCompanion.insert(
+          id: regionId,
+          name: 'Riyadh Region',
+          nameAr: const Value('منطقة الرياض'),
+          createdAt: now,
+          updatedAt: now));
+
+      final provinceId = uuid.v4();
+      await into(provinces).insert(ProvincesCompanion.insert(
+          id: provinceId,
+          regionId: regionId,
+          name: 'Riyadh Province',
+          nameAr: const Value('محافظة الرياض'),
+          createdAt: now,
+          updatedAt: now));
+
+      await into(cities).insert(CitiesCompanion.insert(
+          id: uuid.v4(),
+          provinceId: provinceId,
+          name: 'Riyadh',
+          nameAr: const Value('الرياض'),
+          createdAt: now,
+          updatedAt: now));
+    }
+
+    // Seed Company Info
+    final infoCount =
+        await (select(companyInfo).get()).then((list) => list.length);
+    if (infoCount == 0) {
+      await into(companyInfo).insert(CompanyInfoCompanion.insert(
+        id: uuid.v4(),
+        nameEn: const Value('Real Estate Co.'),
+        nameAr: const Value('شركة العقارات'),
+        addressEn: const Value('123 Business Rd, Riyadh'),
+        addressAr: const Value('123 طريق الأعمال، الرياض'),
+        phone: const Value('+966123456789'),
+        email: const Value('info@realestate.com'),
+        createdAt: now,
+        updatedAt: now,
+      ));
+    }
+
     final userCount = await (select(users).get()).then((list) => list.length);
 
     if (userCount == 0) {
-      const uuid = Uuid();
-      final now = DateTime.now();
+      // Hash password "123"
 
       // Hash password "123"
       final passwordHash = sha256.convert(utf8.encode('123')).toString();
@@ -708,6 +925,366 @@ class AppDatabase extends _$AppDatabase {
         createdAt: now,
         updatedAt: now,
       ));
+
+      // ---------------------------------------------------------
+      // GENERATE 10+ MORE ROWS FOR EACH TABLE (Bulk Data)
+      // ---------------------------------------------------------
+
+      // 1. Users (15 new users)
+      final newUsers = <String>[]; // Store IDs
+      final newOwners = <String>[];
+      final newTenants = <String>[];
+      final newBuyers = <String>[];
+
+      await batch((batch) {
+        for (int i = 1; i <= 15; i++) {
+          final uid = uuid.v4();
+          newUsers.add(uid);
+          String role = 'tenant';
+          if (i <= 5) {
+            role = 'owner';
+            newOwners.add(uid);
+          } else if (i <= 10) {
+            role = 'tenant';
+            newTenants.add(uid);
+          } else {
+            role = 'buyer';
+            newBuyers.add(uid);
+          }
+
+          batch.insert(
+            users,
+            UsersCompanion.insert(
+              id: uid,
+              username: 'user_gen_$i',
+              passwordHash: passwordHash,
+              email: 'user_gen_$i@example.com',
+              fullName: 'Generated User $i',
+              fullNameAr: Value('مستخدم مولد $i'),
+              phone: Value('+9665000000$i'),
+              role: role,
+              createdAt: now,
+              updatedAt: now,
+            ),
+          );
+        }
+      });
+
+      // 2. Properties (15 new properties)
+      final newProperties = <String>[];
+      await batch((batch) {
+        for (int i = 1; i <= 15; i++) {
+          final pid = uuid.v4();
+          newProperties.add(pid);
+          final ownerId = newOwners[i % newOwners.length]; // Round robin owners
+
+          batch.insert(
+            properties,
+            PropertiesCompanion.insert(
+              id: pid,
+              ownerId: ownerId,
+              title: 'Generated Property $i',
+              titleAr: Value('عقار مولد $i'),
+              description: Value('Description for generated property $i'),
+              propertyType: i % 2 == 0 ? 'apartment' : 'villa',
+              propertyCategory: const Value('residential'),
+              listingType: i % 3 == 0 ? 'sale' : 'rent',
+              price: (i * 1000.0) + 500.0,
+              area: (i * 10.0) + 50.0,
+              bedrooms: Value(i % 5 + 1),
+              bathrooms: Value(i % 3 + 1),
+              address: '$i Generated St',
+              city: 'Riyadh',
+              country: 'Saudi Arabia',
+              status: const Value('available'),
+              createdAt: now,
+              updatedAt: now,
+            ),
+          );
+        }
+      });
+
+      // 3. Property Images (2 per property = 30 images)
+      await batch((batch) {
+        for (final pid in newProperties) {
+          batch.insert(
+            propertyImages,
+            PropertyImagesCompanion.insert(
+              id: uuid.v4(),
+              propertyId: pid,
+              imageUrl:
+                  'https://via.placeholder.com/800x600?text=Property+$pid',
+              isPrimary: const Value(true),
+              createdAt: now,
+            ),
+          );
+          batch.insert(
+            propertyImages,
+            PropertyImagesCompanion.insert(
+              id: uuid.v4(),
+              propertyId: pid,
+              imageUrl: 'https://via.placeholder.com/800x600?text=Detail+$pid',
+              isPrimary: const Value(false),
+              createdAt: now,
+            ),
+          );
+        }
+      });
+
+      // 4. Contracts (10 new contracts)
+      final newContracts = <String>[];
+      await batch((batch) {
+        for (int i = 0; i < 10; i++) {
+          final cid = uuid.v4();
+          newContracts.add(cid);
+          // Use first 10 properties for contracts
+          final pid = newProperties[i];
+          final ownerId = newOwners[i % newOwners.length];
+          final tenantId = newTenants[i % newTenants.length];
+
+          batch.insert(
+            contracts,
+            ContractsCompanion.insert(
+              id: cid,
+              propertyId: pid,
+              ownerId: ownerId,
+              tenantBuyerId: tenantId,
+              contractType: 'lease',
+              startDate: now,
+              endDate: Value(now.add(const Duration(days: 365))),
+              monthlyRent: Value((i + 1) * 1000.0),
+              depositAmount: Value((i + 1) * 500.0),
+              terms: const Value('Standard generated lease terms'),
+              status: const Value('active'),
+              createdAt: now,
+              updatedAt: now,
+            ),
+          );
+        }
+      });
+
+      // 5. Payments (20 new payments, 2 per contract)
+      await batch((batch) {
+        for (final cid in newContracts) {
+          // Rent payment
+          batch.insert(
+            payments,
+            PaymentsCompanion.insert(
+              id: uuid.v4(),
+              contractId: cid,
+              payerId: newTenants[0], // Simplified
+              amount: 1000.0,
+              paymentDate: now,
+              paymentType: 'rent',
+              status: const Value('completed'),
+              createdAt: now,
+              updatedAt: now,
+            ),
+          );
+          // Service fee payment
+          batch.insert(
+            payments,
+            PaymentsCompanion.insert(
+              id: uuid.v4(),
+              contractId: cid,
+              payerId: newTenants[0],
+              amount: 100.0,
+              paymentDate: now,
+              paymentType: 'service_fee',
+              status: const Value('pending'),
+              createdAt: now,
+              updatedAt: now,
+            ),
+          );
+        }
+      });
+
+      // 6. Purchase Requests (10 new requests)
+      await batch((batch) {
+        for (int i = 0; i < 10; i++) {
+          batch.insert(
+            purchaseRequests,
+            PurchaseRequestsCompanion.insert(
+              id: uuid.v4(),
+              propertyId: newProperties[i],
+              buyerId: newBuyers[i % newBuyers.length],
+              offeredPrice: 500000.0 + (i * 10000),
+              message: Value('Generated offer message $i'),
+              status: const Value('pending'),
+              createdAt: now,
+              updatedAt: now,
+            ),
+          );
+        }
+      });
+
+      // 7. Property Requests (10 new requests)
+      await batch((batch) {
+        for (int i = 0; i < 10; i++) {
+          batch.insert(
+            propertyRequests,
+            PropertyRequestsCompanion.insert(
+              id: uuid.v4(),
+              buyerId: newBuyers[i % newBuyers.length],
+              propertyCategory: 'residential',
+              propertyType: const Value('apartment'),
+              minPrice: const Value(100000.0),
+              maxPrice: const Value(500000.0),
+              location: 'Generated City $i',
+              urgency: 'can_wait',
+              createdAt: now,
+              updatedAt: now,
+            ),
+          );
+        }
+      });
+
+      // 8. Notifications (15 new notifications)
+      await batch((batch) {
+        for (int i = 0; i < 15; i++) {
+          batch.insert(
+            notifications,
+            NotificationsCompanion.insert(
+              id: uuid.v4(),
+              userId: newUsers[i % newUsers.length],
+              title: 'Notification $i',
+              message: 'This is a generated notification message #$i',
+              isRead: Value(i % 2 == 0),
+              createdAt: now,
+            ),
+          );
+        }
+      });
+
+      // 9. Additional Lookups (to ensure > 10 rows)
+      await batch((batch) {
+        // Nationalities (adding 10 more)
+        final nations = [
+          'Kuwaiti',
+          'Bahraini',
+          'Qatari',
+          'Emirati',
+          'Omani',
+          'Jordanian',
+          'Lebanese',
+          'Syrian',
+          'Indian',
+          'Pakistani'
+        ];
+        final nationsAr = [
+          'كويتي',
+          'بحريني',
+          'قطري',
+          'إماراتي',
+          'عماني',
+          'أردني',
+          'لبناني',
+          'سوري',
+          'هندي',
+          'باكستاني'
+        ];
+        for (int i = 0; i < nations.length; i++) {
+          batch.insert(
+            nationalities,
+            NationalitiesCompanion.insert(
+              id: uuid.v4(),
+              name: nations[i],
+              nameAr: Value(nationsAr[i]),
+              createdAt: now,
+              updatedAt: now,
+            ),
+          );
+        }
+      });
+
+      // Cities (adding 10 more) - Outside batch because we need to await select
+      final existingProvince =
+          await (select(provinces)..limit(1)).getSingleOrNull();
+      if (existingProvince != null) {
+        await batch((batch) {
+          for (int i = 1; i <= 10; i++) {
+            batch.insert(
+              cities,
+              CitiesCompanion.insert(
+                id: uuid.v4(),
+                provinceId: existingProvince.id,
+                name: 'City $i',
+                nameAr: Value('مدينة $i'),
+                createdAt: now,
+                updatedAt: now,
+              ),
+            );
+          }
+        });
+      }
+    }
+
+    // Seed Building Units if needed
+    final unitCount =
+        await (select(buildingUnits).get()).then((list) => list.length);
+    if (unitCount == 0) {
+      // Need an owner for the building
+      final owner = await (select(users)
+            ..where((u) => u.role.equals('owner'))
+            ..limit(1))
+          .getSingleOrNull();
+
+      if (owner != null) {
+        final buildingId = uuid.v4();
+        // Create a Building Property
+        await into(properties).insert(PropertiesCompanion.insert(
+          id: buildingId,
+          ownerId: owner.id,
+          title: 'Skyline Residential Tower',
+          titleAr: const Value('برج سكاي لاين السكني'),
+          description: const Value('Luxury residential tower with 20 floors'),
+          propertyType: 'building',
+          propertyCategory: const Value('residential'),
+          listingType: 'rent',
+          price: 0, // Price depends on units
+          area: 5000.0,
+          address: '999 Tower St',
+          city: 'Metropolis',
+          country: 'USA',
+          createdAt: now,
+          updatedAt: now,
+        ));
+
+        // Create Units
+        await batch((batch) {
+          for (int floor = 1; floor <= 5; floor++) {
+            for (int unit = 1; unit <= 4; unit++) {
+              final unitId = uuid.v4();
+              batch.insert(
+                  buildingUnits,
+                  BuildingUnitsCompanion.insert(
+                    id: unitId,
+                    propertyId: buildingId,
+                    unitType: 'apartment',
+                    unitNumber: '$floor-0$unit',
+                    floorNumber: Value(floor.toString()),
+                    status: const Value('available'),
+                    createdAt: now,
+                    updatedAt: now,
+                  ));
+
+              // Add Description for the unit
+              batch.insert(
+                  unitDescriptions,
+                  UnitDescriptionsCompanion.insert(
+                    id: uuid.v4(),
+                    unitId: unitId,
+                    rooms: const Value(3),
+                    bathrooms: const Value(2),
+                    kitchens: const Value(1),
+                    description: const Value('Standard 3BR Apartment'),
+                    createdAt: now,
+                    updatedAt: now,
+                  ));
+            }
+          }
+        });
+      }
     }
   }
 
@@ -724,6 +1301,16 @@ class AppDatabase extends _$AppDatabase {
       await delete(buildingUnits).go();
       await delete(unitDescriptions).go();
       await delete(properties).go();
+      await delete(companyInfo).go();
+      await delete(currencies).go();
+      await delete(services).go();
+      await delete(cities).go();
+      await delete(provinces).go();
+      await delete(regions).go();
+      await delete(propertyTypes).go();
+      await delete(unitDescriptionTypes).go();
+      await delete(roomTypes).go();
+      await delete(nationalities).go();
       await delete(users).go();
       // Keep settings and static data tables
     });
