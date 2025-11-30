@@ -571,13 +571,32 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
       getTitle: (propertyWithImage) => propertyWithImage.property.title,
       getSubtitle: (propertyWithImage) =>
           '${propertyWithImage.property.city} • \$${propertyWithImage.property.price.toStringAsFixed(0)}',
-      getLeading: (propertyWithImage) => CircleAvatar(
-        backgroundColor: _getStatusColor(propertyWithImage.property.status),
-        child: Icon(
-          _getPropertyTypeIcon(propertyWithImage.property.propertyType),
-          color: Colors.white,
-        ),
-      ),
+      getLeading: (propertyWithImage) {
+        if (propertyWithImage.primaryImageUrl != null) {
+          return InkWell(
+            onTap: () => _showPropertyImages(propertyWithImage.property.id),
+            child: Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: _buildImageWidget(propertyWithImage.primaryImageUrl!),
+              ),
+            ),
+          );
+        }
+        return CircleAvatar(
+          backgroundColor: _getStatusColor(propertyWithImage.property.status),
+          child: Icon(
+            _getPropertyTypeIcon(propertyWithImage.property.propertyType),
+            color: Colors.white,
+          ),
+        );
+      },
       fields: [
         CardField(
           label: l10n.category,
