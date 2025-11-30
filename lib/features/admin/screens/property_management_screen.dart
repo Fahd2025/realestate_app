@@ -1,12 +1,28 @@
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:realestate_app/l10n/app_localizations.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:drift/drift.dart' as drift;
 import '../../../core/database/database.dart';
 import '../../../core/widgets/main_layout.dart';
 import '../../../core/widgets/responsive_data_table.dart';
 import '../../../core/widgets/responsive_card_list.dart';
 import '../../../core/widgets/confirmation_dialog.dart';
 import '../../../core/widgets/search_filter_bar.dart';
+import '../../../core/widgets/image_slideshow_dialog.dart';
 import '../widgets/property_form_modal.dart';
+
+/// Data class to hold property with its primary image
+class PropertyWithImage {
+  final Property property;
+  final String? primaryImageUrl;
+
+  PropertyWithImage({
+    required this.property,
+    this.primaryImageUrl,
+  });
+}
 
 /// Comprehensive property management screen with CRUD operations
 class PropertyManagementScreen extends StatefulWidget {
@@ -25,8 +41,8 @@ class PropertyManagementScreen extends StatefulWidget {
 }
 
 class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
-  List<Property> _properties = [];
-  List<Property> _filteredProperties = [];
+  List<PropertyWithImage> _properties = [];
+  List<PropertyWithImage> _filteredProperties = [];
   bool _isLoading = true;
   String _searchQuery = '';
   String? _selectedCategoryFilter;
@@ -52,8 +68,25 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
       }
 
       final properties = await query.get();
+
+      // Load primary image for each property
+      final propertiesWithImages = <PropertyWithImage>[];
+      for (final property in properties) {
+        final primaryImage =
+            await (widget.database.select(widget.database.propertyImages)
+                  ..where((tbl) => tbl.propertyId.equals(property.id))
+                  ..where((tbl) => tbl.isPrimary.equals(true))
+                  ..limit(1))
+                .getSingleOrNull();
+
+        propertiesWithImages.add(PropertyWithImage(
+          property: property,
+          primaryImageUrl: primaryImage?.imageUrl,
+        ));
+      }
+
       setState(() {
-        _properties = properties;
+        _properties = propertiesWithImages;
         _applyFilters();
         _isLoading = false;
       });
@@ -72,7 +105,9 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
   }
 
   void _applyFilters() {
-    _filteredProperties = _properties.where((property) {
+    _filteredProperties = _properties.where((propertyWithImage) {
+      final property = propertyWithImage.property;
+
       // Search filter
       final matchesSearch = _searchQuery.isEmpty ||
           property.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
@@ -151,14 +186,14 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
     }
   }
 
-  Future<void> _handleEditProperty(Property property) async {
+  Future<void> _handleEditProperty(PropertyWithImage propertyWithImage) async {
     final result = await showModalBottomSheet<bool>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => PropertyFormModal(
         database: widget.database,
-        property: property,
+        property: propertyWithImage.property,
         ownerId: widget.ownerId,
       ),
     );
@@ -174,7 +209,9 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
     }
   }
 
-  Future<void> _handleDeleteProperty(Property property) async {
+  Future<void> _handleDeleteProperty(
+      PropertyWithImage propertyWithImage) async {
+    final property = propertyWithImage.property;
     final l10n = AppLocalizations.of(context)!;
     await ConfirmationDialog.show(
       context: context,
@@ -206,6 +243,30 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
         }
       },
     );
+  }
+
+  Future<void> _showPropertyImages(String propertyId) async {
+    // Load all images for this property
+    final images = await (widget.database.select(widget.database.propertyImages)
+          ..where((tbl) => tbl.propertyId.equals(propertyId))
+          ..orderBy([
+            (tbl) => drift.OrderingTerm(expression: tbl.displayOrder),
+          ]))
+        .get();
+
+    if (images.isEmpty) {
+      return;
+    }
+
+    final imageUrls = images.map((img) => img.imageUrl).toList();
+
+    if (mounted) {
+      await ImageSlideshowDialog.show(
+        context,
+        imageUrls,
+        initialIndex: 0,
+      );
+    }
   }
 
   @override
@@ -346,44 +407,55 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
 
   Widget _buildDesktopView() {
     final l10n = AppLocalizations.of(context)!;
-    return ResponsiveDataTable<Property>(
+    return ResponsiveDataTable<PropertyWithImage>(
       data: _filteredProperties,
       columns: [
         DataTableColumnConfig(
+          label: 'Image', // TODO: Add to localizations
+          getValue: (propertyWithImage) => '',
+          sortable: false,
+          customCell: (propertyWithImage) => _buildImageCell(propertyWithImage),
+        ),
+        DataTableColumnConfig(
           label: l10n.title,
-          getValue: (property) => property.title,
+          getValue: (propertyWithImage) => propertyWithImage.property.title,
         ),
         DataTableColumnConfig(
           label: l10n.category,
-          getValue: (property) => _getCategoryLabel(property.propertyCategory),
+          getValue: (propertyWithImage) =>
+              _getCategoryLabel(propertyWithImage.property.propertyCategory),
         ),
         DataTableColumnConfig(
           label: l10n.type,
-          getValue: (property) => _getPropertyTypeLabel(property.propertyType),
+          getValue: (propertyWithImage) =>
+              _getPropertyTypeLabel(propertyWithImage.property.propertyType),
         ),
         DataTableColumnConfig(
           label: l10n.price,
-          getValue: (property) => '\$${property.price.toStringAsFixed(0)}',
+          getValue: (propertyWithImage) =>
+              '\$${propertyWithImage.property.price.toStringAsFixed(0)}',
           numeric: true,
         ),
         DataTableColumnConfig(
           label: l10n.area,
-          getValue: (property) => '${property.area.toStringAsFixed(0)} m²',
+          getValue: (propertyWithImage) =>
+              '${propertyWithImage.property.area.toStringAsFixed(0)} m²',
           numeric: true,
         ),
         DataTableColumnConfig(
           label: l10n.city,
-          getValue: (property) => property.city,
+          getValue: (propertyWithImage) => propertyWithImage.property.city,
         ),
         DataTableColumnConfig(
           label: l10n.status,
-          getValue: (property) => _getStatusLabel(property.status),
-          customCell: (property) => Chip(
+          getValue: (propertyWithImage) =>
+              _getStatusLabel(propertyWithImage.property.status),
+          customCell: (propertyWithImage) => Chip(
             label: Text(
-              _getStatusLabel(property.status),
+              _getStatusLabel(propertyWithImage.property.status),
               style: const TextStyle(fontSize: 12),
             ),
-            backgroundColor: _getStatusColor(property.status),
+            backgroundColor: _getStatusColor(propertyWithImage.property.status),
             padding: const EdgeInsets.symmetric(horizontal: 8),
           ),
         ),
@@ -394,51 +466,155 @@ class _PropertyManagementScreenState extends State<PropertyManagementScreen> {
     );
   }
 
+  Widget _buildImageCell(PropertyWithImage propertyWithImage) {
+    if (propertyWithImage.primaryImageUrl == null) {
+      return Container(
+        width: 60,
+        height: 60,
+        decoration: BoxDecoration(
+          color: Colors.grey.withValues(alpha: 0.2),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: const Icon(Icons.image_not_supported, color: Colors.grey),
+      );
+    }
+
+    final imageUrl = propertyWithImage.primaryImageUrl!;
+
+    return InkWell(
+      onTap: () => _showPropertyImages(propertyWithImage.property.id),
+      child: Container(
+        width: 60,
+        height: 60,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: _buildImageWidget(imageUrl),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImageWidget(String imageUrl) {
+    // Check if it's a network URL (http/https)
+    if (imageUrl.startsWith('http')) {
+      return CachedNetworkImage(
+        imageUrl: imageUrl,
+        fit: BoxFit.cover,
+        placeholder: (context, url) => const Center(
+          child: SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+        ),
+        errorWidget: (context, url, error) => const Icon(
+          Icons.broken_image,
+          color: Colors.grey,
+        ),
+      );
+    }
+
+    // Check if it's a base64 data URL
+    if (imageUrl.startsWith('data:image')) {
+      try {
+        final base64String = imageUrl.split(',')[1];
+        final bytes = base64Decode(base64String);
+        return Image.memory(
+          bytes,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => const Icon(
+            Icons.broken_image,
+            color: Colors.grey,
+          ),
+        );
+      } catch (e) {
+        return const Icon(
+          Icons.broken_image,
+          color: Colors.grey,
+        );
+      }
+    }
+
+    // Local file path - not supported on web
+    if (kIsWeb) {
+      return Container(
+        color: Colors.grey.withValues(alpha: 0.2),
+        child: const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.image_not_supported, color: Colors.grey, size: 24),
+            SizedBox(height: 4),
+            Text(
+              'Web',
+              style: TextStyle(fontSize: 10, color: Colors.grey),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // For non-web platforms, show placeholder for local files
+    return Container(
+      color: Colors.grey.withValues(alpha: 0.2),
+      child: const Icon(Icons.image, color: Colors.grey),
+    );
+  }
+
   Widget _buildMobileView() {
     final l10n = AppLocalizations.of(context)!;
-    return ResponsiveCardList<Property>(
+    return ResponsiveCardList<PropertyWithImage>(
       data: _filteredProperties,
-      getTitle: (property) => property.title,
-      getSubtitle: (property) =>
-          '${property.city} • \$${property.price.toStringAsFixed(0)}',
-      getLeading: (property) => CircleAvatar(
-        backgroundColor: _getStatusColor(property.status),
+      getTitle: (propertyWithImage) => propertyWithImage.property.title,
+      getSubtitle: (propertyWithImage) =>
+          '${propertyWithImage.property.city} • \$${propertyWithImage.property.price.toStringAsFixed(0)}',
+      getLeading: (propertyWithImage) => CircleAvatar(
+        backgroundColor: _getStatusColor(propertyWithImage.property.status),
         child: Icon(
-          _getPropertyTypeIcon(property.propertyType),
+          _getPropertyTypeIcon(propertyWithImage.property.propertyType),
           color: Colors.white,
         ),
       ),
       fields: [
         CardField(
           label: l10n.category,
-          getValue: (property) => _getCategoryLabel(property.propertyCategory),
+          getValue: (propertyWithImage) =>
+              _getCategoryLabel(propertyWithImage.property.propertyCategory),
         ),
         CardField(
           label: l10n.type,
-          getValue: (property) => _getPropertyTypeLabel(property.propertyType),
+          getValue: (propertyWithImage) =>
+              _getPropertyTypeLabel(propertyWithImage.property.propertyType),
         ),
         CardField(
           label: l10n.area,
-          getValue: (property) => '${property.area.toStringAsFixed(0)} m²',
+          getValue: (propertyWithImage) =>
+              '${propertyWithImage.property.area.toStringAsFixed(0)} m²',
         ),
         CardField(
           label: l10n.bedrooms,
-          getValue: (property) => property.bedrooms?.toString() ?? '-',
+          getValue: (propertyWithImage) =>
+              propertyWithImage.property.bedrooms?.toString() ?? '-',
         ),
         CardField(
           label: l10n.bathrooms,
-          getValue: (property) => property.bathrooms?.toString() ?? '-',
+          getValue: (propertyWithImage) =>
+              propertyWithImage.property.bathrooms?.toString() ?? '-',
         ),
         CardField(
           label: l10n.address,
-          getValue: (property) => property.address,
+          getValue: (propertyWithImage) => propertyWithImage.property.address,
         ),
         CardField(
           label: l10n.status,
-          getValue: (property) => _getStatusLabel(property.status),
-          customWidget: (property) => Chip(
-            label: Text(_getStatusLabel(property.status)),
-            backgroundColor: _getStatusColor(property.status),
+          getValue: (propertyWithImage) =>
+              _getStatusLabel(propertyWithImage.property.status),
+          customWidget: (propertyWithImage) => Chip(
+            label: Text(_getStatusLabel(propertyWithImage.property.status)),
+            backgroundColor: _getStatusColor(propertyWithImage.property.status),
           ),
         ),
       ],
