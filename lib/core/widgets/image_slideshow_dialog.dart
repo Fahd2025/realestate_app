@@ -156,6 +156,7 @@ class _ImageSlideshowDialogState extends State<ImageSlideshowDialog> {
   }
 
   Widget _buildImage(String url) {
+    // Handle network URLs (http/https)
     if (url.startsWith('http')) {
       return CachedNetworkImage(
         imageUrl: url,
@@ -169,7 +170,40 @@ class _ImageSlideshowDialogState extends State<ImageSlideshowDialog> {
           size: 64,
         ),
       );
-    } else if (kIsWeb) {
+    }
+
+    // Handle base64 data URLs
+    if (url.startsWith('data:image')) {
+      try {
+        final base64String = url.split(',')[1];
+        final bytes = base64Decode(base64String);
+        return Image.memory(
+          bytes,
+          fit: BoxFit.contain,
+          errorBuilder: (context, error, stackTrace) => const Icon(
+            Icons.broken_image,
+            color: Colors.white,
+            size: 64,
+          ),
+        );
+      } catch (e) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.broken_image, color: Colors.white, size: 64),
+            const SizedBox(height: 8),
+            Text(
+              'Error loading image: ${e.toString()}',
+              style: const TextStyle(color: Colors.white),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        );
+      }
+    }
+
+    // Handle local file paths
+    if (kIsWeb) {
       return const Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
