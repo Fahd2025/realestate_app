@@ -2329,6 +2329,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Generated on'**
   String get generatedOn;
+
+  /// No description provided for @on.
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get on;
+
+  /// No description provided for @off.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get off;
+
+  /// No description provided for @blue.
+  ///
+  /// In en, this message translates to:
+  /// **'Blue'**
+  String get blue;
+
+  /// No description provided for @green.
+  ///
+  /// In en, this message translates to:
+  /// **'Green'**
+  String get green;
+
+  /// No description provided for @purple.
+  ///
+  /// In en, this message translates to:
+  /// **'Purple'**
+  String get purple;
+
+  /// No description provided for @languageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get languageLabel;
+
+  /// No description provided for @manageCompanyDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage company details and logo'**
+  String get manageCompanyDetails;
+
+  /// No description provided for @apiConfiguration.
+  ///
+  /// In en, this message translates to:
+  /// **'API Configuration'**
+  String get apiConfiguration;
+
+  /// No description provided for @apiUrlPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'https://api.example.com'**
+  String get apiUrlPlaceholder;
+
+  /// No description provided for @saveApiUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Save API URL'**
+  String get saveApiUrl;
+
+  /// No description provided for @apiUrlSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'API URL saved'**
+  String get apiUrlSaved;
+
+  /// No description provided for @enableDataSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable data synchronization with server'**
+  String get enableDataSync;
+
+  /// No description provided for @dataManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Management'**
+  String get dataManagement;
+
+  /// No description provided for @clearAllData.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear All Data'**
+  String get clearAllData;
+
+  /// No description provided for @deleteAllBusinessData.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all business data from the app'**
+  String get deleteAllBusinessData;
+
+  /// No description provided for @clearAllDataTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear All Data?'**
+  String get clearAllDataTitle;
+
+  /// No description provided for @clearAllDataMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This will permanently delete all users, properties, contracts, and other business data. This action cannot be undone.'**
+  String get clearAllDataMessage;
+
+  /// No description provided for @clearData.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear Data'**
+  String get clearData;
+
+  /// No description provided for @allDataCleared.
+  ///
+  /// In en, this message translates to:
+  /// **'All data cleared successfully'**
+  String get allDataCleared;
+
+  /// No description provided for @errorClearingData.
+  ///
+  /// In en, this message translates to:
+  /// **'Error clearing data: {error}'**
+  String errorClearingData(String error);
 }
 
 class _AppLocalizationsDelegate

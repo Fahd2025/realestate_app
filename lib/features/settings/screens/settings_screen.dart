@@ -41,8 +41,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     ApiEndpoints.updateBaseUrl(_apiUrlController.text);
 
     if (mounted) {
+      final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('API URL saved')),
+        SnackBar(content: Text(l10n.apiUrlSaved)),
       );
     }
   }
@@ -56,21 +57,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _clearData() async {
+    final l10n = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Clear All Data?'),
-        content: const Text(
-            'This will permanently delete all users, properties, contracts, and other business data. This action cannot be undone.'),
+        title: Text(l10n.clearAllDataTitle),
+        content: Text(l10n.clearAllDataMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(l10n.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Clear Data'),
+            child: Text(l10n.clearData),
           ),
         ],
       ),
@@ -81,13 +82,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
         await context.read<AppDatabase>().clearData();
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('All data cleared successfully')),
+            SnackBar(content: Text(l10n.allDataCleared)),
           );
         }
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error clearing data: $e')),
+            SnackBar(
+              content: Text(
+                l10n.errorClearingData(e.toString()),
+              ),
+            ),
           );
         }
       }
@@ -98,6 +103,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void dispose() {
     _apiUrlController.dispose();
     super.dispose();
+  }
+
+  String _getLocalizedColorScheme(String scheme, AppLocalizations l10n) {
+    switch (scheme) {
+      case 'blue':
+        return l10n.blue;
+      case 'green':
+        return l10n.green;
+      case 'purple':
+        return l10n.purple;
+      default:
+        return scheme;
+    }
   }
 
   @override
@@ -122,7 +140,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: [
                 SwitchListTile(
                   title: Text(l10n.darkMode),
-                  subtitle: Text(themeCubit.state.isDarkMode ? 'On' : 'Off'),
+                  subtitle:
+                      Text(themeCubit.state.isDarkMode ? l10n.on : l10n.off),
                   value: themeCubit.state.isDarkMode,
                   onChanged: (value) {
                     themeCubit.toggleTheme();
@@ -131,13 +150,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const Divider(height: 1),
                 ListTile(
                   title: Text(l10n.colorScheme),
-                  subtitle: Text(themeCubit.state.colorScheme.toUpperCase()),
+                  subtitle: Text(_getLocalizedColorScheme(
+                      themeCubit.state.colorScheme, l10n)),
                   trailing: DropdownButton<String>(
                     value: themeCubit.state.colorScheme,
                     items: ['blue', 'green', 'purple']
                         .map((scheme) => DropdownMenuItem(
                               value: scheme,
-                              child: Text(scheme.toUpperCase()),
+                              child:
+                                  Text(_getLocalizedColorScheme(scheme, l10n)),
                             ))
                         .toList(),
                     onChanged: (value) {
@@ -160,7 +181,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const SizedBox(height: 8),
           Card(
             child: ListTile(
-              title: const Text('Language'),
+              title: Text(l10n.languageLabel),
               subtitle: Text(languageCubit.state.locale.languageCode == 'en'
                   ? 'English'
                   : 'العربية'),
@@ -190,7 +211,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: ListTile(
               leading: const Icon(Icons.business),
               title: Text(l10n.companySettings),
-              subtitle: const Text('Manage company details and logo'),
+              subtitle: Text(l10n.manageCompanyDetails),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
                 Navigator.push(
@@ -205,7 +226,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           // API Configuration section
           Text(
-            'API Configuration',
+            l10n.apiConfiguration,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 8),
@@ -219,19 +240,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     controller: _apiUrlController,
                     decoration: InputDecoration(
                       labelText: l10n.apiUrl,
-                      hintText: 'https://api.example.com',
+                      hintText: l10n.apiUrlPlaceholder,
                     ),
                   ),
                   const SizedBox(height: 12),
                   ElevatedButton(
                     onPressed: _saveApiUrl,
-                    child: const Text('Save API URL'),
+                    child: Text(l10n.saveApiUrl),
                   ),
                   const SizedBox(height: 16),
                   SwitchListTile(
                     title: Text(l10n.syncEnabled),
-                    subtitle:
-                        const Text('Enable data synchronization with server'),
+                    subtitle: Text(l10n.enableDataSync),
                     value: _syncEnabled,
                     onChanged: _toggleSync,
                     contentPadding: EdgeInsets.zero,
@@ -244,16 +264,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           // Data Management section
           Text(
-            'Data Management',
+            l10n.dataManagement,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 8),
           Card(
             child: ListTile(
               leading: const Icon(Icons.delete_forever, color: Colors.red),
-              title: const Text('Clear All Data',
-                  style: TextStyle(color: Colors.red)),
-              subtitle: const Text('Delete all business data from the app'),
+              title: Text(l10n.clearAllData,
+                  style: const TextStyle(color: Colors.red)),
+              subtitle: Text(l10n.deleteAllBusinessData),
               onTap: _clearData,
             ),
           ),

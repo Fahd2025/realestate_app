@@ -1135,4 +1135,67 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get generatedOn => 'تم الإنشاء في';
+
+  @override
+  String get on => 'مفعل';
+
+  @override
+  String get off => 'معطل';
+
+  @override
+  String get blue => 'أزرق';
+
+  @override
+  String get green => 'أخضر';
+
+  @override
+  String get purple => 'بنفسجي';
+
+  @override
+  String get languageLabel => 'اللغة';
+
+  @override
+  String get manageCompanyDetails => 'إدارة تفاصيل الشركة والشعار';
+
+  @override
+  String get apiConfiguration => 'إعدادات API';
+
+  @override
+  String get apiUrlPlaceholder => 'https://api.example.com';
+
+  @override
+  String get saveApiUrl => 'حفظ رابط API';
+
+  @override
+  String get apiUrlSaved => 'تم حفظ رابط API';
+
+  @override
+  String get enableDataSync => 'تفعيل مزامنة البيانات مع الخادم';
+
+  @override
+  String get dataManagement => 'إدارة البيانات';
+
+  @override
+  String get clearAllData => 'مسح جميع البيانات';
+
+  @override
+  String get deleteAllBusinessData => 'حذف جميع بيانات الأعمال من التطبيق';
+
+  @override
+  String get clearAllDataTitle => 'مسح جميع البيانات؟';
+
+  @override
+  String get clearAllDataMessage =>
+      'سيؤدي هذا إلى حذف جميع المستخدمين والعقارات والعقود وبيانات الأعمال الأخرى بشكل دائم. لا يمكن التراجع عن هذا الإجراء.';
+
+  @override
+  String get clearData => 'مسح البيانات';
+
+  @override
+  String get allDataCleared => 'تم مسح جميع البيانات بنجاح';
+
+  @override
+  String errorClearingData(String error) {
+    return 'خطأ في مسح البيانات: $error';
+  }
 }

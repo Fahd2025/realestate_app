@@ -1136,4 +1136,67 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get generatedOn => 'Generated on';
+
+  @override
+  String get on => 'On';
+
+  @override
+  String get off => 'Off';
+
+  @override
+  String get blue => 'Blue';
+
+  @override
+  String get green => 'Green';
+
+  @override
+  String get purple => 'Purple';
+
+  @override
+  String get languageLabel => 'Language';
+
+  @override
+  String get manageCompanyDetails => 'Manage company details and logo';
+
+  @override
+  String get apiConfiguration => 'API Configuration';
+
+  @override
+  String get apiUrlPlaceholder => 'https://api.example.com';
+
+  @override
+  String get saveApiUrl => 'Save API URL';
+
+  @override
+  String get apiUrlSaved => 'API URL saved';
+
+  @override
+  String get enableDataSync => 'Enable data synchronization with server';
+
+  @override
+  String get dataManagement => 'Data Management';
+
+  @override
+  String get clearAllData => 'Clear All Data';
+
+  @override
+  String get deleteAllBusinessData => 'Delete all business data from the app';
+
+  @override
+  String get clearAllDataTitle => 'Clear All Data?';
+
+  @override
+  String get clearAllDataMessage =>
+      'This will permanently delete all users, properties, contracts, and other business data. This action cannot be undone.';
+
+  @override
+  String get clearData => 'Clear Data';
+
+  @override
+  String get allDataCleared => 'All data cleared successfully';
+
+  @override
+  String errorClearingData(String error) {
+    return 'Error clearing data: $error';
+  }
 }

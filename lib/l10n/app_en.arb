@@ -392,5 +392,32 @@
   "contractInformation": "Contract Information",
   "payer": "Payer",
   "thankYouForPayment": "Thank you for your payment",
-  "generatedOn": "Generated on"
+  "generatedOn": "Generated on",
+  "on": "On",
+  "off": "Off",
+  "blue": "Blue",
+  "green": "Green",
+  "purple": "Purple",
+  "languageLabel": "Language",
+  "manageCompanyDetails": "Manage company details and logo",
+  "apiConfiguration": "API Configuration",
+  "apiUrlPlaceholder": "https://api.example.com",
+  "saveApiUrl": "Save API URL",
+  "apiUrlSaved": "API URL saved",
+  "enableDataSync": "Enable data synchronization with server",
+  "dataManagement": "Data Management",
+  "clearAllData": "Clear All Data",
+  "deleteAllBusinessData": "Delete all business data from the app",
+  "clearAllDataTitle": "Clear All Data?",
+  "clearAllDataMessage": "This will permanently delete all users, properties, contracts, and other business data. This action cannot be undone.",
+  "clearData": "Clear Data",
+  "allDataCleared": "All data cleared successfully",
+  "errorClearingData": "Error clearing data: {error}",
+  "@errorClearingData": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }
