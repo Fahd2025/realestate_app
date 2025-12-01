@@ -198,9 +198,6 @@ class AppRouter {
 
       case AppRoutes.adminContracts:
       case AppRoutes.ownerContracts:
-      // Tenant Routes
-      case AppRoutes.tenantContracts:
-      case AppRoutes.tenantPayments:
       // Contract Routes
       case AppRoutes.contractsPurchase:
         return MaterialPageRoute(
@@ -214,6 +211,32 @@ class AppRouter {
                     PaymentsRepository(database),
                   ),
                   child: const PurchaseContractsScreen(),
+                );
+              } else if (state is AuthUnauthenticated) {
+                return const LoginScreen();
+              }
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            },
+          ),
+          settings: settings,
+        );
+
+      // Tenant Routes - Lease Contracts
+      case AppRoutes.tenantContracts:
+      case AppRoutes.tenantPayments:
+        return MaterialPageRoute(
+          builder: (context) => BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is AuthAuthenticated) {
+                final database = context.read<AuthBloc>().database;
+                return BlocProvider(
+                  create: (context) => ContractsBloc(
+                    ContractsRepository(database),
+                    PaymentsRepository(database),
+                  ),
+                  child: const LeaseContractsScreen(),
                 );
               } else if (state is AuthUnauthenticated) {
                 return const LoginScreen();

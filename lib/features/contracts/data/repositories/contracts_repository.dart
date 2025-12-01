@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:realestate_app/core/database/database.dart';
+import 'package:realestate_app/core/models/enums.dart';
 
 class ContractsRepository {
   final AppDatabase _database;
@@ -43,7 +44,11 @@ class ContractsRepository {
   }
 
   // Advanced query with joins to get property and user details
-  Stream<List<ContractWithDetails>> watchContractsWithDetails({String? type}) {
+  Stream<List<ContractWithDetails>> watchContractsWithDetails({
+    String? type,
+    String? userId,
+    UserRole? role,
+  }) {
     // Create aliases for multiple joins on users table
     final ownerAlias = _database.alias(_database.users, 'owner');
     final tenantBuyerAlias = _database.alias(_database.users, 'tenant_buyer');
@@ -65,6 +70,14 @@ class ContractsRepository {
 
     if (type != null) {
       query.where(_database.contracts.contractType.equals(type));
+    }
+
+    if (userId != null && role != null) {
+      if (role == UserRole.owner) {
+        query.where(_database.contracts.ownerId.equals(userId));
+      } else if (role == UserRole.tenant || role == UserRole.buyer) {
+        query.where(_database.contracts.tenantBuyerId.equals(userId));
+      }
     }
 
     return query.watch().map((rows) {

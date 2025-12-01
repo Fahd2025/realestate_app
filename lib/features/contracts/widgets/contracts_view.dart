@@ -15,6 +15,8 @@ import 'package:realestate_app/features/payments/bloc/payments_bloc.dart';
 import 'package:realestate_app/features/payments/data/repositories/payments_repository.dart';
 import 'package:realestate_app/core/widgets/main_layout.dart';
 
+import 'package:realestate_app/core/models/enums.dart';
+
 class ContractsView extends StatefulWidget {
   final String contractType; // 'buy' or 'rent'
 
@@ -28,7 +30,33 @@ class _ContractsViewState extends State<ContractsView> {
   @override
   void initState() {
     super.initState();
-    context.read<ContractsBloc>().add(LoadContracts(type: widget.contractType));
+    final authState = context.read<AuthBloc>().state;
+    String? userId;
+    UserRole? role;
+
+    if (authState is AuthAuthenticated) {
+      userId = authState.user.id;
+      switch (authState.user.role) {
+        case 'admin':
+          role = UserRole.admin;
+          break;
+        case 'owner':
+          role = UserRole.owner;
+          break;
+        case 'tenant':
+          role = UserRole.tenant;
+          break;
+        case 'buyer':
+          role = UserRole.buyer;
+          break;
+      }
+    }
+
+    context.read<ContractsBloc>().add(LoadContracts(
+          type: widget.contractType,
+          userId: userId,
+          role: role,
+        ));
   }
 
   void _showForm(BuildContext context, {Contract? contract}) {

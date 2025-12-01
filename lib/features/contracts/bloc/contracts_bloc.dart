@@ -28,8 +28,13 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
   void _onLoadContracts(LoadContracts event, Emitter<ContractsState> emit) {
     emit(ContractsLoading());
     _contractsSubscription?.cancel();
-    _contractsSubscription =
-        _repository.watchContractsWithDetails(type: event.type).listen(
+    _contractsSubscription = _repository
+        .watchContractsWithDetails(
+      type: event.type,
+      userId: event.userId,
+      role: event.role,
+    )
+        .listen(
       (contractsWithDetails) {
         add(_ContractsUpdated(contractsWithDetails));
       },

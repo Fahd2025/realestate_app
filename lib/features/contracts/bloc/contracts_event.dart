@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:realestate_app/core/database/database.dart';
+import 'package:realestate_app/core/models/enums.dart';
 
 abstract class ContractsEvent extends Equatable {
   const ContractsEvent();
@@ -10,11 +11,13 @@ abstract class ContractsEvent extends Equatable {
 
 class LoadContracts extends ContractsEvent {
   final String? type; // 'buy' or 'rent'
+  final String? userId;
+  final UserRole? role;
 
-  const LoadContracts({this.type});
+  const LoadContracts({this.type, this.userId, this.role});
 
   @override
-  List<Object?> get props => [type];
+  List<Object?> get props => [type, userId, role];
 }
 
 class AddContract extends ContractsEvent {

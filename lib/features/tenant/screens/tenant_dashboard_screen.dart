@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:realestate_app/l10n/app_localizations.dart';
 import '../../../features/auth/bloc/auth_bloc.dart';
 import '../../../core/constants/routes.dart';
+import '../../../core/widgets/main_layout.dart';
 
 class TenantDashboardScreen extends StatelessWidget {
   const TenantDashboardScreen({super.key});
@@ -12,31 +13,8 @@ class TenantDashboardScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final user = context.read<AuthBloc>().currentUser!;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.dashboard),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.pushNamed(context, AppRoutes.settings);
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.person),
-            onPressed: () {
-              Navigator.pushNamed(context, AppRoutes.profile);
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              context.read<AuthBloc>().add(LogoutRequested());
-              Navigator.pushReplacementNamed(context, AppRoutes.login);
-            },
-          ),
-        ],
-      ),
+    return MainLayout(
+      title: l10n.dashboard,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -70,7 +48,10 @@ class TenantDashboardScreen extends StatelessWidget {
                           ),
                           Text(
                             l10n.tenant,
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
                           ),
@@ -95,7 +76,7 @@ class TenantDashboardScreen extends StatelessWidget {
               title: l10n.myContracts,
               subtitle: 'View your rental contracts',
               onTap: () {
-                // TODO: Navigate to contracts
+                Navigator.pushNamed(context, AppRoutes.tenantContracts);
               },
             ),
             const SizedBox(height: 12),
@@ -105,7 +86,7 @@ class TenantDashboardScreen extends StatelessWidget {
               title: l10n.paymentHistory,
               subtitle: 'View payment history',
               onTap: () {
-                // TODO: Navigate to payments
+                Navigator.pushNamed(context, AppRoutes.tenantPayments);
               },
             ),
             const SizedBox(height: 12),
