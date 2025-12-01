@@ -9,11 +9,11 @@ class ImagePrimaryFixer {
 
   /// Fix all properties to have their first image marked as primary
   Future<void> fixPropertyImages() async {
-    print('DEBUG: Starting image primary fix...');
+    // print('DEBUG: Starting image primary fix...');
 
     // Get all properties
     final properties = await database.select(database.properties).get();
-    print('DEBUG: Found ${properties.length} properties');
+    // print('DEBUG: Found ${properties.length} properties');
 
     int fixedCount = 0;
     for (final property in properties) {
@@ -24,15 +24,15 @@ class ImagePrimaryFixer {
           .get();
 
       if (images.isEmpty) {
-        print('DEBUG: Property ${property.id} has no images');
+        // print('DEBUG: Property ${property.id} has no images');
         continue;
       }
 
-      print('DEBUG: Property ${property.id} has ${images.length} images');
+      // print('DEBUG: Property ${property.id} has ${images.length} images');
 
       // Check if any image is already marked as primary
       final hasPrimary = images.any((img) => img.isPrimary);
-      print('DEBUG: Property ${property.id} hasPrimary: $hasPrimary');
+      // print('DEBUG: Property ${property.id} hasPrimary: $hasPrimary');
 
       if (!hasPrimary && images.isNotEmpty) {
         // Mark the first image as primary
@@ -49,6 +49,6 @@ class ImagePrimaryFixer {
       }
     }
 
-    print('DEBUG: Fixed $fixedCount properties');
+    // print('DEBUG: Fixed $fixedCount properties');
   }
 }

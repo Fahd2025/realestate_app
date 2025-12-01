@@ -44,7 +44,7 @@ class _ContractPaymentsModalState extends State<ContractPaymentsModal> {
   }
 
   void _processPayment(Payment payment, AppLocalizations l10n) async {
-    if (context.mounted) {
+    if (mounted) {
       // Show loading indicator
       final snackBar = SnackBar(
         content: Row(
@@ -65,7 +65,7 @@ class _ContractPaymentsModalState extends State<ContractPaymentsModal> {
     );
 
     // Dismiss the loading snackbar
-    if (context.mounted) {
+    if (mounted) {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
     }
 
@@ -78,9 +78,9 @@ class _ContractPaymentsModalState extends State<ContractPaymentsModal> {
         updatedAt: drift.Value(DateTime.now()),
       );
 
-      context.read<PaymentsBloc>().add(UpdatePayment(updatedPayment));
+      if (mounted) {
+        context.read<PaymentsBloc>().add(UpdatePayment(updatedPayment));
 
-      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(l10n.paymentProcessedSuccessfully),
@@ -89,7 +89,7 @@ class _ContractPaymentsModalState extends State<ContractPaymentsModal> {
         );
       }
     } else {
-      if (context.mounted) {
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('${l10n.paymentFailed}: ${result.message}'),
