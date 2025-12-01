@@ -169,14 +169,6 @@ class _ContractsViewState extends State<ContractsView> {
               DataCell(Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () => _showForm(context, contract: contract),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () => _deleteContract(context, contract.id),
-                  ),
-                  IconButton(
                     icon: const Icon(Icons.picture_as_pdf),
                     onPressed: () {
                       ContractPdfGenerator.printContract(contract, l10n);
@@ -185,6 +177,14 @@ class _ContractsViewState extends State<ContractsView> {
                   IconButton(
                     icon: const Icon(Icons.payment),
                     onPressed: () => _showPayments(context, contract),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () => _showForm(context, contract: contract),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () => _deleteContract(context, contract.id),
                   ),
                 ],
               )),
@@ -254,14 +254,6 @@ class _ContractsViewState extends State<ContractsView> {
                 alignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    onPressed: () => _showForm(context, contract: contract),
-                    child: Text(l10n.edit),
-                  ),
-                  TextButton(
-                    onPressed: () => _deleteContract(context, contract.id),
-                    child: Text(l10n.delete),
-                  ),
-                  TextButton(
                     onPressed: () {
                       ContractPdfGenerator.printContract(contract, l10n);
                     },
@@ -270,6 +262,14 @@ class _ContractsViewState extends State<ContractsView> {
                   TextButton(
                     onPressed: () => _showPayments(context, contract),
                     child: Text(l10n.payments),
+                  ),
+                  TextButton(
+                    onPressed: () => _showForm(context, contract: contract),
+                    child: Text(l10n.edit),
+                  ),
+                  TextButton(
+                    onPressed: () => _deleteContract(context, contract.id),
+                    child: Text(l10n.delete),
                   ),
                 ],
               ),

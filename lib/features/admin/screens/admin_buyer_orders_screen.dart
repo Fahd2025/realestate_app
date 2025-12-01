@@ -385,12 +385,12 @@ class _AdminBuyerRequestsScreenState extends State<AdminBuyerRequestsScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.edit),
+                        icon: const Icon(Icons.edit_note),
                         tooltip: l10n.changeStatus,
                         onPressed: () => _changeRequestStatus(request),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.edit_note),
+                        icon: const Icon(Icons.edit),
                         tooltip: l10n.edit,
                         onPressed: () => _handleEditRequest(request),
                       ),
